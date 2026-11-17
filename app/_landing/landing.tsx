@@ -394,7 +394,11 @@ const processScenes: Record<
   design: [
     { name: "process-design-mark.svg", layer: "mark" },
     { name: "process-design-grid.svg", layer: "texture" },
-    { name: "process-design-hand.webp", layer: "figure" },
+    {
+      name: "process-design-hand@2x.webp",
+      layer: "figure",
+      unoptimized: true,
+    },
     {
       name: "process-design-left-glow.webp",
       layer: "light-start",
@@ -408,7 +412,11 @@ const processScenes: Record<
   ],
   development: [
     { name: "process-development-cube.webp", layer: "mark" },
-    { name: "process-development-hands.webp", layer: "figure" },
+    {
+      name: "process-development-hands@2x.webp",
+      layer: "figure",
+      unoptimized: true,
+    },
   ],
 };
 
@@ -442,15 +450,17 @@ function Approach() {
               />
             </div>
             <div className="studio-step-art">
-              {processScenes[art].map(({ name, layer, unoptimized }) => (
-                <Art
-                  key={layer}
-                  name={name}
-                  className={"studio-step-" + layer}
-                  sizes="(max-width: 640px) 80vw, 40vw"
-                  unoptimized={unoptimized}
-                />
-              ))}
+              <div className="studio-step-scene">
+                {processScenes[art].map(({ name, layer, unoptimized }) => (
+                  <Art
+                    key={layer}
+                    name={name}
+                    className={"studio-step-" + layer}
+                    sizes="(max-width: 640px) 80vw, 40vw"
+                    unoptimized={unoptimized}
+                  />
+                ))}
+              </div>
             </div>
           </li>
         ))}

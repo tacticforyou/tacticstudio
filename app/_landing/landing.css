@@ -136,6 +136,7 @@
   }
 
   .studio-tagline strong {
+    margin-inline: 0.12em;
     font-family: var(--font-yekan), var(--font-peyda), sans-serif;
     font-size: 1.22em;
     font-weight: 700;
@@ -595,6 +596,7 @@
 
   .studio-approach {
     padding-block: calc(196 * var(--u)) calc(224 * var(--u));
+    background: var(--color-studio-white);
   }
 
   .studio-steps {
@@ -616,14 +618,16 @@
     position: relative;
     min-width: 0;
     border-radius: var(--studio-radius);
+    box-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u)) rgb(24 36 55 / 7%);
   }
 
   .studio-step-label {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    background: #fff;
-    box-shadow: var(--studio-shadow);
+    border: calc(1 * var(--u)) solid white;
+    background: rgb(255 255 255 / 40%);
+    backdrop-filter: blur(calc(16 * var(--u)));
     padding: 9% 8% 10%;
     gap: 0.35rem;
     line-height: 1.32;
@@ -665,41 +669,49 @@
     background-image: url("/images/landing/card-wave-rose.svg");
   }
 
-  .studio-step-art {
-    overflow: hidden;
-    isolation: isolate;
-    background: white;
-    box-shadow: var(--studio-shadow);
-  }
-
-  .studio-step-art .studio-art {
-    position: absolute;
-  }
-
-  .studio-step-strategy .studio-step-art::before,
-  .studio-step-design .studio-step-art::before {
+  .studio-step-scene {
     position: absolute;
     inset: 0;
-    content: "";
+    overflow: clip;
+    isolation: isolate;
+    border-radius: inherit;
+    background: white;
   }
 
-  .studio-step-strategy .studio-step-art::before {
-    background:
-      linear-gradient(to left, rgb(148 159 128 / 16%), white 55.93%), white;
+  .studio-step-scene .studio-art {
+    position: absolute;
   }
 
-  .studio-step-design .studio-step-art::before {
-    background:
-      linear-gradient(to right, rgb(148 159 128 / 16%), white 43.64%), white;
-  }
-
-  .studio-step-art::after {
+  /* FigCraft layers 410, 412 and 572 are rotated 180°. Their 40% fill
+     opacity multiplies the sage and rose stops' 40% alpha. */
+  .studio-step-scene::before {
     position: absolute;
     inset: 0;
     border: calc(1 * var(--u)) solid white;
     border-radius: inherit;
+    background:
+      linear-gradient(
+        var(--step-fill-direction) in srgb,
+        var(--step-fill-tint),
+        rgb(255 255 255 / 40%) var(--step-white-stop)
+      ),
+      white;
     content: "";
-    pointer-events: none;
+  }
+
+  .studio-step-strategy,
+  .studio-step-development {
+    --step-fill-direction: to left;
+    --step-white-stop: 55.9322%;
+  }
+
+  .studio-step-strategy,
+  .studio-step-design {
+    --step-fill-tint: rgb(148 159 128 / 16%);
+  }
+
+  .studio-step-development {
+    --step-fill-tint: rgb(180 137 130 / 16%);
   }
 
   .studio-step-strategy .studio-step-mark {
@@ -719,6 +731,8 @@
   }
 
   .studio-step-design {
+    --step-fill-direction: to right;
+    --step-white-stop: 43.6441%;
     grid-template-columns: 590fr 299fr;
   }
 
@@ -744,10 +758,19 @@
   }
 
   .studio-step-design .studio-step-texture {
-    top: -41.87%;
-    left: 34.58%;
-    width: 73.41%;
+    top: 0;
+    left: 42%;
+    width: 58.6%;
     aspect-ratio: 1;
+    /* FigCraft exports layer 416 flat. Match the line pitch and angle in the reference PNG. */
+    transform: translateY(-36.15%) skewY(-15deg) scaleY(1.17);
+    transform-origin: top left;
+    mask-image: linear-gradient(
+      to right,
+      black 15%,
+      rgb(0 0 0 / 82%) 60%,
+      rgb(0 0 0 / 85%)
+    );
   }
 
   .studio-step-light-start,
@@ -781,14 +804,10 @@
     width: 53.35%;
   }
 
-  .studio-step-development .studio-step-art {
+  .studio-step-development .studio-step-scene {
     overflow: visible;
     clip-path: inset(-30% 0 0 round var(--studio-radius));
-    background: linear-gradient(105deg, #fbf9f6, #ebe3e0);
-  }
-
-  .studio-step-development .studio-step-art::after {
-    display: none;
+    background: none;
   }
 
   .studio-step-development .studio-step-mark {
@@ -962,8 +981,9 @@
     align-items: center;
     gap: calc(18 * var(--u));
     padding: calc(20 * var(--u)) calc(30 * var(--u));
-    box-shadow: 0 calc(30 * var(--u)) calc(68 * var(--u)) rgb(56 58 44 / 21%);
-    backdrop-filter: blur(8px);
+    background: rgb(255 255 255 / 40%);
+    box-shadow: 0 calc(36 * var(--u)) calc(96 * var(--u)) rgb(55 59 47 / 16%);
+    backdrop-filter: blur(calc(16 * var(--u)));
   }
 
   .studio-quote-emblem {
@@ -1000,30 +1020,100 @@
   }
 
   .studio-faq-grid {
-    --faq-closed-height: max(9.75rem, calc(203 * var(--u)));
-    --faq-open-height: max(16.5rem, calc(341 * var(--u)));
+    --faq-closed-height: max(
+      var(--faq-closed-min),
+      var(--faq-question-height, 0px)
+    );
+    --faq-closed-min: max(9.75rem, calc(203 * var(--u)));
+    --faq-gap: calc(26 * var(--u));
+    --faq-transition: 440ms cubic-bezier(0.22, 1, 0.36, 1);
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-auto-rows: minmax(
+      var(--faq-closed-height),
+      var(--faq-reserved-height, auto)
+    );
     align-items: start;
-    gap: calc(26 * var(--u));
+    gap: var(--faq-gap);
     margin-block-start: calc(26 * var(--u));
     overflow-anchor: none;
   }
 
   .studio-faq-card {
     position: relative;
-    display: flex;
-    height: var(--faq-closed-height);
-    flex-direction: column;
+    display: grid;
+    min-block-size: var(--faq-closed-height);
+    block-size: var(--faq-closed-height);
+    grid-template-rows: minmax(0, 1fr);
     border-radius: var(--studio-radius);
-    padding: calc(65 * var(--u)) calc(30 * var(--u)) calc(46 * var(--u));
     background: #fff;
     box-shadow: var(--studio-shadow);
     line-height: 1.33;
+    transition: block-size var(--faq-transition);
   }
 
   .studio-faq-card[data-expanded="true"] {
-    height: var(--faq-open-height);
+    block-size: var(--faq-open-height, auto);
+  }
+
+  .studio-faq-viewport {
+    overflow: clip;
+    border-radius: inherit;
+  }
+
+  .studio-faq-content {
+    padding: calc(65 * var(--u)) calc(30 * var(--u)) calc(46 * var(--u));
+  }
+
+  .studio-faq-answer {
+    display: flow-root;
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 -0.35rem;
+    transition:
+      opacity 180ms ease-out,
+      translate var(--faq-transition),
+      visibility 0s linear 180ms;
+  }
+
+  .studio-faq-card[data-expanded="true"] .studio-faq-answer {
+    visibility: visible;
+    opacity: 1;
+    translate: none;
+    transition:
+      opacity 280ms ease-out 55ms,
+      translate var(--faq-transition),
+      visibility 0s;
+  }
+
+  .studio-faq-card .studio-card-wave {
+    background: none;
+  }
+
+  .studio-faq-card .studio-card-wave::before,
+  .studio-faq-card .studio-card-wave::after {
+    position: absolute;
+    inset: 0;
+    background: center / contain no-repeat;
+    content: "";
+    transition: opacity var(--faq-transition);
+  }
+
+  .studio-faq-card .studio-card-wave::before {
+    background-image: url("/images/landing/card-wave.svg");
+  }
+
+  .studio-faq-card .studio-card-wave::after {
+    background-image: url("/images/landing/card-wave-rose.svg");
+    opacity: 0;
+  }
+
+  .studio-faq-card[data-expanded="true"] .studio-card-wave::before {
+    opacity: 0;
+  }
+
+  .studio-faq-card[data-expanded="true"] .studio-card-wave::after {
+    opacity: 1;
   }
 
   .studio-faq-card button {
@@ -1049,11 +1139,6 @@
 
   .studio-faq-card button:focus-visible {
     outline: none;
-  }
-
-  .studio-faq-card p {
-    min-height: 0;
-    overflow: auto;
   }
 
   .studio-footer {
@@ -1218,25 +1303,27 @@
   }
 
   @media (900px < width < 1400px) {
-    .studio-faq-grid {
-      --faq-open-height: 18.5rem;
-    }
-
-    .studio-faq-card {
+    .studio-faq-content {
       padding: 2rem 1rem 1.75rem;
     }
   }
 
   @media (max-width: 900px) {
     .studio-faq-grid {
-      --faq-closed-height: 4.75rem;
-      --faq-open-height: 12.5rem;
+      --faq-closed-min: 4.75rem;
+      --faq-gap: 0.9rem;
+      min-block-size: calc(
+        max(var(--faq-closed-height), var(--faq-reserved-height, 0px)) +
+          (var(--faq-closed-height) + var(--faq-gap)) *
+          var(--faq-closed-count, 0)
+      );
       grid-template-columns: minmax(0, 1fr);
-      gap: 0.9rem;
+      grid-auto-rows: auto;
+      align-content: start;
       margin-block-start: 1.65rem;
     }
 
-    .studio-faq-card {
+    .studio-faq-content {
       padding: 1rem 1rem 1.65rem;
     }
   }
@@ -1474,7 +1561,14 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .studio-button {
+    .studio-button,
+    .studio-faq-card,
+    .studio-faq-card .studio-faq-answer,
+    .studio-faq-card .studio-card-wave::before,
+    .studio-faq-card .studio-card-wave::after {
+      transition: none;
+    }
+    .studio-faq-card[data-expanded="true"] .studio-faq-answer {
       transition: none;
     }
     .studio-button:is(:hover, :active) {
