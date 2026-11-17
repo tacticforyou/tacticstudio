@@ -1,0 +1,57 @@
+@import "tailwindcss";
+
+@theme {
+  --color-canvas: #f7f7f2;
+  --color-ink: #18231e;
+  --color-muted: #4d5e54;
+  --color-accent: #165a41;
+  --color-border: #d6ddd4;
+}
+
+@theme static {
+  --color-studio-ink: #1e201a;
+  --color-studio-white: #fff;
+  --color-studio-sage: #949f80;
+  --color-studio-mist: #cdcfc0;
+  --color-studio-rose: #b48982;
+}
+
+@layer base {
+  body {
+    @apply bg-canvas font-sans text-ink antialiased;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-4 outline-accent;
+  }
+}
+
+@layer components {
+  .markdown {
+    @apply space-y-4 text-base leading-7;
+  }
+
+  .markdown :where(h2, h3, h4, h5, h6) {
+    @apply mt-8 font-semibold;
+  }
+
+  .markdown :where(h2) {
+    @apply text-xl;
+  }
+
+  .markdown :where(a) {
+    @apply text-accent underline underline-offset-4;
+  }
+
+  .markdown :where(ul, ol) {
+    @apply ms-6;
+  }
+
+  .markdown :where(ul) {
+    @apply list-disc;
+  }
+
+  .markdown :where(ol) {
+    @apply list-decimal;
+  }
+}
