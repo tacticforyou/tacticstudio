@@ -16,6 +16,17 @@
   --color-studio-rose: #b48982;
 }
 
+@theme inline {
+  --font-studio-body: var(--font-peyda), sans-serif;
+  --font-studio-display: var(--font-yekan), var(--font-peyda), sans-serif;
+}
+
+@custom-variant studio-condensed (@media (max-width: 1050px));
+@custom-variant studio-faq-stack (@media (max-width: 900px));
+@custom-variant studio-mobile (@media (max-width: 760px));
+@custom-variant studio-narrow (@media (max-width: 700px));
+@custom-variant studio-compact (@media (max-width: 500px));
+
 @layer base {
   body {
     @apply bg-canvas font-sans text-ink antialiased;

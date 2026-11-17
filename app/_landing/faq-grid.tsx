@@ -55,7 +55,10 @@ export function FaqGrid() {
   }, []);
 
   return (
-    <div className="studio-faq-grid" ref={gridRef}>
+    <div
+      className="studio-faq-grid mt-[calc(26*var(--u))] grid grid-cols-4 items-start gap-(--faq-gap) studio-faq-stack:mt-[1.65rem] studio-faq-stack:grid-cols-1 studio-faq-stack:content-start"
+      ref={gridRef}
+    >
       {faq.map(({ question, answer }, index) => {
         const expanded = index === activeIndex;
         const answerId = "studio-faq-answer-" + index;
@@ -66,10 +69,11 @@ export function FaqGrid() {
             data-expanded={expanded}
             key={question}
           >
-            <div className="studio-faq-viewport">
+            <div className="overflow-clip rounded-[inherit]">
               <div className="studio-faq-content">
                 <h3>
                   <button
+                    className="block w-full text-start whitespace-pre-line studio-faq-stack:whitespace-normal"
                     type="button"
                     aria-controls={answerId}
                     aria-expanded={expanded}

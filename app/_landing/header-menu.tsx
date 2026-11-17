@@ -93,12 +93,12 @@ export function HeaderMenu({
         منو
       </button>
       <div className="studio-header-links" id={panelId} data-open={open}>
-        <nav aria-label="ناوبری اصلی" className="studio-navigation">
-          <ul>
+        <nav aria-label="ناوبری اصلی">
+          <ul className="flex flex-wrap items-center justify-center gap-[calc(49*var(--u))] studio-condensed:gap-[calc(25*var(--u))] studio-mobile:grid studio-mobile:items-stretch studio-mobile:justify-stretch studio-mobile:gap-0">
             {navigation.map(({ label, href }) =>
               href === "#services" ? (
                 <li
-                  className="studio-service-menu"
+                  className="relative"
                   key={href}
                   ref={servicesRef}
                   onPointerEnter={(event) => {

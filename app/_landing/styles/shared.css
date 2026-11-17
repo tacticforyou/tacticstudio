@@ -1,0 +1,114 @@
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    html:has(> body > .studio-landing) {
+      scroll-behavior: smooth;
+    }
+  }
+
+  .studio-landing {
+    --u: clamp(0.68px, 0.0520833vw, 1px);
+    --studio-radius: calc(33 * var(--u));
+    --studio-card-radius: calc(40 * var(--u));
+    --studio-shadow: 0 calc(36 * var(--u)) calc(90 * var(--u))
+      rgb(52 49 53 / 11%);
+    --studio-panel-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u))
+      rgb(24 36 55 / 7%);
+  }
+
+  .studio-landing a:focus-visible {
+    outline-color: #505b40;
+  }
+
+  .studio-landing :is(section, footer, article)[id] {
+    scroll-margin-block-start: 1rem;
+  }
+
+  .studio-art {
+    position: relative;
+    display: block;
+  }
+
+  .studio-shell {
+    width: min(calc(100% - 3rem), calc(1274 * var(--u)));
+    margin-inline: auto;
+  }
+
+  .studio-band {
+    position: relative;
+    isolation: isolate;
+    margin-inline: calc(12 * var(--u));
+    border-radius: var(--studio-radius);
+  }
+
+  .studio-wave {
+    position: absolute;
+    z-index: 2;
+    inset-inline-start: 50%;
+    bottom: -1px;
+    width: calc(351 * var(--u));
+    aspect-ratio: 351 / 45;
+    transform: translateX(50%);
+    pointer-events: none;
+  }
+
+  .studio-wave-top {
+    inset-block: -1px auto;
+  }
+
+  .studio-button {
+    transition:
+      translate 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .studio-button:hover {
+    translate: 0 -2px;
+  }
+
+  .studio-button:active {
+    translate: 0 1px;
+  }
+
+  .studio-button-outline {
+    border-color: rgb(148 159 128 / 30%);
+    background: transparent;
+  }
+
+  .studio-button-sage {
+    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u)) rgb(148 159 128 / 50%);
+  }
+
+  .studio-button-sage::before {
+    position: absolute;
+    inset-inline-start: 11%;
+    width: calc(5 * var(--u));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: white;
+    content: "";
+  }
+
+  .studio-button-rose {
+    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u)) rgb(180 137 130 / 50%);
+  }
+
+  .studio-button-glint {
+    position: absolute;
+    inset-inline-start: 50%;
+    bottom: 0;
+    width: calc(177 * var(--u));
+    aspect-ratio: 177 / 95;
+    pointer-events: none;
+    transform: translate(50%, 41.58%);
+  }
+
+  .studio-tagline-underline {
+    position: absolute;
+    inset-inline-start: calc(50% + 4 * var(--u));
+    top: calc(100% + 3 * var(--u));
+    width: calc(84 * var(--u));
+    aspect-ratio: 84 / 15;
+    transform: translateX(50%);
+    pointer-events: none;
+  }
+}

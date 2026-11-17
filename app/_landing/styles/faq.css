@@ -1,0 +1,111 @@
+@layer components {
+  .studio-faq-grid {
+    --faq-closed-height: max(
+      var(--faq-closed-min),
+      var(--faq-question-height, 0px)
+    );
+    --faq-closed-min: max(9.75rem, calc(203 * var(--u)));
+    --faq-gap: calc(26 * var(--u));
+    --faq-transition: 440ms cubic-bezier(0.22, 1, 0.36, 1);
+    grid-auto-rows: minmax(
+      var(--faq-closed-height),
+      var(--faq-reserved-height, auto)
+    );
+    overflow-anchor: none;
+  }
+
+  .studio-faq-card {
+    position: relative;
+    display: grid;
+    min-block-size: var(--faq-closed-height);
+    block-size: var(--faq-closed-height);
+    grid-template-rows: minmax(0, 1fr);
+    border-radius: var(--studio-radius);
+    background: #fff;
+    box-shadow: var(--studio-panel-shadow);
+    line-height: 1.33;
+    transition: block-size var(--faq-transition);
+  }
+
+  .studio-faq-card[data-expanded="true"] {
+    block-size: var(--faq-open-height, auto);
+  }
+
+  .studio-faq-content {
+    padding: calc(75 * var(--u)) calc(32 * var(--u)) calc(46 * var(--u));
+  }
+
+  .studio-faq-card p {
+    margin-block-start: 1.05em;
+  }
+
+  .studio-faq-answer {
+    display: flow-root;
+    visibility: hidden;
+    opacity: 0;
+    translate: 0 -0.35rem;
+    transition:
+      opacity 180ms ease-out,
+      translate var(--faq-transition),
+      visibility 0s linear 180ms;
+  }
+
+  .studio-faq-card[data-expanded="true"] .studio-faq-answer {
+    visibility: visible;
+    opacity: 1;
+    translate: none;
+    transition:
+      opacity 280ms ease-out 55ms,
+      translate var(--faq-transition),
+      visibility 0s;
+  }
+
+  .studio-faq-card .studio-card-wave {
+    background: none;
+  }
+
+  .studio-faq-card .studio-card-wave::before,
+  .studio-faq-card .studio-card-wave::after {
+    position: absolute;
+    inset: 0;
+    background: center / contain no-repeat;
+    content: "";
+    transition: opacity var(--faq-transition);
+  }
+
+  .studio-faq-card .studio-card-wave::before {
+    background-image: url("/images/landing/card-wave.svg");
+  }
+
+  .studio-faq-card .studio-card-wave::after {
+    background-image: url("/images/landing/card-wave-rose.svg");
+    opacity: 0;
+  }
+
+  .studio-faq-card[data-expanded="true"] .studio-card-wave::before {
+    opacity: 0;
+  }
+
+  .studio-faq-card[data-expanded="true"] .studio-card-wave::after {
+    opacity: 1;
+  }
+
+  .studio-faq-card[data-expanded="false"] button {
+    cursor: pointer;
+  }
+
+  .studio-faq-card[data-expanded="false"] button::after {
+    position: absolute;
+    inset: 0;
+    content: "";
+  }
+
+  .studio-faq-card:has(button:focus-visible) {
+    outline: 2px solid #505b40;
+    outline-offset: 3px;
+  }
+
+  .studio-faq-card button:focus-visible {
+    outline: none;
+  }
+}

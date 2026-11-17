@@ -1,0 +1,115 @@
+@layer components {
+  .studio-footer {
+    --footer-artwork-top: calc(-355 * var(--u));
+    padding-block: 0 calc(125 * var(--u));
+    clip-path: inset(var(--footer-artwork-top) 0 0 round var(--studio-radius));
+  }
+
+  .studio-footer-background {
+    position: absolute;
+    z-index: -1;
+    inset: var(--footer-artwork-top) 0 0;
+    overflow: clip;
+    border-radius: var(--studio-radius);
+    pointer-events: none;
+  }
+
+  /* The exported glow adds 750px around the FigCraft ellipse for its blur. */
+  .studio-footer-glow {
+    position: absolute;
+    top: calc(-103 * var(--u));
+    left: calc(-998 * var(--u));
+    width: calc(3893 * var(--u));
+    aspect-ratio: 3893 / 2539;
+  }
+
+  .studio-footer-face {
+    position: absolute;
+    top: calc(113 * var(--u));
+    left: 0;
+    width: calc(1162 * var(--u));
+    aspect-ratio: 1162 / 943;
+  }
+
+  .studio-footer-column {
+    position: relative;
+    font-size: max(0.8rem, calc(16 * var(--u)));
+    font-weight: 300;
+    line-height: max(1rem, calc(22 * var(--u)));
+  }
+
+  .studio-footer-column:not(:last-child)::after {
+    position: absolute;
+    inset-block-start: calc(6 * var(--u));
+    inset-inline-end: calc(-1 * var(--divider-offset));
+    width: calc(1 * var(--u));
+    height: calc(204 * var(--u));
+    background: white;
+    content: "";
+  }
+
+  .studio-footer-column:nth-child(1) {
+    --divider-offset: calc(18 * var(--u));
+  }
+
+  .studio-footer-column:nth-child(2) {
+    --divider-offset: calc(34 * var(--u));
+  }
+
+  .studio-footer-column:nth-child(3) {
+    --divider-offset: calc(50 * var(--u));
+  }
+
+  .studio-back-to-top {
+    position: absolute;
+    right: calc(188 * var(--u));
+    bottom: calc(50 * var(--u));
+    width: calc(108 * var(--u));
+    aspect-ratio: 1;
+    border-radius: 50%;
+    background: rgb(148 159 128 / 39%);
+    box-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u)) rgb(24 36 55 / 30%);
+    backdrop-filter: blur(calc(8 * var(--u)));
+  }
+
+  .studio-back-to-top::before {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: calc(1 * var(--u));
+    background: linear-gradient(to bottom, transparent, white);
+    content: "";
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+  }
+
+  .studio-back-to-top .studio-art {
+    position: absolute;
+    top: -7.41%;
+    left: 5.56%;
+    width: 88.89%;
+    aspect-ratio: 96 / 157;
+  }
+  .studio-footer-wave {
+    width: calc(523 * var(--u));
+    aspect-ratio: 523 / 67;
+  }
+
+  .studio-footer-wave-left,
+  .studio-footer-wave-right {
+    inset-inline-start: auto;
+    width: calc(141 * var(--u));
+    aspect-ratio: 141 / 18;
+    transform: none;
+  }
+
+  .studio-footer-wave-left {
+    left: 9.07%;
+  }
+
+  .studio-footer-wave-right {
+    right: 9.12%;
+  }
+}

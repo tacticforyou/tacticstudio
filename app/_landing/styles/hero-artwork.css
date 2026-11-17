@@ -1,0 +1,213 @@
+@layer components {
+  .studio-hero-mark {
+    flex: 0 0 calc(306 * var(--u));
+    aspect-ratio: 344 / 91;
+  }
+
+  .studio-hero-orbs {
+    position: relative;
+    flex: 0 0 calc(182 * var(--u));
+    aspect-ratio: 182 / 86;
+    isolation: isolate;
+    border-radius: 999px;
+    background: var(--color-studio-ink);
+    box-shadow: 0 calc(22 * var(--u)) calc(100 * var(--u)) rgb(0 0 0 / 15%);
+    transform: skewY(-8deg);
+  }
+
+  .studio-orbs-mask {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+    clip-path: inset(0 round 999px);
+  }
+
+  .studio-orb {
+    position: absolute;
+    top: 5.81%;
+    width: 41.21%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+  }
+
+  .studio-orb-sage {
+    left: 3.3%;
+    background: linear-gradient(to right, #889275, #303329);
+  }
+
+  .studio-orb-rose {
+    background: linear-gradient(to right, var(--color-studio-rose), #000);
+  }
+
+  .studio-orb-rose:nth-child(2) {
+    left: 30.77%;
+    filter: blur(calc(0.45 * var(--u)));
+  }
+
+  .studio-orb-rose:nth-child(3) {
+    left: 51.65%;
+    filter: blur(calc(0.65 * var(--u)));
+  }
+
+  .studio-orb-rose:nth-child(4) {
+    left: 72.53%;
+    filter: blur(calc(0.9 * var(--u)));
+  }
+
+  .studio-orb-star {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 105.47%;
+    aspect-ratio: 1;
+    transform: translate(-50%, -45%);
+  }
+
+  .studio-hero-card,
+  .studio-hero-years,
+  .studio-service-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .studio-hero-card,
+  .studio-service-card {
+    border-radius: var(--studio-card-radius);
+    color: white;
+  }
+
+  .studio-hero-web,
+  .studio-service-web {
+    background: linear-gradient(to bottom, #9eaa88, #3f4436);
+  }
+
+  .studio-hero-brand,
+  .studio-service-brand,
+  .studio-service-ai {
+    background: linear-gradient(222deg, #98a483 -5%, #171a14 110%);
+  }
+
+  .studio-hero-ai {
+    border-radius: var(--studio-radius);
+    background: #080908;
+  }
+
+  .studio-hero-web,
+  .studio-hero-brand {
+    aspect-ratio: 326 / 361;
+  }
+
+  .studio-card-art,
+  .studio-hero-brand-art {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+  }
+
+  .studio-card-art img,
+  .studio-hero-brand-art img {
+    object-fit: fill;
+  }
+
+  .studio-hero-brand-art {
+    left: -19.02%;
+  }
+
+  .studio-service-copy {
+    position: absolute;
+    inset-inline-start: 11%;
+    z-index: 1;
+    width: 64%;
+    font-size: max(0.72rem, calc(14 * var(--u)));
+    line-height: 1.5;
+  }
+
+  .studio-service-copy h3 {
+    max-width: 12ch;
+    font-size: max(0.86rem, calc(20 * var(--u)));
+    font-weight: 600;
+  }
+
+  .studio-service-copy p {
+    margin-block-start: 0.45em;
+    color: #f5f5ee;
+  }
+
+  .studio-hero-web .studio-service-copy,
+  .studio-service-web .studio-service-copy,
+  .studio-service-ai .studio-service-copy {
+    top: 9%;
+    text-shadow: 0 1px 5px rgb(11 21 8 / 60%);
+  }
+
+  .studio-hero-brand .studio-service-copy,
+  .studio-service-brand .studio-service-copy {
+    bottom: 12%;
+  }
+
+  .studio-hero-brand h3,
+  .studio-service-brand h3,
+  .studio-service-ai h3,
+  .studio-hero-ai h3 {
+    max-width: none;
+  }
+
+  .studio-phone::after {
+    position: absolute;
+    z-index: 0;
+    inset: 44% 1px 1px;
+    border-radius: 0 0 var(--studio-card-radius) var(--studio-card-radius);
+    background: #65724b;
+    mix-blend-mode: color;
+    opacity: 0.66;
+    content: "";
+    pointer-events: none;
+  }
+
+  .studio-pane {
+    border: 1px solid rgb(255 255 255 / 50%);
+    border-radius: var(--studio-radius);
+    background: rgb(255 255 255 / 52%);
+  }
+
+  .studio-team-wave {
+    position: absolute;
+    bottom: 0;
+    left: calc(32 * var(--u));
+    width: min(45%, calc(271 * var(--u)));
+    aspect-ratio: 271 / 107;
+    pointer-events: none;
+    transform: translate(-15.31%, 36.92%);
+  }
+
+  .studio-hero-years {
+    overflow: hidden;
+    min-width: 0;
+    padding: 8% 8% 0;
+    font-size: max(0.7rem, calc(20 * var(--u)));
+    line-height: 1.35;
+  }
+
+  .studio-hero-years p {
+    position: relative;
+    margin-inline-start: auto;
+    text-align: right;
+  }
+
+  .studio-years-stars {
+    position: absolute;
+    z-index: -1;
+    inset: 31% -6% auto;
+    aspect-ratio: 303 / 173;
+  }
+
+  .studio-hero-ai .studio-service-copy {
+    inset: auto 4% 15%;
+    width: auto;
+    text-align: center;
+  }
+
+  .studio-hero-ai .studio-service-copy p {
+    margin-block-start: 0;
+  }
+}

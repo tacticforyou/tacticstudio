@@ -1,0 +1,225 @@
+@layer components {
+  .studio-heading-stars {
+    position: absolute;
+    inset-inline-start: calc(220 * var(--u));
+    top: calc(-50 * var(--u));
+    width: calc(178 * var(--u));
+    aspect-ratio: 178 / 132;
+  }
+
+  .studio-step {
+    --step-edge: inset 0 0 0 1px white;
+    grid-template-columns: 299fr 590fr;
+  }
+
+  .studio-step-label,
+  .studio-step-art {
+    position: relative;
+    min-width: 0;
+    border-radius: var(--studio-radius);
+    box-shadow: var(--studio-panel-shadow);
+  }
+
+  .studio-step-label {
+    background: rgb(255 255 255 / 40%);
+    box-shadow: var(--step-edge), var(--studio-panel-shadow);
+    backdrop-filter: blur(calc(16 * var(--u)));
+    padding: 9% 8% 10%;
+  }
+
+  .studio-step-label h3,
+  .studio-faq-card h3 {
+    font-size: max(0.87rem, calc(20 * var(--u)));
+    font-weight: 600;
+  }
+
+  .studio-step-label p,
+  .studio-faq-card p {
+    margin-block-start: 0.8em;
+    font-size: max(0.76rem, calc(16 * var(--u)));
+    font-weight: 300;
+  }
+
+  /* The 224 × 101 export pads the 141 × 18 path to retain its stroke and shadow. */
+  .studio-card-wave {
+    position: absolute;
+    inset-inline-start: 9%;
+    bottom: 0;
+    width: min(74.92%, calc(224 * var(--u)));
+    aspect-ratio: 224 / 101;
+    background: url("/images/landing/card-wave.svg") center / contain no-repeat;
+    pointer-events: none;
+    transform: translate(18.53%, 39.11%);
+  }
+
+  .studio-card-wave[data-tone="rose"] {
+    background-image: url("/images/landing/card-wave-rose.svg");
+  }
+
+  .studio-step-scene {
+    position: absolute;
+    inset: 0;
+    isolation: isolate;
+    border-radius: inherit;
+    clip-path: inset(0 round var(--studio-radius));
+  }
+
+  .studio-step-scene .studio-art {
+    position: absolute;
+  }
+
+  /* FigCraft layers 410, 412 and 572 are rotated 180°. Their 40% fill
+     opacity multiplies the sage and rose stops' 40% alpha. */
+  .studio-step-scene::before {
+    position: absolute;
+    /* Keep an opaque backdrop under the screen-blended art at fractional pixels. */
+    inset: -1px;
+    background:
+      linear-gradient(
+        var(--step-fill-direction) in srgb,
+        var(--step-fill-tint),
+        rgb(255 255 255 / 40%) var(--step-white-stop)
+      ),
+      white;
+    content: "";
+  }
+
+  .studio-step-scene::after {
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--step-edge);
+    content: "";
+    pointer-events: none;
+  }
+
+  .studio-step-strategy,
+  .studio-step-development {
+    --step-fill-direction: to left;
+    --step-white-stop: 55.9322%;
+  }
+
+  .studio-step-strategy,
+  .studio-step-design {
+    --step-fill-tint: rgb(148 159 128 / 16%);
+  }
+
+  .studio-step-development {
+    --step-fill-tint: rgb(180 137 130 / 16%);
+  }
+
+  .studio-step-strategy .studio-step-mark {
+    top: 44.94%;
+    left: 42.45%;
+    width: 38.27%;
+    aspect-ratio: 225.815 / 165.278;
+  }
+
+  .studio-step-strategy .studio-step-figure {
+    inset: 0;
+  }
+
+  .studio-step-design {
+    --step-fill-direction: to right;
+    --step-white-stop: 43.6441%;
+    grid-template-columns: 590fr 299fr;
+  }
+
+  .studio-step-design .studio-step-label {
+    grid-area: 1 / 2;
+  }
+  .studio-step-design .studio-step-art {
+    grid-area: 1 / 1;
+  }
+
+  .studio-step-design .studio-step-mark {
+    top: -25.12%;
+    left: 3.05%;
+    width: 38.27%;
+    aspect-ratio: 225.815 / 165.758;
+  }
+
+  .studio-step-design .studio-step-figure {
+    top: -79%;
+    left: 21.5%;
+    width: 123%;
+    aspect-ratio: 723 / 612;
+  }
+
+  .studio-step-design .studio-step-texture {
+    top: 0;
+    left: 42%;
+    width: 58.6%;
+    aspect-ratio: 1;
+    /* FigCraft exports layer 416 flat. Match the line pitch and angle in the reference PNG. */
+    transform: translateY(-36.15%) skewY(-15deg) scaleY(1.17);
+    transform-origin: top left;
+    mask-image: linear-gradient(
+      to right,
+      black 15%,
+      rgb(0 0 0 / 82%) 60%,
+      rgb(0 0 0 / 85%)
+    );
+  }
+
+  .studio-step-light-start,
+  .studio-step-light-end {
+    width: 67.61%;
+    aspect-ratio: 1;
+    mix-blend-mode: screen;
+    pointer-events: none;
+  }
+
+  .studio-step-strategy :is(.studio-step-light-start, .studio-step-light-end) {
+    top: -37.44%;
+  }
+
+  .studio-step-strategy .studio-step-light-start {
+    left: -3.56%;
+  }
+
+  .studio-step-strategy .studio-step-light-end {
+    left: 64.92%;
+  }
+
+  .studio-step-design .studio-step-light-start {
+    top: -37.93%;
+    left: -33.73%;
+  }
+
+  .studio-step-design .studio-step-light-end {
+    top: -35.19%;
+    left: 54.84%;
+    width: 53.35%;
+  }
+
+  @media (width > 760px) {
+    .studio-step-development .studio-step-scene {
+      clip-path: inset(-30% 0 0 round var(--studio-radius));
+    }
+
+    .studio-step-development .studio-step-scene::before {
+      inset: 0;
+      border-radius: inherit;
+      box-shadow: var(--step-edge);
+    }
+
+    .studio-step-development .studio-step-scene::after {
+      content: none;
+    }
+  }
+
+  .studio-step-development .studio-step-mark {
+    top: 10%;
+    left: 50%;
+    width: 36.6%;
+    aspect-ratio: 4 / 3;
+  }
+
+  .studio-step-development .studio-step-figure {
+    top: -82%;
+    left: -36.3%;
+    width: 128.5%;
+    aspect-ratio: 4 / 3;
+  }
+}

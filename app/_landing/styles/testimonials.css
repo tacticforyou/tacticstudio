@@ -1,0 +1,49 @@
+@layer components {
+  .studio-testimonials-glow,
+  .studio-testimonials-art,
+  .studio-testimonials::after {
+    position: absolute;
+    z-index: -1;
+    left: 50%;
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  .studio-testimonials-glow {
+    /* The design ellipse extends 479px below the section. Its SVG adds 750px for blur. */
+    bottom: calc(-1229 * var(--u));
+    width: calc(3893 * var(--u));
+    aspect-ratio: 3893 / 2539;
+  }
+
+  .studio-testimonials-art,
+  .studio-testimonials::after {
+    bottom: calc(-30 * var(--u));
+    width: calc(606 * var(--u));
+    max-width: 100%;
+    aspect-ratio: 606 / 775;
+  }
+
+  .studio-testimonials-art {
+    /* FigCraft exports the layer at 80% opacity. Exclusion needs the live backdrop. */
+    mix-blend-mode: exclusion;
+  }
+
+  .studio-testimonials::after {
+    /* Match the darker lower facets in the reference without tinting the surrounding glow. */
+    background: linear-gradient(
+      to bottom,
+      transparent 58%,
+      rgb(55 59 47 / 8%) 91%
+    );
+    mask: url("/images/landing/testimonials-art@2x.webp") center / contain
+      no-repeat;
+    content: "";
+  }
+
+  .studio-quote {
+    background: rgb(255 255 255 / 18%);
+    box-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u)) rgb(55 59 47 / 50%);
+    backdrop-filter: blur(calc(10 * var(--u)));
+  }
+}
