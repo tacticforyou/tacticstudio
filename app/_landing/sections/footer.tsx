@@ -27,7 +27,6 @@ export function Footer() {
   return (
     <footer id="contact" className="studio-band studio-footer">
       <div className="studio-footer-background">
-        <Art name="footer-glow.svg" className="studio-footer-glow" />
         <Art
           name="footer-portrait.webp"
           className="studio-footer-face"

@@ -9,27 +9,65 @@
     position: absolute;
     z-index: -1;
     inset: var(--footer-artwork-top) 0 0;
+    /* Blend to white in the gradient so the pale tail is painted as opaque color. */
+    background: radial-gradient(
+      ellipse calc(2673 * var(--u)) calc(1300 * var(--u)) at
+        calc(948.5 * var(--u)) calc(1166.5 * var(--u)) in srgb,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 98%,
+          var(--color-studio-white)
+        )
+        0%,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 89%,
+          var(--color-studio-white)
+        )
+        19%,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 75%,
+          var(--color-studio-white)
+        )
+        30%,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 50%,
+          var(--color-studio-white)
+        )
+        40%,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 25%,
+          var(--color-studio-white)
+        )
+        50%,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 13%,
+          var(--color-studio-white)
+        )
+        60%,
+      color-mix(in srgb, var(--color-studio-mist) 4%, var(--color-studio-white))
+        70%,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 1.2%,
+          var(--color-studio-white)
+        )
+        80%,
+      color-mix(
+          in srgb,
+          var(--color-studio-mist) 0.25%,
+          var(--color-studio-white)
+        )
+        90%,
+      var(--color-studio-white)
+    );
     overflow: clip;
     border-radius: var(--studio-radius);
     pointer-events: none;
-  }
-
-  .studio-footer-background::after {
-    position: absolute;
-    inset: 0;
-    background: url("/images/landing/footer-grain.svg") repeat;
-    mask-image: linear-gradient(transparent, #000 24%);
-    opacity: 0.055;
-    content: "";
-  }
-
-  /* The exported glow adds 750px around the FigCraft ellipse for its blur. */
-  .studio-footer-glow {
-    position: absolute;
-    top: calc(-103 * var(--u));
-    left: calc(-998 * var(--u));
-    width: calc(3893 * var(--u));
-    aspect-ratio: 3893 / 2539;
   }
 
   .studio-footer-face {
