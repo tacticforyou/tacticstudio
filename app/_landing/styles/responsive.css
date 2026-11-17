@@ -261,7 +261,6 @@
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .studio-button,
     .studio-nav-chevron,
     .studio-service-menu-list,
     .studio-faq-card,
@@ -272,9 +271,6 @@
     }
     .studio-faq-card[data-expanded="true"] .studio-faq-answer {
       transition: none;
-    }
-    .studio-button:is(:hover, :active) {
-      translate: none;
     }
   }
 }

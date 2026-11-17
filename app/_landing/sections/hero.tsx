@@ -3,6 +3,7 @@ import { Art, Wave } from "../components/art";
 import { LogoRow } from "../components/logo-row";
 import { ServiceCopy } from "../components/service-copy";
 import { Tagline } from "../components/tagline";
+import { StudioWordmark } from "../components/studio-wordmark";
 import { HeaderMenu } from "../header-menu";
 
 function HeroOrbs() {
@@ -67,13 +68,7 @@ export function Hero() {
       <div className="studio-shell relative">
         <div className="mx-auto mt-[calc(98*var(--u))] w-full max-w-[calc(1040*var(--u))] studio-mobile:mt-[clamp(2.5rem,9vw,3.6rem)]">
           <h1 className="flex min-h-[calc(101*var(--u))] items-center justify-center gap-[calc(22*var(--u))] text-[clamp(1.85rem,calc(56*var(--u)),3.5rem)] leading-[1.42] font-black studio-mobile:flex-wrap studio-mobile:gap-x-[0.9rem] studio-mobile:gap-y-[0.65rem] studio-mobile:text-center studio-mobile:text-[clamp(1.85rem,8.6vw,2.375rem)] studio-mobile:leading-[1.26]">
-            <Art
-              name="wordmark-hero.svg"
-              className="studio-hero-mark"
-              alt="تاکتیک"
-              sizes="310px"
-              eager
-            />
+            <StudioWordmark variant="hero" />
             <HeroOrbs />
             <span className="whitespace-nowrap studio-mobile:basis-full studio-mobile:text-balance studio-mobile:whitespace-normal">
               راه رسیدن به نتایج واقعی

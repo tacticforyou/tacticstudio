@@ -128,7 +128,7 @@ export function HeaderMenu({
                     }}
                   >
                     {chevron}
-                    <span>{label}</span>
+                    <span className="studio-nav-label">{label}</span>
                   </button>
                   <ul
                     className="studio-service-menu-list"
@@ -139,7 +139,7 @@ export function HeaderMenu({
                     {Object.entries(services).map(([key, { title }]) => (
                       <li key={key}>
                         <a className="studio-nav-link" href={"#service-" + key}>
-                          {title}
+                          <span className="studio-nav-label">{title}</span>
                         </a>
                       </li>
                     ))}
@@ -148,7 +148,7 @@ export function HeaderMenu({
               ) : (
                 <li key={href}>
                   <a className="studio-nav-link" href={href}>
-                    {label}
+                    <span className="studio-nav-label">{label}</span>
                   </a>
                 </li>
               ),

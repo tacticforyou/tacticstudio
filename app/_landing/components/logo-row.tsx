@@ -30,7 +30,7 @@ export function LogoRow({ featuredProject }: { featuredProject?: string }) {
                 sizes="150px"
               />
             ) : (
-              <span className="grid h-[calc(55*var(--u))] place-items-center text-center font-sans text-[clamp(0.65rem,1.55vw,1.5rem)] leading-tight font-bold text-studio-ink studio-mobile:h-[2.4rem] studio-compact:h-[1.85rem]">
+              <span className="grid h-[calc(55*var(--u))] place-items-center text-center font-sans text-[clamp(0.65rem,1.55vw,1.5rem)] leading-tight font-bold text-white studio-mobile:h-[2.4rem] studio-compact:h-[1.85rem]">
                 {featuredProject}
               </span>
             )}

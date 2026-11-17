@@ -1,7 +1,9 @@
 import type { ReactNode } from "react";
 import { Actions } from "../components/actions";
 import { Art, Wave } from "../components/art";
+import { BackToTopLink } from "../components/back-to-top-link";
 import { Tagline } from "../components/tagline";
+import { StudioWordmark } from "../components/studio-wordmark";
 import { contact } from "../copy";
 
 function FooterColumn({
@@ -100,23 +102,13 @@ export function Footer() {
           href="#top"
           className="mx-auto mt-[calc(46*var(--u))] mb-[calc(47*var(--u))] block w-[calc(308*var(--u))]"
         >
-          <Art
-            className="aspect-344/91"
-            name="wordmark-footer.svg"
-            alt="تاکتیک"
-            sizes="308px"
-          />
+          <StudioWordmark variant="footer" />
         </a>
         <Actions />
       </div>
-      <a
-        href="#top"
-        className="studio-back-to-top"
-        aria-label="بازگشت به بالای صفحه"
-        data-click-sound="back-to-top"
-      >
+      <BackToTopLink>
         <Art name="icon-arrow-up.svg" sizes="108px" />
-      </a>
+      </BackToTopLink>
       <Wave name="footer-wave.svg" className="studio-footer-wave" />
       <Wave name="footer-wave-center.svg" />
       <Wave name="footer-wave-left.svg" className="studio-footer-wave-left" />

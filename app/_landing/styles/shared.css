@@ -9,6 +9,7 @@
     --u: clamp(0.68px, 0.0520833vw, 1px);
     --studio-radius: calc(33 * var(--u));
     --studio-card-radius: calc(40 * var(--u));
+    --studio-pane-edge: rgb(255 255 255 / 50%);
     --studio-shadow: 0 calc(36 * var(--u)) calc(90 * var(--u))
       rgb(52 49 53 / 11%);
     --studio-panel-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u))
@@ -56,17 +57,48 @@
   }
 
   .studio-button {
-    transition:
-      translate 160ms ease,
-      box-shadow 160ms ease;
+    --studio-button-glow: transparent;
+    --studio-button-hover-glow: var(--studio-button-glow);
+    border-color: transparent;
+    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u))
+      var(--studio-button-glow);
   }
 
-  .studio-button:hover {
-    translate: 0 -2px;
+  .studio-button:is(:hover, :focus-visible) {
+    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u))
+      var(--studio-button-hover-glow);
   }
 
-  .studio-button:active {
-    translate: 0 1px;
+  @media (hover: hover) {
+    .studio-button:is(.studio-button-sage, .studio-button-rose):hover {
+      border-color: var(--studio-pane-edge);
+    }
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .studio-button {
+      transition:
+        border-color 420ms ease-out,
+        box-shadow 640ms ease-in-out,
+        transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+
+      @media (hover: hover) {
+        /* The press animation uses the individual scale property. */
+        &:hover {
+          transform: scale(1.022);
+        }
+      }
+    }
+
+    .studio-wordmark img {
+      transform-origin: center bottom;
+      transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .studio-wordmark:hover img,
+    a:focus-visible > .studio-wordmark img {
+      transform: skewX(-2.5deg);
+    }
   }
 
   .studio-button-outline {
@@ -75,7 +107,8 @@
   }
 
   .studio-button-sage {
-    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u)) rgb(148 159 128 / 50%);
+    --studio-button-glow: rgb(148 159 128 / 50%);
+    --studio-button-hover-glow: rgb(148 159 128 / 55%);
   }
 
   .studio-button-sage::before {
@@ -89,7 +122,8 @@
   }
 
   .studio-button-rose {
-    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u)) rgb(180 137 130 / 50%);
+    --studio-button-glow: rgb(180 137 130 / 50%);
+    --studio-button-hover-glow: rgb(180 137 130 / 55%);
   }
 
   .studio-button-glint {

@@ -22,9 +22,18 @@
     grid-template-rows: minmax(0, 1fr);
     border-radius: var(--studio-radius);
     background: #fff;
-    box-shadow: var(--studio-panel-shadow);
     line-height: 1.33;
     transition: block-size var(--faq-transition);
+  }
+
+  .studio-faq-card::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    box-shadow: var(--studio-panel-shadow);
+    pointer-events: none;
+    content: "";
   }
 
   .studio-faq-card[data-expanded="true"] {

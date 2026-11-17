@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, type MouseEvent } from "react";
 import { Art } from "./components/art";
+import { animatePress } from "./press-animation";
 
 const labels = { right: "پروژه بعدی", left: "پروژه قبلی" };
 
@@ -112,18 +113,7 @@ export function PortfolioArrow({
   }, []);
 
   function handleClick(event: MouseEvent<HTMLButtonElement>) {
-    if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      pressAnimation.current?.cancel();
-      pressAnimation.current = event.currentTarget.animate(
-        [
-          { scale: "1" },
-          { scale: "0.91", offset: 0.25 },
-          { scale: "1.045", offset: 0.65 },
-          { scale: "1" },
-        ],
-        { duration: 320, easing: "ease-in-out" },
-      );
-    }
+    pressAnimation.current = animatePress(event.currentTarget);
     onSelect();
   }
 

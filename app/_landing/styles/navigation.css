@@ -16,10 +16,34 @@
     white-space: nowrap;
   }
 
-  .studio-nav-link:hover,
-  .studio-footer a:hover {
-    text-decoration: underline;
-    text-underline-offset: 0.28em;
+  .studio-nav-label,
+  .studio-footer-column a {
+    position: relative;
+  }
+
+  .studio-nav-label::after,
+  .studio-footer-column a::after {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: -0.24em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    pointer-events: none;
+    content: "";
+  }
+
+  .studio-nav-link:is(:hover, :focus-visible) > .studio-nav-label::after,
+  .studio-footer-column a:is(:hover, :focus-visible)::after {
+    transform: scaleX(1);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .studio-nav-label::after,
+    .studio-footer-column a::after {
+      transition: transform 240ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
   }
 
   .studio-nav-chevron {

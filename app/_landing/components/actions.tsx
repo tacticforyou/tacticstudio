@@ -1,11 +1,12 @@
 import type { ReactNode } from "react";
+import { AnimatedActionLink } from "./animated-action-link";
 import { Art } from "./art";
 
 const buttonTones = {
   outline:
     "studio-button-outline min-w-[calc(168*var(--u))] text-studio-ink font-bold",
-  sage: "studio-button-sage min-w-[calc(193*var(--u))] border-transparent bg-studio-sage text-white font-semibold",
-  rose: "studio-button-rose min-w-[calc(193*var(--u))] border-transparent bg-studio-rose text-white font-semibold",
+  sage: "studio-button-sage min-w-[calc(193*var(--u))] bg-studio-sage text-white font-semibold",
+  rose: "studio-button-rose min-w-[calc(193*var(--u))] bg-studio-rose text-white font-semibold",
 };
 
 function StudioButton({
@@ -18,7 +19,7 @@ function StudioButton({
   children: ReactNode;
 }) {
   return (
-    <a
+    <AnimatedActionLink
       className={
         "studio-button relative inline-flex min-h-[calc(48*var(--u))] items-center justify-center rounded-[999px] border px-4 py-1 text-center text-[max(0.75rem,calc(16*var(--u)))] leading-[1.1511] whitespace-nowrap studio-mobile:min-h-11 " +
         buttonTones[tone]
@@ -30,7 +31,7 @@ function StudioButton({
         name={"button-wave-" + tone + ".svg"}
         className="studio-button-glint"
       />
-    </a>
+    </AnimatedActionLink>
   );
 }
 

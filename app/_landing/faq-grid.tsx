@@ -56,7 +56,7 @@ export function FaqGrid() {
 
   return (
     <div
-      className="studio-faq-grid mt-[calc(26*var(--u))] grid grid-cols-4 items-start gap-(--faq-gap) studio-faq-stack:mt-[1.65rem] studio-faq-stack:grid-cols-1 studio-faq-stack:content-start"
+      className="studio-faq-grid isolate mt-[calc(26*var(--u))] grid grid-cols-4 items-start gap-(--faq-gap) studio-faq-stack:mt-[1.65rem] studio-faq-stack:grid-cols-1 studio-faq-stack:content-start"
       ref={gridRef}
     >
       {faq.map(({ question, answer }, index) => {
