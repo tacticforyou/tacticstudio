@@ -57,37 +57,35 @@
   }
 
   .studio-button {
+    --studio-button-color: transparent;
     --studio-button-glow: transparent;
-    --studio-button-hover-glow: var(--studio-button-glow);
     border-color: transparent;
+    background-color: var(--studio-button-color);
     box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u))
       var(--studio-button-glow);
   }
 
-  .studio-button:is(:hover, :focus-visible) {
-    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u))
-      var(--studio-button-hover-glow);
-  }
-
   @media (hover: hover) {
-    .studio-button:is(.studio-button-sage, .studio-button-rose):hover {
-      border-color: var(--studio-pane-edge);
+    .studio-button:hover {
+      background-color: color-mix(
+        in srgb,
+        var(--studio-button-color),
+        var(--color-studio-ink) 6%
+      );
+    }
+
+    .studio-button:hover .studio-button-glint {
+      transform: translate(50%, 41.58%) scaleY(0.9);
     }
   }
 
   @media (prefers-reduced-motion: no-preference) {
     .studio-button {
-      transition:
-        border-color 420ms ease-out,
-        box-shadow 640ms ease-in-out,
-        transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: background-color 260ms ease-out;
+    }
 
-      @media (hover: hover) {
-        /* The press animation uses the individual scale property. */
-        &:hover {
-          transform: scale(1.022);
-        }
-      }
+    .studio-button-glint {
+      transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
     .studio-wordmark img {
@@ -103,12 +101,11 @@
 
   .studio-button-outline {
     border-color: rgb(148 159 128 / 30%);
-    background: transparent;
   }
 
   .studio-button-sage {
+    --studio-button-color: var(--color-studio-sage);
     --studio-button-glow: rgb(148 159 128 / 50%);
-    --studio-button-hover-glow: rgb(148 159 128 / 55%);
   }
 
   .studio-button-sage::before {
@@ -122,8 +119,8 @@
   }
 
   .studio-button-rose {
+    --studio-button-color: var(--color-studio-rose);
     --studio-button-glow: rgb(180 137 130 / 50%);
-    --studio-button-hover-glow: rgb(180 137 130 / 55%);
   }
 
   .studio-button-glint {
@@ -134,6 +131,7 @@
     aspect-ratio: 177 / 95;
     pointer-events: none;
     transform: translate(50%, 41.58%);
+    transform-origin: 50% 58.42%;
   }
 
   .studio-tagline-underline {

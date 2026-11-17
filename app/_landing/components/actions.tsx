@@ -5,8 +5,8 @@ import { Art } from "./art";
 const buttonTones = {
   outline:
     "studio-button-outline min-w-[calc(168*var(--u))] text-studio-ink font-bold",
-  sage: "studio-button-sage min-w-[calc(193*var(--u))] bg-studio-sage text-white font-semibold",
-  rose: "studio-button-rose min-w-[calc(193*var(--u))] bg-studio-rose text-white font-semibold",
+  sage: "studio-button-sage min-w-[calc(193*var(--u))] text-white font-semibold",
+  rose: "studio-button-rose min-w-[calc(193*var(--u))] text-white font-semibold",
 };
 
 function StudioButton({
