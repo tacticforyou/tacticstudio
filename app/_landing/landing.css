@@ -154,17 +154,11 @@
   .studio-tagline-underline {
     position: absolute;
     inset-inline-start: calc(50% + 4 * var(--u));
-    top: calc(100% - 21 * var(--u));
-    width: calc(129 * var(--u));
-    aspect-ratio: 129 / 59;
-    transform: translateX(50%);
-    pointer-events: none;
-  }
-
-  .studio-hero-lede .studio-tagline-underline {
     top: calc(100% + 3 * var(--u));
     width: calc(84 * var(--u));
     aspect-ratio: 84 / 15;
+    transform: translateX(50%);
+    pointer-events: none;
   }
 
   .studio-hero {

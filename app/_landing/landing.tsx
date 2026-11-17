@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { approaches, contact, services, testimonials } from "./copy";
 import { FaqGrid } from "./faq-grid";
 import { HeaderMenu } from "./header-menu";
+import { SectionEdgeAlignment } from "./section-edge-alignment";
 import "./landing.css";
 
 const peyda = localFont({
@@ -101,13 +102,16 @@ function Actions() {
   );
 }
 
-function Tagline({ underline = "tagline-brush.svg" }: { underline?: string }) {
+function Tagline() {
   return (
     <p className="studio-tagline">
       کسب‌وکارت رو برای فرصت‌های{" "}
       <strong className="relative inline-block">
         بزرگ‌تر
-        <Art className="studio-tagline-underline" name={underline} />
+        <Art
+          className="studio-tagline-underline"
+          name="tagline-hero-brush.svg"
+        />
       </strong>{" "}
       <span className="whitespace-nowrap">آماده می‌کنیم.</span>
     </p>
@@ -278,7 +282,7 @@ function Hero() {
           </h1>
           <div className="studio-hero-lede">
             <Actions />
-            <Tagline underline="tagline-hero-brush.svg" />
+            <Tagline />
           </div>
         </div>
         <section aria-label="خدمات و تجربه تاکتیک" className="studio-hero-grid">
@@ -746,6 +750,7 @@ export function LandingPage() {
         <Faq />
       </main>
       <Footer />
+      <SectionEdgeAlignment />
     </div>
   );
 }
