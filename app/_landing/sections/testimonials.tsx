@@ -9,11 +9,6 @@ export function Testimonials() {
       className="studio-band studio-testimonials overflow-clip bg-studio-white pt-[calc(61*var(--u))] pb-[calc(282*var(--u))] studio-mobile:pt-[2.3rem] studio-mobile:pb-[5.3rem]"
     >
       <Art
-        name="testimonials-glow.svg"
-        className="studio-testimonials-glow"
-        unoptimized
-      />
-      <Art
         name="testimonials-art@2x.webp"
         className="studio-testimonials-art"
         unoptimized

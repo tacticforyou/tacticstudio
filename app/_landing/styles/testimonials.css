@@ -1,4 +1,8 @@
 @layer components {
+  .studio-testimonials {
+    --studio-glow-center: 50% calc(100% - 40.5 * var(--u));
+  }
+
   .studio-testimonials::before {
     position: absolute;
     z-index: -1;
@@ -13,7 +17,6 @@
     content: "";
   }
 
-  .studio-testimonials-glow,
   .studio-testimonials-art,
   .studio-testimonials::after {
     position: absolute;
@@ -21,14 +24,6 @@
     left: 50%;
     transform: translateX(-50%);
     pointer-events: none;
-  }
-
-  .studio-testimonials-glow {
-    /* The design ellipse extends 479px below the section. Its SVG adds 750px for blur. */
-    bottom: calc(-1229 * var(--u));
-    width: calc(3893 * var(--u));
-    aspect-ratio: 3893 / 2539;
-    z-index: -2;
   }
 
   .studio-testimonials-art,
