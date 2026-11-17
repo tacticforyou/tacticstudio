@@ -14,6 +14,16 @@
     width: min(38vw, calc(295 * var(--u)));
   }
 
+  .studio-project-gradient {
+    background: linear-gradient(
+      180deg,
+      var(--color-studio-white) 19%,
+      color-mix(in srgb, var(--project-color) 24%, white) 49%,
+      color-mix(in srgb, var(--project-color) 88%, white) 86%,
+      var(--project-color)
+    );
+  }
+
   .studio-project-arrow {
     position: relative;
     width: calc(138 * var(--u));
