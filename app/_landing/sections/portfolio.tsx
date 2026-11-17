@@ -23,7 +23,7 @@ const projects = [
       cardBounds: [150, 0, 2969, 2217],
     },
     alt: "هویت بصری Doshi، همراه با لوگو، کارت برند و نمونه کیف‌های دستی و دوشی",
-    color: "#A89A93",
+    color: "#D4B7AA",
   },
   {
     name: "Radian Robots",
@@ -34,7 +34,7 @@ const projects = [
       cardBounds: [0, 76, 3232, 2625],
     },
     alt: "هویت بصری Radian Robots، همراه با لوگو، ربات و نمونه نمایش برند روی دستگاه‌ها",
-    color: "#4B9274",
+    color: "#A8CFAD",
   },
   {
     name: "Collision Centers",
@@ -45,7 +45,7 @@ const projects = [
       cardBounds: [88, 0, 2912, 2217],
     },
     alt: "هویت بصری Collision Centers، همراه با لوگو، تابلو، خودرو و نمونه نمایش روی گوشی",
-    color: "#FFC700",
+    color: "#F1D88D",
   },
 ] as const;
 

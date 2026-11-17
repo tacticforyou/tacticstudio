@@ -8,7 +8,7 @@ export function Services() {
     <section
       id="services"
       aria-labelledby="services-title"
-      className="studio-band studio-services mt-[calc(12*var(--u))] pt-[calc(192*var(--u))] pb-[calc(47*var(--u))] studio-mobile:pt-18 studio-mobile:pb-16"
+      className="studio-band studio-services z-1 mt-[calc(12*var(--u))] pt-[calc(192*var(--u))] pb-[calc(47*var(--u))] studio-mobile:pt-18 studio-mobile:pb-16"
     >
       <Wave name="edge-wave-down.svg" className="studio-wave-top" />
       <div className="studio-shell relative">

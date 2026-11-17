@@ -45,7 +45,7 @@
     z-index: 2;
     inset-inline-start: 50%;
     bottom: -1px;
-    width: calc(351 * var(--u));
+    width: var(--studio-wave-width, calc(351 * var(--u)));
     aspect-ratio: 351 / 45;
     transform: translateX(50%);
     pointer-events: none;

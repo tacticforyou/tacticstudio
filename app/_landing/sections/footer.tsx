@@ -113,6 +113,7 @@ export function Footer() {
         href="#top"
         className="studio-back-to-top"
         aria-label="بازگشت به بالای صفحه"
+        data-click-sound="back-to-top"
       >
         <Art name="icon-arrow-up.svg" sizes="108px" />
       </a>

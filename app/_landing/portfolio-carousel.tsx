@@ -2,9 +2,9 @@
 
 import Image from "next/image";
 import { type CSSProperties, type ReactNode, useRef, useState } from "react";
-import { Art } from "./components/art";
 import { LogoRow } from "./components/logo-row";
-import { usePortfolioFavicon } from "./use-portfolio-favicon";
+import { PortfolioArrow } from "./portfolio-arrow";
+import { useLandingFavicon } from "./use-landing-favicon";
 
 type Project = {
   name: string;
@@ -36,7 +36,7 @@ export function PortfolioCarousel({
   const section = useRef<HTMLElement>(null);
   const [active, setActive] = useState(0);
   const project = projects[active];
-  usePortfolioFavicon(section, project.color);
+  useLandingFavicon(section, project.color);
 
   function select(offset: number) {
     setActive(
@@ -63,15 +63,7 @@ export function PortfolioCarousel({
       <div className="studio-shell relative">
         {heading}
         <div className="mt-[calc(38*var(--u))] grid grid-cols-[minmax(0,1fr)_minmax(0,calc(694*var(--u)))_minmax(0,1fr)] place-items-center gap-4 studio-mobile:grid-cols-[minmax(0,1fr)_minmax(0,7fr)_minmax(0,1fr)] studio-mobile:gap-[0.45rem]">
-          <button
-            type="button"
-            aria-label="پروژه بعدی"
-            className="studio-project-arrow cursor-pointer justify-self-start"
-            data-direction="right"
-            onClick={() => select(1)}
-          >
-            <Art name="icon-arrow-right.svg" sizes="138px" />
-          </button>
+          <PortfolioArrow direction="right" onSelect={() => select(1)} />
           <div className="grid w-full grid-cols-1 items-center">
             {projects.map(({ name, image, alt }, index) => {
               const [left, top, right, bottom] = image.cardBounds;
@@ -104,15 +96,7 @@ export function PortfolioCarousel({
               );
             })}
           </div>
-          <button
-            type="button"
-            aria-label="پروژه قبلی"
-            className="studio-project-arrow cursor-pointer justify-self-end"
-            data-direction="left"
-            onClick={() => select(-1)}
-          >
-            <Art name="icon-arrow-left.svg" sizes="138px" />
-          </button>
+          <PortfolioArrow direction="left" onSelect={() => select(-1)} />
         </div>
         <output className="sr-only">{project.name}</output>
         <LogoRow featuredProject={project.name} />

@@ -1,4 +1,18 @@
 @layer components {
+  .studio-testimonials::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 auto;
+    height: clamp(3rem, 6vw, 6rem);
+    background: linear-gradient(
+      to bottom,
+      var(--color-studio-white),
+      transparent
+    );
+    pointer-events: none;
+    content: "";
+  }
+
   .studio-testimonials-glow,
   .studio-testimonials-art,
   .studio-testimonials::after {
@@ -14,6 +28,7 @@
     bottom: calc(-1229 * var(--u));
     width: calc(3893 * var(--u));
     aspect-ratio: 3893 / 2539;
+    z-index: -2;
   }
 
   .studio-testimonials-art,

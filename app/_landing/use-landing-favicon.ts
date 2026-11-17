@@ -1,6 +1,7 @@
 import { type RefObject, useEffect, useRef, useState } from "react";
 
 const white = [255, 255, 255];
+const footerAccent = "#CDCFC0";
 const duration = 300;
 const steps = 8;
 
@@ -24,20 +25,35 @@ async function loadFavicon(signal: AbortSignal) {
   return { link, href, svg, background, color: white };
 }
 
-export function usePortfolioFavicon(
+export function useLandingFavicon(
   section: RefObject<HTMLElement | null>,
   accent: string,
 ) {
-  const [visible, setVisible] = useState(false);
+  const [region, setRegion] = useState<"portfolio" | "footer" | undefined>();
   const favicon = useRef<Awaited<ReturnType<typeof loadFavicon>>>(undefined);
+  const activeAccent =
+    region === "footer"
+      ? footerAccent
+      : region === "portfolio"
+        ? accent
+        : undefined;
 
   useEffect(() => {
-    if (!section.current) return;
+    const portfolio = section.current;
+    const footer = document.getElementById("contact");
+    if (!portfolio) return;
 
-    const observer = new IntersectionObserver(([entry]) => {
-      setVisible(entry.intersectionRatio > 0);
+    const intersecting = new Set<Element>();
+    const observer = new IntersectionObserver((entries) => {
+      for (const { target, isIntersecting } of entries) {
+        if (isIntersecting) intersecting.add(target);
+        else intersecting.delete(target);
+      }
+      if (footer && intersecting.has(footer)) setRegion("footer");
+      else setRegion(intersecting.has(portfolio) ? "portfolio" : undefined);
     });
-    observer.observe(section.current);
+    observer.observe(portfolio);
+    if (footer) observer.observe(footer);
     return () => observer.disconnect();
   }, [section]);
 
@@ -51,7 +67,7 @@ export function usePortfolioFavicon(
   );
 
   useEffect(() => {
-    if (!visible && !favicon.current) return;
+    if (!activeAccent && !favicon.current) return;
 
     const controller = new AbortController();
     let frame = 0;
@@ -62,9 +78,9 @@ export function usePortfolioFavicon(
       favicon.current = icon;
 
       const from = icon.color;
-      const to = visible
+      const to = activeAccent
         ? [1, 3, 5].map((offset) =>
-            parseInt(accent.slice(offset, offset + 2), 16),
+            parseInt(activeAccent.slice(offset, offset + 2), 16),
           )
         : white;
       if (from.every((value, index) => value === to[index])) return;
@@ -86,7 +102,7 @@ export function usePortfolioFavicon(
             Math.round(value + ((to[index] - value) * step) / steps),
           );
 
-          if (!visible && step === steps) {
+          if (!activeAccent && step === steps) {
             icon.link.setAttribute("href", icon.href);
           } else {
             icon.background.setAttribute(
@@ -108,5 +124,5 @@ export function usePortfolioFavicon(
       controller.abort();
       cancelAnimationFrame(frame);
     };
-  }, [accent, visible]);
+  }, [activeAccent]);
 }

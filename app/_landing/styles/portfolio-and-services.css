@@ -11,7 +11,7 @@
 
   .studio-portfolio > .studio-wave,
   .studio-services > .studio-wave-top {
-    width: min(38vw, calc(295 * var(--u)));
+    --studio-wave-width: min(38vw, calc(295 * var(--u)));
   }
 
   .studio-project-gradient {
@@ -24,18 +24,26 @@
     );
   }
 
-  .studio-project-arrow {
-    position: relative;
-    width: calc(138 * var(--u));
-    aspect-ratio: 1;
-    border: 0;
-    border-radius: 50%;
+  .studio-project-arrow-slot {
     translate: 0 calc(-19 * var(--u));
+  }
+
+  .studio-project-arrow {
     background: rgb(255 255 255 / 40%);
     box-shadow:
       inset 0 0 0 calc(1 * var(--u)) white,
       0 calc(75 * var(--u)) calc(163.1 * var(--u)) rgb(24 36 55 / 30%);
     backdrop-filter: blur(calc(8 * var(--u)));
+  }
+
+  .studio-project-arrow:is(:hover, :focus-visible, [data-near="true"]) {
+    background-color: rgb(255 255 255 / 65%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .studio-project-arrow {
+      transition: background-color 360ms ease-out;
+    }
   }
 
   .studio-project-arrow .studio-art {
