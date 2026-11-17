@@ -14,6 +14,29 @@ function soundFor(control: Element | null) {
   if (sound === "project" || sound === "back-to-top") return sound;
 }
 
+function isLongScroll(target: Element) {
+  const link = target.closest<HTMLAnchorElement>('a[href^="#"]');
+  if (
+    !link ||
+    (link.target && link.target !== "_self") ||
+    link.hasAttribute("download")
+  ) {
+    return false;
+  }
+
+  const destination = document.getElementById(link.hash.slice(1));
+  const scroller = document.scrollingElement;
+  if (!destination || !scroller) return false;
+
+  const { scrollTop, scrollHeight, clientHeight } = scroller;
+  const margin =
+    Number.parseFloat(getComputedStyle(destination).scrollMarginBlockStart) ||
+    0;
+  const top = scrollTop + destination.getBoundingClientRect().top - margin;
+  const nextTop = Math.max(0, Math.min(top, scrollHeight - clientHeight));
+  return Math.abs(nextTop - scrollTop) >= clientHeight;
+}
+
 export function LandingClickSounds() {
   useEffect(() => {
     const clips = new Map<keyof typeof sounds, HTMLAudioElement>();
@@ -44,10 +67,35 @@ export function LandingClickSounds() {
       .querySelectorAll(soundControl)
       .forEach((control) => preload.observe(control));
 
-    function playClickSound(event: MouseEvent) {
-      if (!event.isTrusted || !(event.target instanceof Element)) return;
+    function prepareScrollSound() {
+      getClip("back-to-top");
+    }
 
-      const sound = soundFor(event.target.closest(soundControl));
+    // Section links in the header can use the same clip before the footer is visible.
+    if (document.readyState === "complete") prepareScrollSound();
+    else window.addEventListener("load", prepareScrollSound, { once: true });
+
+    function playClickSound(event: MouseEvent) {
+      if (
+        !event.isTrusted ||
+        event.defaultPrevented ||
+        event.button !== 0 ||
+        event.metaKey ||
+        event.ctrlKey ||
+        event.shiftKey ||
+        event.altKey ||
+        !(event.target instanceof Element)
+      ) {
+        return;
+      }
+
+      const control = soundFor(event.target.closest(soundControl));
+      const sound =
+        control === "project"
+          ? control
+          : isLongScroll(event.target)
+            ? "back-to-top"
+            : undefined;
       if (!sound) return;
 
       const clip = getClip(sound);
@@ -62,6 +110,7 @@ export function LandingClickSounds() {
     document.addEventListener("click", playClickSound);
     return () => {
       preload.disconnect();
+      window.removeEventListener("load", prepareScrollSound);
       document.removeEventListener("click", playClickSound);
       playing?.pause();
     };

@@ -159,7 +159,7 @@
       right: -56rem;
     }
     .studio-hero-brand-art {
-      left: -9%;
+      --brand-art-width: 109%;
     }
     .studio-hero-brand-art img {
       object-fit: cover;

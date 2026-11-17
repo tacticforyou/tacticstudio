@@ -110,7 +110,8 @@
   }
 
   .studio-hero-brand-art {
-    left: -19.02%;
+    /* Widen the viewport for the badge shadow while keeping the same artwork scale. */
+    left: calc(100% - var(--brand-art-width, 119.02%) * (460.008 / 388.008));
   }
 
   .studio-service-copy {
