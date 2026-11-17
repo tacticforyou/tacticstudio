@@ -1,14 +1,9 @@
 import Image from "next/image";
 import localFont from "next/font/local";
 import type { ReactNode } from "react";
-import {
-  approaches,
-  contact,
-  navigation,
-  services,
-  testimonials,
-} from "./copy";
+import { approaches, contact, services, testimonials } from "./copy";
 import { FaqGrid } from "./faq-grid";
+import { HeaderMenu } from "./header-menu";
 import "./landing.css";
 
 const peyda = localFont({
@@ -36,6 +31,7 @@ const yekan = localFont({
 type ArtProps = {
   name: string;
   className?: string;
+  imageClassName?: string;
   alt?: string;
   sizes?: string;
   eager?: boolean;
@@ -45,6 +41,7 @@ type ArtProps = {
 function Art({
   name,
   className = "",
+  imageClassName = "object-contain",
   alt = "",
   sizes = "30vw",
   eager = false,
@@ -59,7 +56,7 @@ function Art({
         sizes={sizes}
         unoptimized={unoptimized}
         loading={eager ? "eager" : undefined}
-        className="object-contain"
+        className={imageClassName}
       />
     </span>
   );
@@ -104,18 +101,15 @@ function Actions() {
   );
 }
 
-function Tagline() {
+function Tagline({ underline = "tagline-brush.svg" }: { underline?: string }) {
   return (
     <p className="studio-tagline">
       کسب‌وکارت رو برای فرصت‌های{" "}
       <strong className="relative inline-block">
         بزرگ‌تر
-        <Art
-          className="studio-tagline-underline"
-          name="tagline-underline.svg"
-        />
+        <Art className="studio-tagline-underline" name={underline} />
       </strong>{" "}
-      آماده می‌کنیم.
+      <span className="whitespace-nowrap">آماده می‌کنیم.</span>
     </p>
   );
 }
@@ -175,26 +169,18 @@ function SiteHeader() {
       <a href="#top" className="studio-header-brand">
         <Art name="wordmark-nav.svg" alt="تاکتیک" sizes="112px" eager />
       </a>
-      <nav aria-label="ناوبری اصلی" className="studio-navigation">
-        <ul className="flex flex-wrap items-center justify-center">
-          {navigation.map(({ label, href }) => (
-            <li key={href}>
-              <a className="studio-nav-link" href={href}>
-                {href === "#services" && (
-                  <Art
-                    className="studio-nav-chevron"
-                    name="nav-chevron.svg"
-                    sizes="18px"
-                    eager
-                  />
-                )}
-                <span>{label}</span>
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <ConsultationLink header />
+      <HeaderMenu
+        chevron={
+          <Art
+            className="studio-nav-chevron"
+            name="nav-chevron.svg"
+            sizes="18px"
+            eager
+          />
+        }
+      >
+        <ConsultationLink header />
+      </HeaderMenu>
     </header>
   );
 }
@@ -279,13 +265,11 @@ function Hero() {
       <SiteHeader />
       <div className="studio-shell relative">
         <div className="studio-intro">
-          <h1
-            className="studio-hero-title"
-            aria-label="تاکتیک، راه رسیدن به نتایج واقعی"
-          >
+          <h1 className="studio-hero-title">
             <Art
               name="wordmark-hero.svg"
               className="studio-hero-mark"
+              alt="تاکتیک"
               sizes="310px"
               eager
             />
@@ -294,7 +278,7 @@ function Hero() {
           </h1>
           <div className="studio-hero-lede">
             <Actions />
-            <Tagline />
+            <Tagline underline="tagline-hero-brush.svg" />
           </div>
         </div>
         <section aria-label="خدمات و تجربه تاکتیک" className="studio-hero-grid">
@@ -371,6 +355,7 @@ type ProcessLayer = {
   name: string;
   layer: "mark" | "figure" | "texture" | "light-start" | "light-end";
   unoptimized?: boolean;
+  imageClassName?: string;
 };
 
 const processScenes: Record<
@@ -379,7 +364,12 @@ const processScenes: Record<
 > = {
   strategy: [
     { name: "process-strategy-mark.svg", layer: "mark" },
-    { name: "process-strategy-focus.webp", layer: "figure", unoptimized: true },
+    {
+      name: "process-strategy-focus.webp",
+      layer: "figure",
+      unoptimized: true,
+      imageClassName: "object-cover object-[16%_center]",
+    },
     {
       name: "process-strategy-glow.webp",
       layer: "light-start",
@@ -451,15 +441,18 @@ function Approach() {
             </div>
             <div className="studio-step-art">
               <div className="studio-step-scene">
-                {processScenes[art].map(({ name, layer, unoptimized }) => (
-                  <Art
-                    key={layer}
-                    name={name}
-                    className={"studio-step-" + layer}
-                    sizes="(max-width: 640px) 80vw, 40vw"
-                    unoptimized={unoptimized}
-                  />
-                ))}
+                {processScenes[art].map(
+                  ({ name, layer, unoptimized, imageClassName }) => (
+                    <Art
+                      key={layer}
+                      name={name}
+                      className={"studio-step-" + layer}
+                      imageClassName={imageClassName}
+                      sizes="(max-width: 640px) 80vw, 40vw"
+                      unoptimized={unoptimized}
+                    />
+                  ),
+                )}
               </div>
             </div>
           </li>
@@ -495,10 +488,10 @@ function Portfolio() {
           </button>
           <figure>
             <Art
-              name="previsore-project.webp"
+              name="previsore-project@2x.webp"
               className="studio-project-art"
               alt="هویت بصری و طراحی اپلیکیشن Prevaisor، همراه با نمونه لوگو، پوستر و رابط کاربری"
-              sizes="(max-width: 640px) 90vw, 44vw"
+              unoptimized
             />
           </figure>
           <button
@@ -584,9 +577,14 @@ function Testimonials() {
       className="studio-band studio-testimonials"
     >
       <Art
-        name="testimonials-art.webp"
+        name="testimonials-glow.svg"
+        className="studio-testimonials-glow"
+        unoptimized
+      />
+      <Art
+        name="testimonials-art@2x.webp"
         className="studio-testimonials-art"
-        sizes="42vw"
+        unoptimized
       />
       <div className="studio-shell relative">
         <SectionHeading
