@@ -37,7 +37,7 @@ export function SectionEdgeAlignment() {
     const listeners = new AbortController();
     const { signal } = listeners;
     let idleTimer: number | undefined;
-    let skipAlignment = false;
+    let manualScroll = false;
     let touchStartY: number | undefined;
     let previousScrollTop = window.scrollY;
     let scrollingDown = true;
@@ -47,14 +47,15 @@ export function SectionEdgeAlignment() {
         return;
       }
 
+      const viewportHeight = root.clientHeight;
+      const scrollTop = window.scrollY;
+      const lastInteriorPosition =
+        root.scrollHeight - viewportHeight - edgeRange;
+      if (scrollTop <= edgeRange || scrollTop >= lastInteriorPosition) return;
+
       const gutter =
         hero.getBoundingClientRect().left -
         landing.getBoundingClientRect().left;
-      const viewportHeight = root.clientHeight;
-      const scrollTop = window.scrollY;
-      if (scrollTop <= 0 && !scrollingDown) return;
-
-      const maxScroll = root.scrollHeight - viewportHeight;
       const preferredEdge = scrollingDown ? "bottom" : "top";
       let alignment: { delta: number; priority: number } | undefined;
 
@@ -74,7 +75,9 @@ export function SectionEdgeAlignment() {
         for (const [edge, gap, delta] of edges) {
           if (Math.abs(gap) > edgeRange) continue;
           const destination = scrollTop + delta;
-          if (destination < 0 || destination > maxScroll) continue;
+          if (destination <= edgeRange || destination >= lastInteriorPosition) {
+            continue;
+          }
 
           // Keep the visible curve in view when the opposite edge also qualifies.
           const priority =
@@ -100,7 +103,7 @@ export function SectionEdgeAlignment() {
 
     function handleScroll() {
       const scrollTop = window.scrollY;
-      if (!skipAlignment && scrollTop !== previousScrollTop) {
+      if (manualScroll && scrollTop !== previousScrollTop) {
         scrollingDown = scrollTop > previousScrollTop;
       }
       previousScrollTop = scrollTop;
@@ -109,25 +112,21 @@ export function SectionEdgeAlignment() {
 
     function scheduleAlignment() {
       window.clearTimeout(idleTimer);
-      if (touchStartY !== undefined) return;
+      if (!manualScroll || touchStartY !== undefined) return;
 
       idleTimer = window.setTimeout(() => {
-        // Link navigation and the correction itself can both emit scroll events.
-        if (skipAlignment) {
-          skipAlignment = false;
-          return;
-        }
+        manualScroll = false;
         alignSectionEdge();
       }, idleDelay);
     }
 
     function suppressAlignment() {
-      skipAlignment = true;
-      scheduleAlignment();
+      manualScroll = false;
+      window.clearTimeout(idleTimer);
     }
 
     function resumeManualScrolling() {
-      skipAlignment = false;
+      manualScroll = true;
     }
 
     function startTouch() {
@@ -141,7 +140,7 @@ export function SectionEdgeAlignment() {
       const scrolled =
         touchStartY !== undefined && touchStartY !== window.scrollY;
       touchStartY = undefined;
-      if (scrolled || skipAlignment) scheduleAlignment();
+      if (scrolled) scheduleAlignment();
     }
 
     window.addEventListener("scroll", handleScroll, {
@@ -193,15 +192,6 @@ export function SectionEdgeAlignment() {
       },
       { signal },
     );
-
-    const [navigation] = performance.getEntriesByType(
-      "navigation",
-    ) as PerformanceNavigationTiming[];
-    if (window.location.hash || navigation?.type === "back_forward") {
-      suppressAlignment();
-    } else {
-      scheduleAlignment();
-    }
 
     return () => {
       window.clearTimeout(idleTimer);
