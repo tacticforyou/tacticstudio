@@ -1,0 +1,181 @@
+@layer components {
+  @media (prefers-reduced-motion: no-preference) {
+    .studio-orb {
+      animation: studio-hero-orb-drift 950ms cubic-bezier(0.22, 1, 0.36, 1)
+        160ms both;
+    }
+
+    .studio-orb-sage {
+      --orb-start: -2.5%;
+    }
+
+    .studio-orb-rose:nth-child(2) {
+      --orb-start: -5%;
+    }
+
+    .studio-orb-rose:nth-child(3) {
+      --orb-start: -8%;
+      animation-delay: 210ms;
+    }
+
+    .studio-orb-rose:nth-child(4) {
+      --orb-start: -11%;
+      animation-delay: 260ms;
+    }
+
+    .studio-orb-star::before {
+      position: absolute;
+      inset: 25%;
+      background: radial-gradient(ellipse, #fff9e8 0%, transparent 65%);
+      content: "";
+      animation: studio-hero-star-flash 1.05s ease-in-out 300ms both;
+    }
+
+    .studio-hero .studio-tagline-underline {
+      animation: studio-hero-brush-draw 720ms cubic-bezier(0.22, 1, 0.36, 1)
+        340ms both;
+    }
+
+    .studio-hero-years::after {
+      position: absolute;
+      z-index: -1;
+      inset: 23% 21% -24% -20%;
+      background: radial-gradient(
+        ellipse,
+        rgb(255 253 242 / 54%),
+        transparent 73%
+      );
+      pointer-events: none;
+      content: "";
+      opacity: 0;
+      animation: studio-hero-years-glow 1.8s ease-in-out 680ms backwards;
+      transition: opacity 500ms ease-out;
+    }
+
+    .studio-hero-ai-lights > span {
+      position: absolute;
+      top: var(--symbol-y, 26%);
+      left: var(--symbol-x);
+      width: 19%;
+      aspect-ratio: 1;
+      translate: -50% -50%;
+      background: radial-gradient(
+        circle,
+        rgb(255 240 223 / 12%),
+        transparent 66%
+      );
+      animation: studio-hero-years-glow 990ms ease-out var(--symbol-delay) both;
+    }
+
+    .studio-hero-ai-lights > :nth-child(1) {
+      --symbol-x: 42%;
+      --symbol-delay: 770ms;
+    }
+
+    .studio-hero-ai-lights > :nth-child(2) {
+      --symbol-x: 60%;
+      --symbol-delay: 900ms;
+    }
+
+    .studio-hero-ai-lights > :nth-child(3) {
+      --symbol-x: 30%;
+      --symbol-y: 42%;
+      --symbol-delay: 1030ms;
+    }
+
+    .studio-hero-ai-lights > :nth-child(4) {
+      --symbol-x: 72%;
+      --symbol-y: 42%;
+      --symbol-delay: 1160ms;
+    }
+
+    .studio-hero-logos img {
+      animation: studio-hero-logo-reveal 720ms ease-out var(--logo-delay, 850ms)
+        both;
+    }
+
+    .studio-hero-logos li:nth-child(2) {
+      --logo-delay: 920ms;
+    }
+
+    .studio-hero-logos li:nth-child(3) {
+      --logo-delay: 990ms;
+    }
+
+    .studio-hero-logos li:nth-child(4) {
+      --logo-delay: 1060ms;
+    }
+
+    .studio-hero-logos li:nth-child(5) {
+      --logo-delay: 1130ms;
+    }
+
+    @media (hover: hover) {
+      .studio-hero-ai {
+        overflow: clip;
+      }
+
+      .studio-hero-years:hover::after {
+        opacity: 0.66;
+      }
+
+      .studio-hero-ai .studio-card-art {
+        transform-origin: 50% 35%;
+        transition: scale 540ms cubic-bezier(0.22, 1, 0.36, 1);
+      }
+
+      .studio-hero-ai:hover .studio-card-art {
+        scale: 1.012;
+      }
+    }
+  }
+
+  @keyframes studio-hero-orb-drift {
+    from {
+      translate: var(--orb-start) 0;
+    }
+    to {
+      translate: 0 0;
+    }
+  }
+
+  @keyframes studio-hero-star-flash {
+    0%,
+    100% {
+      opacity: 0;
+      scale: 0.92;
+    }
+    38% {
+      opacity: 0.28;
+      scale: 1.02;
+    }
+  }
+
+  @keyframes studio-hero-brush-draw {
+    from {
+      clip-path: inset(0 0 0 100%);
+    }
+    to {
+      clip-path: inset(0);
+    }
+  }
+
+  @keyframes studio-hero-years-glow {
+    0%,
+    100% {
+      opacity: 0;
+    }
+    42% {
+      opacity: 1;
+    }
+  }
+
+  @keyframes studio-hero-logo-reveal {
+    from {
+      opacity: 0.4;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}

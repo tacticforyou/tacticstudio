@@ -166,10 +166,6 @@
         var(--color-studio-ink) 6%
       );
     }
-
-    .studio-button:hover .studio-button-glint {
-      transform: translate(50%, 41.58%) scaleY(0.9);
-    }
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -178,7 +174,17 @@
     }
 
     .studio-button-glint {
-      transition: transform 360ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 440ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .studio-button:focus-visible .studio-button-glint {
+      transform: translate(50%, 43%) scale(1.025, 0.9);
+    }
+
+    @media (hover: hover) {
+      .studio-button:hover .studio-button-glint {
+        transform: translate(50%, 43%) scale(1.025, 0.9);
+      }
     }
 
     .studio-wordmark img {

@@ -133,6 +133,15 @@ export function Hero() {
                   sizes="(max-width: 640px) 50vw, 22vw"
                   eager
                 />
+                <div
+                  className="studio-hero-ai-lights pointer-events-none absolute inset-0 -z-1"
+                  aria-hidden="true"
+                >
+                  <span />
+                  <span />
+                  <span />
+                  <span />
+                </div>
                 <ServiceCopy
                   service="ai"
                   description="کسب و کارتان را هوشمند تر کنید"

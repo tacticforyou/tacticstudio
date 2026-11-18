@@ -63,7 +63,7 @@ export function HeroBrandCard({
       const edgeInfluence = blend ** 2 * (3 - 2 * blend);
       const edgeBoost = pressure < 0 ? 0.4 : -0.25;
       const strength = 1 + edgeBoost * edgeInfluence;
-      const angle = 12.5 * Math.min(Math.hypot(x, y), 1) * strength;
+      const angle = 8 * Math.min(Math.hypot(x, y), 1) * strength;
 
       // Rotate about the in-plane axis perpendicular to the pointer direction.
       const dx = x * width;

@@ -15,7 +15,7 @@ export function LogoRow({ featuredProject }: { featuredProject?: string }) {
         "mx-auto grid items-center justify-items-center gap-[0.6rem] studio-mobile:mt-8 studio-compact:gap-[0.35rem] " +
         (featuredProject
           ? "mt-[calc(94*var(--u))] w-full grid-cols-[minmax(0,1fr)_minmax(0,1fr)_minmax(0,1.4fr)_minmax(0,1fr)_minmax(0,1fr)]"
-          : "mt-[calc(76*var(--u))] w-[94%] grid-cols-5")
+          : "studio-hero-logos mt-[calc(76*var(--u))] w-[94%] grid-cols-5")
       }
       dir="ltr"
     >
@@ -36,7 +36,15 @@ export function LogoRow({ featuredProject }: { featuredProject?: string }) {
             )}
           </li>
         ) : (
-          <li key={word} className="w-[min(90%,calc(139*var(--u)))] opacity-66">
+          <li
+            key={word}
+            className={
+              "w-[min(90%,calc(139*var(--u)))] opacity-66" +
+              (featuredProject
+                ? ""
+                : " motion-safe:transition-opacity motion-safe:duration-300 motion-safe:hover:opacity-92")
+            }
+          >
             <Art
               className="h-[calc(55*var(--u))] studio-mobile:h-[2.4rem] studio-compact:h-[1.85rem]"
               name={asset}
