@@ -5,6 +5,7 @@
   "scripts": {
     "dev": "next dev --hostname 0.0.0.0 --port 3100",
     "build": "next build",
+    "artwork:generate": "node scripts/generate-initial-artwork.mjs && prettier --write app/_landing/components/initial-artwork.ts",
     "start": "next start",
     "lint": "oxlint --deny-warnings",
     "typecheck": "next typegen && tsc --noEmit",
@@ -31,6 +32,7 @@
     "oxlint": "^1.94.0",
     "prettier": "^3.10.1",
     "prettier-plugin-tailwindcss": "^0.8.1",
+    "sharp": "^0.35.5",
     "tailwindcss": "4.3.3",
     "typescript": "^5"
   }

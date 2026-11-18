@@ -142,19 +142,23 @@
     background-color: var(--studio-button-color);
   }
 
-  :is(.studio-button-sage, .studio-button-rose)::after {
+  .studio-button-shadow {
     --shadow-y-unit: var(--u);
     position: absolute;
     inset: calc(-92 * var(--shadow-y-unit)) calc(-92 * var(--u));
     border: 0 solid;
-    border-image: var(--studio-button-shadow) 115 152 /
+    border-image: var(--studio-button-shadow, none) 115 152 /
       calc(115 * var(--shadow-y-unit)) calc(152 * var(--u)) round;
     pointer-events: none;
-    content: "";
+    opacity: 0;
+  }
+
+  .studio-button-shadow[data-ready="true"] {
+    opacity: 1;
   }
 
   @media (max-width: 760px) {
-    :is(.studio-button-sage, .studio-button-rose)::after {
+    .studio-button-shadow {
       --shadow-y-unit: calc(44px / 48);
     }
   }
@@ -170,6 +174,10 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
+    .studio-button-shadow[data-ready="true"] {
+      animation: studio-button-shadow-reveal 3s ease-out both;
+    }
+
     .studio-button {
       transition: background-color 260ms ease-out;
     }
@@ -199,13 +207,21 @@
     }
   }
 
+  @keyframes studio-button-shadow-reveal {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
   .studio-button-outline {
     border-color: rgb(148 159 128 / 30%);
   }
 
   .studio-button-sage {
     --studio-button-color: var(--color-studio-sage);
-    --studio-button-shadow: url("/images/landing/shadow-button-sage.png");
   }
 
   .studio-button-sage::before {
@@ -220,7 +236,6 @@
 
   .studio-button-rose {
     --studio-button-color: var(--color-studio-rose);
-    --studio-button-shadow: url("/images/landing/shadow-button-rose.png");
   }
 
   .studio-button-glint {

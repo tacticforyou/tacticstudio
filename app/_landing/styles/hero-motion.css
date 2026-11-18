@@ -34,22 +34,6 @@
       animation: studio-hero-brush-draw 720ms var(--ease-studio) 340ms both;
     }
 
-    .studio-hero-years::after {
-      position: absolute;
-      z-index: -1;
-      inset: 23% 21% -24% -20%;
-      background: radial-gradient(
-        ellipse,
-        rgb(255 253 242 / 54%),
-        transparent 73%
-      );
-      pointer-events: none;
-      content: "";
-      opacity: 0;
-      animation: studio-hero-years-glow 1.8s ease-in-out 680ms backwards;
-      transition: opacity 500ms ease-out;
-    }
-
     .studio-hero-ai-lights > span {
       position: absolute;
       top: var(--symbol-y, 26%);
@@ -111,10 +95,6 @@
     @media (hover: hover) {
       .studio-hero-ai {
         overflow: clip;
-      }
-
-      .studio-hero-years:hover::after {
-        opacity: 0.66;
       }
 
       .studio-hero-ai .studio-card-art {

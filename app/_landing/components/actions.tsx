@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 import { AnimatedActionLink } from "./animated-action-link";
 import { Art } from "./art";
+import { ButtonShadow } from "./button-shadow";
 
 const buttonTones = {
   outline:
@@ -31,6 +32,7 @@ function StudioButton({
         name={"button-wave-" + tone + ".svg"}
         className="studio-button-glint"
       />
+      {tone !== "outline" && <ButtonShadow tone={tone} />}
     </AnimatedActionLink>
   );
 }

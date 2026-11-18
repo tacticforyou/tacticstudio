@@ -8,6 +8,7 @@ import teamCenter from "@/public/images/landing/team-portrait-center.webp";
 import teamLeft from "@/public/images/landing/team-portrait-left.webp";
 import teamRight from "@/public/images/landing/team-portrait-right.webp";
 import yearsStars from "@/public/images/landing/years-stars.webp";
+import { initialArtwork } from "./initial-artwork";
 
 const rasterArtwork: Readonly<Partial<Record<string, StaticImageData>>> = {
   "hero-ai-art.webp": heroAi,
@@ -51,7 +52,8 @@ export function Art({
         sizes={sizes}
         unoptimized={unoptimized}
         loading={eager ? "eager" : undefined}
-        placeholder={eager && image ? "blur" : "empty"}
+        placeholder={eager ? (initialArtwork[name] ?? "empty") : "empty"}
+        style={eager && image ? { objectFit: "contain" } : undefined}
         className={imageClassName}
       />
     </span>
