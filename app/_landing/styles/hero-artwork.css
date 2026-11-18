@@ -103,7 +103,37 @@
 
   .studio-hero-web,
   .studio-hero-brand {
+    inline-size: 100%;
+    align-self: stretch;
     aspect-ratio: 326 / 361;
+  }
+
+  .studio-hero-web {
+    --hero-phone-gap: 0.75rem;
+    /* Match the FigCraft crop when it clears the copy. Grow the middle track for wrapped text. */
+    grid-template-rows:
+      9%
+      minmax(max-content, calc(100% * 165 / 361 - 9% - var(--hero-phone-gap)))
+      minmax(0, 1fr);
+  }
+
+  .studio-hero-phone-art {
+    /* The 507 × 754 source has 39px of transparent space above the handset. */
+    position: absolute;
+    left: calc(-100% * 44 / 326);
+    width: calc(100% * 507 / 326);
+    aspect-ratio: 507 / 754;
+    margin-block-start: calc(var(--hero-phone-gap) - 100% * 39 / 326);
+  }
+
+  @media (hover: hover) and (prefers-reduced-motion: no-preference) {
+    .studio-hero-phone-art {
+      transition: translate 750ms cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .studio-hero-web:hover .studio-hero-phone-art {
+      translate: 0 calc(-8 * var(--u));
+    }
   }
 
   .studio-card-art,
@@ -121,6 +151,18 @@
   .studio-hero-brand-art {
     /* Widen the viewport for the badge shadow while keeping the same artwork scale. */
     left: calc(100% - var(--brand-art-width, 119.02%) * (460.008 / 388.008));
+  }
+
+  .studio-hero-brand-motion,
+  .studio-hero-brand-shadow {
+    /* Keep the badge face inside the viewport when the hero shell nearly fills it. */
+    --brand-badge-inset: clamp(
+      0px,
+      min(calc((100vw - 816px) / 12), calc((1024px - 100vw) / 11)),
+      8px
+    );
+    margin-left: var(--brand-badge-inset);
+    margin-right: calc(-1 * var(--brand-badge-inset));
   }
 
   .studio-hero-brand-motion {
@@ -188,8 +230,8 @@
       position: absolute;
       inset: 0;
       background: #6a7459;
-      mask: url("/images/landing/hero-brand-badge.svg") right center /
-        var(--brand-badge-mask-size, 100% 100%) no-repeat;
+      mask: url("/images/landing/hero-brand-badge.svg")
+        var(--brand-badge-mask-position, center) / contain no-repeat;
       transform: translateZ(calc(-4 * var(--u)));
       content: "";
     }
@@ -220,11 +262,22 @@
     color: #f5f5ee;
   }
 
+  .studio-hero-web .studio-service-copy {
+    position: relative;
+    grid-row: 2;
+    align-self: start;
+    width: max(64%, min(83%, 10rem));
+  }
+
   .studio-hero-web .studio-service-copy,
   .studio-service-web .studio-service-copy,
   .studio-service-ai .studio-service-copy {
-    top: 9%;
     text-shadow: 0 1px 3px rgb(11 21 8 / 40%);
+  }
+
+  .studio-service-web .studio-service-copy,
+  .studio-service-ai .studio-service-copy {
+    top: 9%;
   }
 
   .studio-hero-brand .studio-service-copy,
@@ -251,6 +304,11 @@
     pointer-events: none;
   }
 
+  .studio-hero-web.studio-phone::after {
+    inset-block-start: 41%;
+    mask-image: linear-gradient(transparent, #000 4%);
+  }
+
   .studio-pane {
     border: 1px solid var(--studio-pane-edge);
     border-radius: var(--studio-radius);
@@ -270,14 +328,13 @@
   .studio-hero-years {
     overflow: hidden;
     min-width: 0;
-    padding: 8% 8% 0;
+    padding: 8%;
     font-size: max(0.7rem, calc(20 * var(--u)));
     line-height: 1.35;
   }
 
   .studio-hero-years p {
     position: relative;
-    margin-inline-start: auto;
     text-align: right;
   }
 

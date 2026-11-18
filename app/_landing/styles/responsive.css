@@ -160,10 +160,9 @@
     }
     .studio-hero-brand-art {
       --brand-art-width: 109%;
-      --brand-badge-mask-size: cover;
+      --brand-badge-mask-position: right center;
     }
     .studio-hero-brand-art img {
-      object-fit: cover;
       object-position: right;
     }
     .studio-hero-web .studio-service-copy,
@@ -243,12 +242,7 @@
   @media (max-width: 500px) {
     .studio-hero-web,
     .studio-hero-brand {
-      inline-size: 100%;
       min-block-size: 11.5rem;
-    }
-    .studio-hero-web .studio-card-art {
-      inset-block-start: auto;
-      aspect-ratio: 326 / 361;
     }
     .studio-hero-card .studio-service-copy p {
       font-size: 0.64rem;

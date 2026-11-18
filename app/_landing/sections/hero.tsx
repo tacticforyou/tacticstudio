@@ -53,18 +53,23 @@ function SiteHeader() {
 export function Hero() {
   return (
     <div id="top" className="studio-band studio-hero">
-      <Art
-        name="hero-left.webp"
-        className="studio-hero-face studio-hero-face-left"
-        sizes="100vw"
-        eager
-      />
-      <Art
-        name="hero-right.webp"
-        className="studio-hero-face studio-hero-face-right"
-        sizes="100vw"
-        eager
-      />
+      <div
+        className="studio-hero-background pointer-events-none absolute inset-0 -z-1 overflow-clip rounded-[inherit]"
+        aria-hidden="true"
+      >
+        <Art
+          name="hero-left.webp"
+          className="studio-hero-face studio-hero-face-left"
+          sizes="100vw"
+          eager
+        />
+        <Art
+          name="hero-right.webp"
+          className="studio-hero-face studio-hero-face-right"
+          sizes="100vw"
+          eager
+        />
+      </div>
       <SiteHeader />
       <div className="studio-shell relative">
         <div className="mx-auto mt-[calc(98*var(--u))] w-full max-w-[calc(1040*var(--u))] studio-mobile:mt-[clamp(2.5rem,9vw,3.6rem)]">
@@ -82,16 +87,27 @@ export function Hero() {
         </div>
         <section
           aria-label="خدمات و تجربه تاکتیک"
-          className="mt-[calc(89*var(--u))] grid grid-cols-[326fr_606fr_326fr] gap-[calc(8*var(--u))] studio-mobile:mt-[2.8rem] studio-mobile:grid-cols-2 studio-mobile:gap-[0.6rem]"
+          className="mt-[calc(89*var(--u))] grid grid-cols-[minmax(0,326fr)_minmax(0,606fr)_minmax(0,326fr)] gap-[calc(8*var(--u))] studio-mobile:mt-[2.8rem] studio-mobile:grid-cols-2 studio-mobile:gap-[0.6rem]"
         >
-          <article className="studio-hero-card studio-hero-web studio-phone">
+          <article className="studio-hero-card studio-hero-web studio-phone grid min-w-0 grid-cols-1 overflow-hidden">
             <Art
-              name="hero-web-art.webp"
-              className="studio-card-art"
-              sizes="(max-width: 640px) 50vw, 25vw"
+              name="hero-web-background.webp"
+              className="pointer-events-none absolute inset-0 -z-1 studio-compact:top-auto studio-compact:aspect-326/361"
+              sizes="(max-width: 760px) 50vw, 25vw"
               eager
             />
             <ServiceCopy service="web" />
+            <div
+              className="pointer-events-none relative -z-1 row-start-3"
+              aria-hidden="true"
+            >
+              <Art
+                name="hero-web-phone.webp"
+                className="studio-hero-phone-art"
+                sizes="(max-width: 760px) 75vw, (max-width: 1305px) 345px, (max-width: 1920px) 26vw, 507px"
+                eager
+              />
+            </div>
           </article>
           <div className="grid min-w-0 grid-rows-[150fr_203fr] gap-[calc(8*var(--u))] studio-mobile:grid-rows-[auto_auto] studio-mobile:[grid-area:2/1/3/-1]">
             <div className="studio-pane relative flex items-center justify-between gap-[0.6rem] ps-[10%] pe-[12%] text-[max(0.8rem,calc(20*var(--u)))] font-light studio-mobile:min-h-[5.1rem] studio-mobile:ps-[8%] studio-mobile:pe-[8%]">
@@ -108,7 +124,7 @@ export function Hero() {
               <Art name="team-wave.svg" className="studio-team-wave" />
             </div>
             <div className="grid min-w-0 grid-cols-2 gap-[calc(8*var(--u))]">
-              <div className="studio-hero-years studio-pane studio-mobile:aspect-299/203 studio-compact:min-h-26 studio-compact:w-full">
+              <div className="studio-hero-years studio-pane @container flex flex-col gap-1 studio-mobile:aspect-299/203 studio-compact:min-h-26 studio-compact:w-full">
                 <Art
                   name="years-stars.webp"
                   className="studio-years-stars"
@@ -120,7 +136,7 @@ export function Hero() {
                   <br />و تجربه کردیم.
                 </p>
                 <div
-                  className="absolute bottom-[8%] left-[8%] flex items-baseline gap-[0.04em] text-[clamp(2rem,calc(94*var(--u)),5.875rem)] leading-none font-semibold text-[#0e100e] studio-mobile:text-[clamp(2rem,12vw,calc(94*var(--u)))]"
+                  className="mt-auto flex items-baseline gap-[0.04em] self-end text-[clamp(1.75rem,43cqi-0.8rem,calc(94*var(--u)))] leading-none font-semibold text-[#0e100e]"
                   dir="ltr"
                 >
                   <span className="text-[0.75em] font-light">+</span>۱۳
@@ -166,7 +182,7 @@ export function Hero() {
             />
             <Art
               name="hero-brand-badge-shadow.svg"
-              className="studio-hero-brand-art pointer-events-none"
+              className="studio-hero-brand-art studio-hero-brand-shadow pointer-events-none"
               eager
             />
             <ServiceCopy service="brand" />

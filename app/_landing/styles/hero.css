@@ -1,7 +1,9 @@
 @layer components {
   .studio-hero {
-    overflow: clip;
     padding: calc(58 * var(--u)) 0 calc(78 * var(--u));
+  }
+
+  .studio-hero-background {
     background:
       radial-gradient(
         ellipse at 50% 115%,
