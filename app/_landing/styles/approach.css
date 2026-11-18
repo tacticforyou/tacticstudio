@@ -114,8 +114,24 @@
     aspect-ratio: 225.815 / 165.278;
   }
 
+  .studio-step-strategy .studio-step-scene {
+    container-type: size;
+  }
+
   .studio-step-strategy .studio-step-figure {
-    inset: 0;
+    /* Recreate the prior 16%-centered cover crop within the shared source.
+       Its frame measures about 509.4 × 175.24 source pixels. */
+    --strategy-crop-width: max(100cqw, calc(100cqh * 509.4 / 175.24));
+    --strategy-source-pixel: calc(var(--strategy-crop-width) / 509.4);
+    top: calc(
+      (100cqh - 175.24 * var(--strategy-source-pixel)) / 2 - 4.04 *
+        var(--strategy-source-pixel)
+    );
+    left: calc(
+      (100cqw - var(--strategy-crop-width)) * 0.16 - 2.84 *
+        var(--strategy-source-pixel)
+    );
+    width: calc(328 * var(--strategy-source-pixel));
   }
 
   .studio-step-design {

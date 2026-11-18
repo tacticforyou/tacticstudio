@@ -32,4 +32,16 @@
   .studio-hero-face-right {
     right: calc(-1119 * var(--u));
   }
+
+  .studio-hero-right-art {
+    position: absolute;
+    /* The shared crop starts at (896, 362) in the 1600 × 1200 original.
+       Mirror the crop and offset it within the original hero mask. */
+    top: calc(100% * 362 / 1200);
+    left: calc(100% * 376 / 1600);
+    width: calc(100% * 328 / 1600);
+    scale: -1 1;
+    opacity: 0.28;
+    filter: brightness(1.2);
+  }
 }

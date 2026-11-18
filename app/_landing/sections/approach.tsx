@@ -1,13 +1,14 @@
-import { Art } from "../components/art";
+import { Art, Portrait } from "../components/art";
 import { SectionHeading } from "../components/section-heading";
 import { approaches } from "../copy";
 
-type ProcessLayer = {
-  name: string;
-  layer: "mark" | "figure" | "texture" | "light-start" | "light-end";
-  unoptimized?: boolean;
-  imageClassName?: string;
-};
+type ProcessLayer =
+  | {
+      name: string;
+      layer: "mark" | "figure" | "texture" | "light-start" | "light-end";
+      unoptimized?: boolean;
+    }
+  | { layer: "figure"; portrait: "right" };
 
 const processScenes: Record<
   (typeof approaches)[number]["art"],
@@ -15,12 +16,7 @@ const processScenes: Record<
 > = {
   strategy: [
     { name: "process-strategy-mark.svg", layer: "mark" },
-    {
-      name: "process-strategy-focus.webp",
-      layer: "figure",
-      unoptimized: true,
-      imageClassName: "object-cover object-[16%_center]",
-    },
+    { layer: "figure", portrait: "right" },
     {
       name: "process-strategy-glow.webp",
       layer: "light-start",
@@ -106,15 +102,20 @@ export function Approach() {
             </div>
             <div className="studio-step-art">
               <div className="studio-step-scene">
-                {processScenes[art].map(
-                  ({ name, layer, unoptimized, imageClassName }) => (
+                {processScenes[art].map((scene) =>
+                  "portrait" in scene ? (
+                    <Portrait
+                      key={scene.layer}
+                      side={scene.portrait}
+                      className="studio-step-figure"
+                    />
+                  ) : (
                     <Art
-                      key={layer}
-                      name={name}
-                      className={"studio-step-" + layer}
-                      imageClassName={imageClassName}
+                      key={scene.layer}
+                      name={scene.name}
+                      className={"studio-step-" + scene.layer}
                       sizes="(max-width: 640px) 80vw, 40vw"
-                      unoptimized={unoptimized}
+                      unoptimized={scene.unoptimized}
                     />
                   ),
                 )}

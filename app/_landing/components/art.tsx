@@ -49,12 +49,19 @@ export function Wave({
 export function Portrait({
   className,
   eager,
-}: Pick<ArtProps, "className" | "eager">) {
+  side = "left",
+}: Pick<ArtProps, "className" | "eager"> & { side?: "left" | "right" }) {
+  const right = side === "right";
+
   return (
     <Art
-      name="shared-portrait.webp"
-      className={`aspect-1178/1886 ${className ?? ""}`}
-      sizes="(max-width: 526px) 152vw, (max-width: 1305px) 801px, (max-width: 1920px) 62vw, 1178px"
+      name={right ? "shared-portrait-right.webp" : "shared-portrait.webp"}
+      className={`${right ? "aspect-328/838" : "aspect-1178/1886"} ${className ?? ""}`}
+      sizes={
+        right
+          ? "(max-width: 1305px) 270px, (max-width: 1920px) 21vw, 397px"
+          : "(max-width: 526px) 152vw, (max-width: 1305px) 801px, (max-width: 1920px) 62vw, 1178px"
+      }
       eager={eager}
     />
   );

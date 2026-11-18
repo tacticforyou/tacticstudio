@@ -61,12 +61,9 @@ export function Hero() {
         aria-hidden="true"
       >
         <Portrait className="studio-hero-face studio-hero-face-left" eager />
-        <Art
-          name="hero-right.webp"
-          className="studio-hero-face studio-hero-face-right"
-          sizes="100vw"
-          eager
-        />
+        <span className="studio-hero-face studio-hero-face-right">
+          <Portrait side="right" className="studio-hero-right-art" eager />
+        </span>
       </div>
       <SiteHeader />
       <div className="studio-shell relative">
