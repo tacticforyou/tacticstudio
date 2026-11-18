@@ -32,6 +32,15 @@
     @apply bg-canvas font-sans text-ink antialiased;
   }
 
+  ::selection {
+    background-color: color-mix(
+      in srgb,
+      var(--color-studio-sage) 80%,
+      var(--color-studio-white)
+    );
+    color: var(--color-studio-ink);
+  }
+
   :focus-visible {
     @apply outline-2 outline-offset-4 outline-accent;
   }

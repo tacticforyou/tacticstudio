@@ -113,9 +113,9 @@ export function Footer() {
         <Art name="icon-arrow-up.svg" sizes="108px" />
       </BackToTopLink>
       <Wave name="footer-wave.svg" className="studio-footer-wave" />
-      <Wave name="footer-wave-center.svg" />
+      <Wave />
       <Wave name="footer-wave-left.svg" className="studio-footer-wave-left" />
-      <Wave name="footer-wave-right.svg" className="studio-footer-wave-right" />
+      <Wave name="footer-wave-left.svg" className="studio-footer-wave-right" />
     </footer>
   );
 }

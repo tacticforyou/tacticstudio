@@ -112,9 +112,10 @@
 
   .studio-wave-top {
     inset-block: -1px auto;
+    transform: translateX(50%) scaleY(-1);
   }
 
-  :is(.studio-faq-card, .studio-step-label, .studio-step-art)::before {
+  :is(.studio-faq-shadow, .studio-step-label, .studio-step-art)::before {
     position: absolute;
     z-index: -1;
     /* The slices keep the corners fixed at different card sizes. */

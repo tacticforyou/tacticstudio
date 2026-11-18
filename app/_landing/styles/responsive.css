@@ -44,10 +44,6 @@
       display: none;
     }
 
-    .studio-wave-top {
-      transform: translateX(50%) scaleY(-1);
-    }
-
     .studio-band > .studio-footer-wave {
       width: calc(var(--studio-mobile-notch-width) * 523 / 351);
       opacity: 0.4;

@@ -16,22 +16,44 @@
 
   .studio-faq-card {
     position: relative;
-    display: grid;
     min-block-size: var(--faq-closed-height);
     block-size: var(--faq-closed-height);
+    transition: block-size var(--faq-transition);
+  }
+
+  .studio-faq-surface {
+    position: relative;
+    display: grid;
+    block-size: 100%;
     grid-template-rows: minmax(0, 1fr);
     border-radius: var(--studio-radius);
     background: #fff;
     line-height: 1.33;
-    transition: block-size var(--faq-transition);
+  }
+
+  .studio-faq-shadow {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .studio-faq-surface,
+  .studio-faq-shadow {
+    transform-origin: center top;
   }
 
   .studio-faq-card[data-expanded="true"] {
     block-size: var(--faq-open-height, auto);
   }
 
+  .studio-faq-grid[data-motion-layout="true"] .studio-faq-card {
+    transition: none;
+  }
+
   .studio-faq-content {
     padding: calc(75 * var(--u)) calc(32 * var(--u)) calc(46 * var(--u));
+    transform-origin: center top;
   }
 
   .studio-faq-card p {
@@ -61,6 +83,7 @@
 
   .studio-faq-card .studio-card-wave {
     background: none;
+    transform-origin: center bottom;
   }
 
   .studio-faq-card .studio-card-wave::before,
@@ -101,7 +124,7 @@
     content: "";
   }
 
-  .studio-faq-card:has(button:focus-visible) {
+  .studio-faq-surface:has(button:focus-visible) {
     outline: 2px solid #505b40;
     outline-offset: 3px;
   }

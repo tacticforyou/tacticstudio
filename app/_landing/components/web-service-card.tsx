@@ -11,35 +11,36 @@ export function WebServiceCard({ hero = false }: { hero?: boolean }) {
           : "studio-service-card studio-service-web studio-phone grid min-w-0 grid-cols-1"
       }
     >
-      <Art
-        name={
-          hero ? "hero-web-background.webp" : "services-web-background.webp"
-        }
+      <div
+        aria-hidden="true"
         className={
           hero
-            ? "pointer-events-none absolute inset-0 -z-1 studio-compact:top-auto studio-compact:aspect-326/361"
-            : "studio-card-art pointer-events-none"
+            ? "[container-type:size] pointer-events-none absolute inset-0 -z-1 grid place-items-center studio-compact:top-auto studio-compact:aspect-326/361"
+            : "pointer-events-none absolute inset-0 -z-1"
         }
-        sizes={
-          hero
-            ? "(max-width: 760px) 50vw, 25vw"
-            : "(max-width: 700px) 352px, 20vw"
-        }
-        eager={hero}
-      />
+      >
+        <div
+          className={hero ? "studio-hero-web-pattern" : "relative size-full"}
+        >
+          <Art
+            name="services-web-background.webp"
+            className={
+              hero ? "studio-hero-web-pattern-art" : "absolute inset-0"
+            }
+            sizes="(max-width: 700px) max(min(calc(100vw - 3rem), 352px), calc(57.4vw - 1.9rem)), (max-width: 760px) calc(57.4vw - 1.9rem), (max-width: 1305px) 255px, (max-width: 1920px) 19.5vw, 374px"
+            eager={hero}
+          />
+        </div>
+      </div>
       <ServiceCopy service="web" />
       <div
         className="pointer-events-none relative -z-1 row-start-3"
         aria-hidden="true"
       >
         <Art
-          name="hero-web-phone.webp"
+          name="shared-web-phone.webp"
           className="studio-phone-art"
-          sizes={
-            hero
-              ? "(max-width: 760px) 75vw, (max-width: 1305px) 345px, (max-width: 1920px) 26vw, 507px"
-              : "(max-width: 700px) min(136vw, 478px), (max-width: 1305px) 345px, (max-width: 1920px) 27vw, 507px"
-          }
+          sizes="(max-width: 700px) max(calc(78vw - 2.6rem), min(calc(136vw - 4rem), 478px)), (max-width: 760px) calc(78vw - 2.6rem), (max-width: 1305px) 346px, (max-width: 1920px) 26.5vw, 508px"
           eager={hero}
         />
       </div>

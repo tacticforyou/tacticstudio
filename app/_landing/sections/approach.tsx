@@ -5,7 +5,7 @@ import { approaches } from "../copy";
 type ProcessLayer =
   | {
       name: string;
-      layer: "mark" | "figure" | "texture" | "light-start" | "light-end";
+      layer: "mark" | "figure" | "texture";
       unoptimized?: boolean;
     }
   | { layer: "figure"; portrait: "right" };
@@ -17,16 +17,6 @@ const processScenes: Record<
   strategy: [
     { name: "process-strategy-mark.svg", layer: "mark" },
     { layer: "figure", portrait: "right" },
-    {
-      name: "process-strategy-glow.webp",
-      layer: "light-start",
-      unoptimized: true,
-    },
-    {
-      name: "process-strategy-glow.webp",
-      layer: "light-end",
-      unoptimized: true,
-    },
   ],
   design: [
     { name: "process-design-mark.svg", layer: "mark" },
@@ -34,16 +24,6 @@ const processScenes: Record<
     {
       name: "process-design-hand@2x.webp",
       layer: "figure",
-      unoptimized: true,
-    },
-    {
-      name: "process-design-left-glow.webp",
-      layer: "light-start",
-      unoptimized: true,
-    },
-    {
-      name: "process-design-right-glow.webp",
-      layer: "light-end",
       unoptimized: true,
     },
   ],
@@ -118,6 +98,12 @@ export function Approach() {
                       unoptimized={scene.unoptimized}
                     />
                   ),
+                )}
+                {art !== "development" && (
+                  <>
+                    <span className="studio-step-light-start" aria-hidden />
+                    <span className="studio-step-light-end" aria-hidden />
+                  </>
                 )}
               </div>
             </div>

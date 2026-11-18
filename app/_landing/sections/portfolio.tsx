@@ -61,7 +61,7 @@ export function Portfolio() {
           description="هر پروژه برای ما فرصتی است تا مسئله‌ای را به شکلی متفاوت ببینیم، راهکاری خلاقانه پیدا کنیم و آن را به تجربه‌ای ارزشمند تبدیل کنیم."
         />
       }
-      wave={<Wave name="portfolio-wave.svg" />}
+      wave={<Wave />}
     />
   );
 }

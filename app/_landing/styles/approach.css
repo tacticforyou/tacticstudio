@@ -179,8 +179,12 @@
 
   .studio-step-light-start,
   .studio-step-light-end {
+    position: absolute;
     width: 67.61%;
     aspect-ratio: 1;
+    /* Left cell is the horizontal flare. Right cell keeps the distinct design flare. */
+    background: url("/images/landing/process-flares.webp") left / 200% 100%
+      no-repeat;
     mix-blend-mode: screen;
     pointer-events: none;
   }
@@ -200,12 +204,14 @@
   .studio-step-design .studio-step-light-start {
     top: -37.93%;
     left: -33.73%;
+    scale: -1 1;
   }
 
   .studio-step-design .studio-step-light-end {
     top: -35.19%;
     left: 54.84%;
     width: 53.35%;
+    background-position: right;
   }
 
   @media (width > 760px) {

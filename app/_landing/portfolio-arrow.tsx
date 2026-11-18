@@ -134,7 +134,15 @@ export function PortfolioArrow({
         data-click-sound="project"
         onClick={handleClick}
       >
-        <Art name={`icon-arrow-${direction}.svg`} sizes="138px" />
+        <Art
+          name="icon-arrow-right.svg"
+          imageClassName={
+            direction === "left"
+              ? "rotate-180 object-contain"
+              : "object-contain"
+          }
+          sizes="138px"
+        />
       </button>
     </div>
   );

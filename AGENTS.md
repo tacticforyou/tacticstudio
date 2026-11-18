@@ -40,3 +40,8 @@ This block is written and re-added by `next dev` — verify at `node_modules/nex
 - Add RSS once there are published articles. Serve only published articles with stable absolute URLs and dates, and link the feed via metadata. Add JSON-LD when a schema type accurately describes visible published content.
 - Use semantic landmarks and headings, keyboard-accessible controls, visible focus, and descriptive link text. Verify these alongside the rendered metadata.
 - [Metadata and social images](https://nextjs.org/docs/app/getting-started/metadata-and-og-images) · [Robots](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/robots) · [Sitemap](https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap) · [JSON-LD](https://nextjs.org/docs/app/guides/json-ld) · [Google's noindex guidance](https://developers.google.com/search/docs/crawling-indexing/block-indexing)
+
+## Graphify
+
+- Start codebase questions with `graphify query "<question>"` when `graphify-out/graph.json` exists. Verify implementation details in the referenced source files.
+- Run `graphify update .` to create or refresh the local index, report, and interactive graph. The update covers code and Markdown structure.

@@ -118,6 +118,20 @@
     --phone-art-offset: -64;
   }
 
+  .studio-hero-web-pattern {
+    position: relative;
+    overflow: clip;
+    width: min(100%, calc(100cqh * 326 / 361));
+    aspect-ratio: 326 / 361;
+  }
+
+  .studio-hero-web-pattern-art {
+    /* The FigCraft crops share their right edge and height. */
+    position: absolute;
+    inset: 0 0 0 auto;
+    width: calc(100% * 374 / 326);
+  }
+
   .studio-phone {
     --phone-gap: 0.75rem;
     /* Match the FigCraft crop when it clears the copy. Grow the middle track for wrapped text. */
@@ -128,11 +142,11 @@
   }
 
   .studio-phone-art {
-    /* The 507 × 754 source has 39px of transparent space above the handset. */
+    /* The crop keeps the original 507px design width and 39px of top padding. */
     position: absolute;
     left: calc(100% * var(--phone-art-offset) / var(--phone-card-design-width));
     width: calc(100% * 507 / var(--phone-card-design-width));
-    aspect-ratio: 507 / 754;
+    aspect-ratio: 507 / 320;
     margin-block-start: calc(
       var(--phone-gap) - 100% * 39 / var(--phone-card-design-width)
     );
@@ -183,12 +197,21 @@
     pointer-events: none;
   }
 
+  .studio-hero-brand-trigger {
+    display: none;
+  }
+
   @media (prefers-reduced-motion: no-preference) {
     .studio-hero-brand-motion {
       animation: studio-brand-badge-float 7s ease-in-out infinite;
+      perspective: var(--brand-badge-perspective);
+      perspective-origin: var(--brand-badge-pivot-x) var(--brand-badge-pivot-y);
     }
 
-    .studio-hero-brand-motion[data-tilting="true"] {
+    .studio-hero-brand-motion:is(
+      [data-tilting="true"],
+      [data-pressing="true"]
+    ) {
       animation-play-state: paused;
     }
 
@@ -201,32 +224,26 @@
         translate: 0 calc(-10 * var(--u));
       }
     }
-  }
 
-  @media (any-hover: hover) and (prefers-reduced-motion: no-preference) {
-    .studio-hero-brand-motion {
-      perspective: var(--brand-badge-perspective);
-      perspective-origin: var(--brand-badge-pivot-x) var(--brand-badge-pivot-y);
-    }
-
-    /* Include the visible overhang without making the transparent shadow interactive. */
     .studio-hero-brand-surface {
       top: var(--brand-badge-pivot-y);
       left: var(--brand-badge-pivot-x);
       width: 43%;
       height: 36%;
       translate: -50% -50%;
-      clip-path: polygon(
-        7% 26%,
-        54% 8%,
-        68% 13%,
-        93% 55%,
-        89% 73%,
-        38% 93%,
-        28% 87%,
-        6% 47%
-      );
+    }
+
+    .studio-hero-brand-trigger {
+      /* The oval covers the face and a small radius around it on all sides. */
+      position: absolute;
+      inset: calc(-4px - 10 * var(--u));
+      display: block;
       pointer-events: auto;
+    }
+
+    .studio-hero-brand-trigger:focus-visible {
+      outline: 2px solid #505b40;
+      outline-offset: 2px;
     }
 
     .studio-hero-brand-pose {
