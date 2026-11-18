@@ -13,16 +13,16 @@ const peyda = localFont({
   ],
   variable: "--font-peyda",
   display: "swap",
-  preload: false,
-  adjustFontFallback: false,
+  preload: true,
+  adjustFontFallback: "Arial",
 });
 
 const yekan = localFont({
   src: "./_landing/fonts/yekan-bakh-fanum.woff2",
   variable: "--font-yekan",
   display: "swap",
-  preload: false,
-  adjustFontFallback: false,
+  preload: true,
+  adjustFontFallback: "Arial",
 });
 
 export const metadata: Metadata = {
