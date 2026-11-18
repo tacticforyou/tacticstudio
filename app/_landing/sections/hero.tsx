@@ -5,6 +5,8 @@ import { LogoRow } from "../components/logo-row";
 import { ServiceCopy } from "../components/service-copy";
 import { Tagline } from "../components/tagline";
 import { StudioWordmark } from "../components/studio-wordmark";
+import { TeamPortraits } from "../components/team-portraits";
+import { WebServiceCard } from "../components/web-service-card";
 import { HeaderMenu } from "../header-menu";
 
 function HeroOrbs() {
@@ -84,34 +86,10 @@ export function Hero() {
           aria-label="خدمات و تجربه تاکتیک"
           className="mt-[calc(89*var(--u))] grid grid-cols-[minmax(0,326fr)_minmax(0,606fr)_minmax(0,326fr)] gap-[calc(8*var(--u))] studio-mobile:mt-[2.8rem] studio-mobile:grid-cols-2"
         >
-          <article className="studio-hero-card studio-hero-web studio-phone grid min-w-0 grid-cols-1 overflow-hidden">
-            <Art
-              name="hero-web-background.webp"
-              className="pointer-events-none absolute inset-0 -z-1 studio-compact:top-auto studio-compact:aspect-326/361"
-              sizes="(max-width: 760px) 50vw, 25vw"
-              eager
-            />
-            <ServiceCopy service="web" />
-            <div
-              className="pointer-events-none relative -z-1 row-start-3"
-              aria-hidden="true"
-            >
-              <Art
-                name="hero-web-phone.webp"
-                className="studio-hero-phone-art"
-                sizes="(max-width: 760px) 75vw, (max-width: 1305px) 345px, (max-width: 1920px) 26vw, 507px"
-                eager
-              />
-            </div>
-          </article>
+          <WebServiceCard hero />
           <div className="grid min-w-0 grid-rows-[150fr_203fr] gap-[calc(8*var(--u))] studio-mobile:grid-rows-[auto_auto] studio-mobile:[grid-area:2/1/3/-1]">
             <div className="studio-pane relative flex items-center justify-between gap-[0.6rem] ps-[10%] pe-[12%] text-[max(0.8rem,calc(20*var(--u)))] font-light studio-mobile:min-h-[5.1rem] studio-mobile:ps-[8%] studio-mobile:pe-[8%]">
-              <Art
-                name="hero-team-portraits.webp"
-                className="aspect-180/68 w-[38%] flex-none studio-mobile:max-w-36"
-                unoptimized
-                eager
-              />
+              <TeamPortraits />
               <p>
                 تیمی برای خلق نتایج{" "}
                 <strong className="font-bold">بزرگ‌تر</strong>

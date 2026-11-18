@@ -109,29 +109,41 @@
   }
 
   .studio-hero-web {
-    --hero-phone-gap: 0.75rem;
+    --phone-card-design-width: 326;
+    --phone-art-offset: -44;
+  }
+
+  .studio-service-web {
+    --phone-card-design-width: 374;
+    --phone-art-offset: -64;
+  }
+
+  .studio-phone {
+    --phone-gap: 0.75rem;
     /* Match the FigCraft crop when it clears the copy. Grow the middle track for wrapped text. */
     grid-template-rows:
       9%
-      minmax(max-content, calc(100% * 165 / 361 - 9% - var(--hero-phone-gap)))
+      minmax(max-content, calc(100% * 165 / 361 - 9% - var(--phone-gap)))
       minmax(0, 1fr);
   }
 
-  .studio-hero-phone-art {
+  .studio-phone-art {
     /* The 507 × 754 source has 39px of transparent space above the handset. */
     position: absolute;
-    left: calc(-100% * 44 / 326);
-    width: calc(100% * 507 / 326);
+    left: calc(100% * var(--phone-art-offset) / var(--phone-card-design-width));
+    width: calc(100% * 507 / var(--phone-card-design-width));
     aspect-ratio: 507 / 754;
-    margin-block-start: calc(var(--hero-phone-gap) - 100% * 39 / 326);
+    margin-block-start: calc(
+      var(--phone-gap) - 100% * 39 / var(--phone-card-design-width)
+    );
   }
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
-    .studio-hero-phone-art {
+    .studio-hero-web .studio-phone-art {
       transition: translate 750ms cubic-bezier(0.22, 1, 0.36, 1);
     }
 
-    .studio-hero-web:hover .studio-hero-phone-art {
+    .studio-hero-web:hover .studio-phone-art {
       translate: 0 calc(-8 * var(--u));
     }
   }
@@ -186,7 +198,7 @@
         translate: 0 0;
       }
       48% {
-        translate: 0 calc(-7 * var(--u));
+        translate: 0 calc(-10 * var(--u));
       }
     }
   }
@@ -262,7 +274,7 @@
     color: #f5f5ee;
   }
 
-  .studio-hero-web .studio-service-copy {
+  .studio-phone .studio-service-copy {
     position: relative;
     grid-row: 2;
     align-self: start;
@@ -275,7 +287,6 @@
     text-shadow: 0 1px 3px rgb(11 21 8 / 40%);
   }
 
-  .studio-service-web .studio-service-copy,
   .studio-service-ai .studio-service-copy {
     top: 9%;
   }

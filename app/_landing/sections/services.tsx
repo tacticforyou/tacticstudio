@@ -2,6 +2,7 @@ import { ConsultationLink } from "../components/actions";
 import { Art, Portrait, Wave } from "../components/art";
 import { SectionHeading } from "../components/section-heading";
 import { ServiceCopy } from "../components/service-copy";
+import { WebServiceCard } from "../components/web-service-card";
 
 export function Services() {
   return (
@@ -19,17 +20,7 @@ export function Services() {
           description="ما با ترکیب استراتژی، طراحی و فناوری، راهکارهایی خلق می‌کنیم که به کسب‌وکار شما کمک می‌کنند هویتی متمایز بسازد، تجربه‌ای بهتر ارائه دهد و در فضای دیجیتال رشد کند."
         />
         <div className="mt-[calc(72*var(--u))] grid grid-cols-3 gap-[calc(75*var(--u))] studio-mobile:mt-[2.6rem] studio-mobile:gap-[1.3rem] studio-narrow:grid-cols-1">
-          <article
-            id="service-web"
-            className="studio-service-card studio-service-web studio-phone"
-          >
-            <Art
-              name="services-web-detail.webp"
-              className="studio-card-art"
-              unoptimized
-            />
-            <ServiceCopy service="web" />
-          </article>
+          <WebServiceCard />
           <article
             id="service-brand"
             className="studio-service-card studio-service-brand"
