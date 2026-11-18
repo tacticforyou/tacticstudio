@@ -1,5 +1,6 @@
 import { Actions, ConsultationLink } from "../components/actions";
 import { Art, Wave } from "../components/art";
+import { HeroBrandCard } from "../components/hero-brand-card";
 import { LogoRow } from "../components/logo-row";
 import { ServiceCopy } from "../components/service-copy";
 import { Tagline } from "../components/tagline";
@@ -139,15 +140,28 @@ export function Hero() {
               </article>
             </div>
           </div>
-          <article className="studio-hero-card studio-hero-brand">
+          <HeroBrandCard
+            badge={
+              <Art
+                name="hero-brand-badge.svg"
+                className="absolute inset-0"
+                eager
+              />
+            }
+          >
             <Art
               name="hero-brand-art.svg"
               className="studio-hero-brand-art"
               sizes="(max-width: 640px) 55vw, 28vw"
               eager
             />
+            <Art
+              name="hero-brand-badge-shadow.svg"
+              className="studio-hero-brand-art pointer-events-none"
+              eager
+            />
             <ServiceCopy service="brand" />
-          </article>
+          </HeroBrandCard>
         </section>
         <LogoRow />
       </div>

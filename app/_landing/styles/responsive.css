@@ -160,6 +160,7 @@
     }
     .studio-hero-brand-art {
       --brand-art-width: 109%;
+      --brand-badge-mask-size: cover;
     }
     .studio-hero-brand-art img {
       object-fit: cover;
