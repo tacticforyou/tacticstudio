@@ -51,9 +51,20 @@
     content: "";
   }
 
-  .studio-quote {
+  .studio-quote::before {
+    position: absolute;
+    z-index: -1;
+    /* All shadows share the grid's lower layer, beneath every glass surface. */
+    inset: calc(-330 * var(--u));
+    border: 0 solid;
+    border-image: url("/images/landing/shadow-testimonial.png") 400 430 fill /
+      calc(400 * var(--u)) calc(430 * var(--u)) stretch;
+    pointer-events: none;
+    content: "";
+  }
+
+  .studio-quote-surface {
     background: rgb(255 255 255 / 18%);
-    box-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u)) rgb(55 59 47 / 50%);
     backdrop-filter: blur(calc(10 * var(--u)));
   }
 }
