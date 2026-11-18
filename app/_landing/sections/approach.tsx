@@ -81,7 +81,7 @@ export function Approach() {
         description="هر کسب‌وکار مسیر متفاوتی برای رشد دارد. ما با شناخت نیازها، تدوین استراتژی و اجرای خلاقانه، راهکارهایی متناسب با اهداف واقعی هر کسب‌وکار طراحی می‌کنیم."
         stars
       />
-      <ol className="mx-auto mt-[calc(88*var(--u))] grid w-full max-w-[calc(899*var(--u))] gap-[calc(65*var(--u))] studio-mobile:mt-[2.6rem] studio-mobile:max-w-none studio-mobile:gap-[1.3rem]">
+      <ol className="isolate mx-auto mt-[calc(88*var(--u))] grid w-full max-w-[calc(899*var(--u))] gap-[calc(65*var(--u))] studio-mobile:mt-[2.6rem] studio-mobile:max-w-none studio-mobile:gap-[1.3rem]">
         {approaches.map(({ number, title, description, art }) => (
           <li
             key={number}

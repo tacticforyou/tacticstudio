@@ -12,8 +12,6 @@
     --studio-pane-edge: rgb(255 255 255 / 50%);
     --studio-shadow: 0 calc(36 * var(--u)) calc(90 * var(--u))
       rgb(52 49 53 / 11%);
-    --studio-panel-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u))
-      rgb(24 36 55 / 7%);
   }
 
   .studio-landing a:focus-visible {
@@ -116,13 +114,48 @@
     inset-block: -1px auto;
   }
 
+  :is(.studio-faq-card, .studio-step-label, .studio-step-art)::before {
+    position: absolute;
+    z-index: -1;
+    /* The slices keep the corners fixed at different card sizes. */
+    inset: calc(-92 * var(--u)) calc(-150 * var(--u)) calc(-208 * var(--u));
+    border: 0 solid;
+    border-image: url("/images/landing/faq-shadow-dither.png") 199 270 fill /
+      calc(199 * var(--u)) calc(270 * var(--u)) round;
+    pointer-events: none;
+    content: "";
+  }
+
+  :is(.studio-project-arrow, .studio-back-to-top)::after {
+    position: absolute;
+    inset: -166.67%;
+    background: url("/images/landing/shadow-round.png") center / 100% 100%
+      no-repeat;
+    pointer-events: none;
+    content: "";
+  }
+
   .studio-button {
     --studio-button-color: transparent;
-    --studio-button-glow: transparent;
     border-color: transparent;
     background-color: var(--studio-button-color);
-    box-shadow: 0 calc(18 * var(--u)) calc(50 * var(--u))
-      var(--studio-button-glow);
+  }
+
+  :is(.studio-button-sage, .studio-button-rose)::after {
+    --shadow-y-unit: var(--u);
+    position: absolute;
+    inset: calc(-92 * var(--shadow-y-unit)) calc(-92 * var(--u));
+    border: 0 solid;
+    border-image: var(--studio-button-shadow) 115 152 /
+      calc(115 * var(--shadow-y-unit)) calc(152 * var(--u)) round;
+    pointer-events: none;
+    content: "";
+  }
+
+  @media (max-width: 760px) {
+    :is(.studio-button-sage, .studio-button-rose)::after {
+      --shadow-y-unit: calc(44px / 48);
+    }
   }
 
   @media (hover: hover) {
@@ -165,7 +198,7 @@
 
   .studio-button-sage {
     --studio-button-color: var(--color-studio-sage);
-    --studio-button-glow: rgb(148 159 128 / 50%);
+    --studio-button-shadow: url("/images/landing/shadow-button-sage.png");
   }
 
   .studio-button-sage::before {
@@ -180,7 +213,7 @@
 
   .studio-button-rose {
     --studio-button-color: var(--color-studio-rose);
-    --studio-button-glow: rgb(180 137 130 / 50%);
+    --studio-button-shadow: url("/images/landing/shadow-button-rose.png");
   }
 
   .studio-button-glint {

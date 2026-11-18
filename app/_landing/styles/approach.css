@@ -17,13 +17,12 @@
     position: relative;
     min-width: 0;
     border-radius: var(--studio-radius);
-    box-shadow: var(--studio-panel-shadow);
+    /* Both surfaces cover the shared shadow layer beneath the process grid. */
+    background: var(--color-studio-white);
   }
 
   .studio-step-label {
-    background: rgb(255 255 255 / 40%);
-    box-shadow: var(--step-edge), var(--studio-panel-shadow);
-    backdrop-filter: blur(calc(16 * var(--u)));
+    box-shadow: var(--step-edge);
     padding: 9% 8% 10%;
   }
 

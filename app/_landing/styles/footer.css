@@ -62,7 +62,6 @@
     aspect-ratio: 1;
     border-radius: 50%;
     background: rgb(148 159 128 / 39%);
-    box-shadow: 0 calc(75 * var(--u)) calc(163.1 * var(--u)) rgb(24 36 55 / 30%);
     backdrop-filter: blur(calc(8 * var(--u)));
   }
 

@@ -11,8 +11,17 @@
     isolation: isolate;
     border-radius: 999px;
     background: var(--color-studio-ink);
-    box-shadow: 0 calc(22 * var(--u)) calc(100 * var(--u)) rgb(0 0 0 / 15%);
     transform: skewY(-8deg);
+  }
+
+  .studio-hero-orbs::after {
+    position: absolute;
+    z-index: -1;
+    inset: -162.79% -76.92%;
+    background: url("/images/landing/shadow-orbs.png") center / 100% 100%
+      no-repeat;
+    pointer-events: none;
+    content: "";
   }
 
   .studio-orbs-mask {
@@ -138,7 +147,7 @@
   .studio-service-web .studio-service-copy,
   .studio-service-ai .studio-service-copy {
     top: 9%;
-    text-shadow: 0 1px 5px rgb(11 21 8 / 60%);
+    text-shadow: 0 1px 3px rgb(11 21 8 / 40%);
   }
 
   .studio-hero-brand .studio-service-copy,

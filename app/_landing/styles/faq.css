@@ -26,17 +26,6 @@
     transition: block-size var(--faq-transition);
   }
 
-  .studio-faq-card::before {
-    position: absolute;
-    z-index: -1;
-    inset: 0;
-    border-radius: inherit;
-    box-shadow: 0 calc(34 * var(--u)) calc(62 * var(--u)) calc(-19 * var(--u))
-      rgb(24 36 55 / 9%);
-    pointer-events: none;
-    content: "";
-  }
-
   .studio-faq-card[data-expanded="true"] {
     block-size: var(--faq-open-height, auto);
   }

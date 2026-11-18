@@ -30,9 +30,7 @@
 
   .studio-project-arrow {
     background: rgb(255 255 255 / 40%);
-    box-shadow:
-      inset 0 0 0 calc(1 * var(--u)) white,
-      0 calc(75 * var(--u)) calc(163.1 * var(--u)) rgb(24 36 55 / 30%);
+    box-shadow: inset 0 0 0 calc(1 * var(--u)) white;
     backdrop-filter: blur(calc(8 * var(--u)));
   }
 
