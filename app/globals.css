@@ -14,6 +14,8 @@
   --color-studio-sage: #949f80;
   --color-studio-mist: #cdcfc0;
   --color-studio-rose: #b48982;
+  --color-studio-focus: #505b40;
+  --ease-studio: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
 @theme inline {

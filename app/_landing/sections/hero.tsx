@@ -55,7 +55,10 @@ function SiteHeader() {
 
 export function Hero() {
   return (
-    <div id="top" className="studio-band studio-hero">
+    <div
+      id="top"
+      className="studio-band studio-hero px-0 pt-[calc(58*var(--u))] pb-[calc(78*var(--u))] studio-mobile:pt-[1.3rem]"
+    >
       <div
         className="studio-hero-background pointer-events-none absolute inset-0 -z-1 overflow-clip rounded-[inherit]"
         aria-hidden="true"

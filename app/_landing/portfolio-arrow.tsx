@@ -121,7 +121,7 @@ export function PortfolioArrow({
     <div
       ref={anchorRef}
       className={
-        "studio-project-arrow-slot aspect-square w-[calc(138*var(--u))] studio-mobile:w-full " +
+        "studio-project-arrow-slot aspect-square w-[calc(138*var(--u))] -translate-y-[calc(19*var(--u))] studio-mobile:w-full studio-mobile:translate-none " +
         (direction === "right" ? "justify-self-start" : "justify-self-end")
       }
     >

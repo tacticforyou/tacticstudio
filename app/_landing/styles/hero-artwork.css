@@ -72,19 +72,6 @@
     transform: translate(-50%, -45%);
   }
 
-  .studio-hero-card,
-  .studio-hero-years,
-  .studio-service-card {
-    position: relative;
-    isolation: isolate;
-  }
-
-  .studio-hero-card,
-  .studio-service-card {
-    border-radius: var(--studio-card-radius);
-    color: white;
-  }
-
   .studio-hero-web,
   .studio-service-web {
     background: linear-gradient(to bottom, #9eaa88, #3f4436);
@@ -154,7 +141,7 @@
 
   @media (hover: hover) and (prefers-reduced-motion: no-preference) {
     .studio-hero-web .studio-phone-art {
-      transition: translate 750ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: translate 750ms var(--ease-studio);
     }
 
     .studio-hero-web:hover .studio-phone-art {
@@ -242,7 +229,7 @@
     }
 
     .studio-hero-brand-trigger:focus-visible {
-      outline: 2px solid #505b40;
+      outline: 2px solid var(--color-studio-focus);
       outline-offset: 2px;
     }
 
@@ -252,7 +239,7 @@
         var(--brand-badge-pose, rotate3d(1, 0, 0, 0deg))
         var(--brand-badge-unproject);
       transform-style: preserve-3d;
-      transition: transform 600ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 600ms var(--ease-studio);
     }
 
     .studio-hero-brand-pose::before {
@@ -267,51 +254,8 @@
 
     .studio-hero-brand-pose img {
       filter: var(--brand-badge-lighting, none);
-      transition: filter 600ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: filter 600ms var(--ease-studio);
     }
-  }
-
-  .studio-service-copy {
-    position: absolute;
-    inset-inline-start: 11%;
-    z-index: 1;
-    width: 64%;
-    font-size: max(0.72rem, calc(14 * var(--u)));
-    line-height: 1.5;
-  }
-
-  .studio-service-copy h3 {
-    max-width: 12ch;
-    font-size: max(0.86rem, calc(20 * var(--u)));
-    font-weight: 600;
-  }
-
-  .studio-service-copy p {
-    margin-block-start: 0.45em;
-    color: #f5f5ee;
-  }
-
-  .studio-phone .studio-service-copy {
-    position: relative;
-    grid-row: 2;
-    align-self: start;
-    width: max(64%, min(83%, 10rem));
-  }
-
-  .studio-service-ai .studio-service-copy {
-    top: 9%;
-  }
-
-  .studio-hero-brand .studio-service-copy,
-  .studio-service-brand .studio-service-copy {
-    bottom: 12%;
-  }
-
-  .studio-hero-brand h3,
-  .studio-service-brand h3,
-  .studio-service-ai h3,
-  .studio-hero-ai h3 {
-    max-width: none;
   }
 
   .studio-phone::after {
@@ -329,12 +273,6 @@
   .studio-hero-web.studio-phone::after {
     inset-block-start: 41%;
     mask-image: linear-gradient(transparent, #000 4%);
-  }
-
-  .studio-pane {
-    border: 1px solid var(--studio-pane-edge);
-    border-radius: var(--studio-radius);
-    background: rgb(255 255 255 / 52%);
   }
 
   .studio-team-wave {
@@ -376,5 +314,42 @@
 
   .studio-hero-ai .studio-service-copy p {
     margin-block-start: 0;
+  }
+
+  @media (max-width: 760px) {
+    .studio-hero-mark {
+      flex-basis: min(42%, 13rem);
+    }
+    .studio-hero-orbs {
+      flex-basis: min(24%, 7rem);
+    }
+    .studio-hero-brand-art {
+      --brand-art-width: 109%;
+      --brand-badge-mask-position: right center;
+    }
+    .studio-hero-brand-art img {
+      object-position: right;
+    }
+    .studio-hero-web .studio-service-copy,
+    .studio-hero-brand .studio-service-copy {
+      width: 83%;
+      inset-inline-start: 8%;
+    }
+    .studio-hero-years {
+      font-size: 0.72rem;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .studio-hero-web,
+    .studio-hero-brand {
+      min-block-size: 11.5rem;
+    }
+    .studio-hero-card .studio-service-copy p {
+      font-size: 0.64rem;
+    }
+    .studio-hero-card h3 {
+      font-size: 0.74rem;
+    }
   }
 }

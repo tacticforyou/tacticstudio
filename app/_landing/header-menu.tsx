@@ -3,6 +3,9 @@
 import { useEffect, useId, useRef, useState, type ReactNode } from "react";
 import { navigation, services } from "./copy";
 
+const navLinkClassName =
+  "studio-nav-link flex items-center gap-[0.18rem] text-[max(0.75rem,calc(16*var(--u)))] leading-[1.1511] whitespace-nowrap studio-mobile:min-h-11 studio-mobile:px-[0.65rem] studio-mobile:text-[0.95rem] studio-mobile:whitespace-normal";
+
 export function HeaderMenu({
   children,
   chevron,
@@ -115,7 +118,9 @@ export function HeaderMenu({
                   }}
                 >
                   <button
-                    className="studio-nav-link studio-service-toggle"
+                    className={
+                      navLinkClassName + " studio-service-toggle cursor-pointer"
+                    }
                     type="button"
                     aria-controls={servicesId}
                     aria-expanded={servicesOpen}
@@ -138,7 +143,12 @@ export function HeaderMenu({
                   >
                     {Object.entries(services).map(([key, { title }]) => (
                       <li key={key}>
-                        <a className="studio-nav-link" href={"#service-" + key}>
+                        <a
+                          className={
+                            navLinkClassName + " min-h-11 px-[0.65rem]"
+                          }
+                          href={"#service-" + key}
+                        >
                           <span className="studio-nav-label">{title}</span>
                         </a>
                       </li>
@@ -147,7 +157,7 @@ export function HeaderMenu({
                 </li>
               ) : (
                 <li key={href}>
-                  <a className="studio-nav-link" href={href}>
+                  <a className={navLinkClassName} href={href}>
                     <span className="studio-nav-label">{label}</span>
                   </a>
                 </li>

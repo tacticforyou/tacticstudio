@@ -24,10 +24,6 @@
     );
   }
 
-  .studio-project-arrow-slot {
-    translate: 0 calc(-19 * var(--u));
-  }
-
   .studio-project-arrow {
     background: rgb(255 255 255 / 40%);
     box-shadow: inset 0 0 0 calc(1 * var(--u)) white;
@@ -94,5 +90,25 @@
     bottom: -3%;
     width: 43%;
     aspect-ratio: 160 / 185;
+  }
+
+  .studio-service-ai .studio-service-copy {
+    top: 9%;
+  }
+
+  @media (max-width: 760px) {
+    .studio-services .studio-section-heading h2 {
+      max-width: 100%;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .studio-service-card {
+      width: min(100%, 22rem);
+      margin-inline: auto;
+    }
+    .studio-service-card .studio-service-copy {
+      width: 66%;
+    }
   }
 }

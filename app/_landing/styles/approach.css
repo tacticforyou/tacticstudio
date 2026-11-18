@@ -26,35 +26,6 @@
     padding: 9% 8% 10%;
   }
 
-  .studio-step-label h3,
-  .studio-faq-card h3 {
-    font-size: max(0.87rem, calc(20 * var(--u)));
-    font-weight: 600;
-  }
-
-  .studio-step-label p,
-  .studio-faq-card p {
-    margin-block-start: 0.8em;
-    font-size: max(0.76rem, calc(16 * var(--u)));
-    font-weight: 300;
-  }
-
-  /* The 224 × 101 export pads the 141 × 18 path to retain its stroke and shadow. */
-  .studio-card-wave {
-    position: absolute;
-    inset-inline-start: 9%;
-    bottom: 0;
-    width: min(74.92%, calc(224 * var(--u)));
-    aspect-ratio: 224 / 101;
-    background: url("/images/landing/card-wave.svg") center / contain no-repeat;
-    pointer-events: none;
-    transform: translate(18.53%, 39.11%);
-  }
-
-  .studio-card-wave[data-tone="rose"] {
-    background-image: url("/images/landing/card-wave-rose.svg");
-  }
-
   .studio-step-scene {
     position: absolute;
     inset: 0;
@@ -242,5 +213,46 @@
     left: -36.3%;
     width: 128.5%;
     aspect-ratio: 4 / 3;
+  }
+
+  @media (max-width: 1050px) {
+    .studio-step-label {
+      padding-inline: 6%;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .studio-step {
+      grid-template-columns: 1fr 1.2fr;
+    }
+    .studio-step-design {
+      grid-template-columns: 1.2fr 1fr;
+    }
+    .studio-step-label {
+      padding: 0.85rem;
+    }
+    .studio-step-label p {
+      margin-block-start: 0.3em;
+    }
+    .studio-step-design .studio-step-figure {
+      top: 0.25rem;
+      right: -12%;
+      left: auto;
+      width: min(135%, 16.5rem);
+      translate: 0 -20%;
+    }
+    .studio-step-development .studio-step-figure {
+      top: auto;
+      bottom: 0;
+      left: 50%;
+      width: clamp(13.5rem, 118%, 15rem);
+      translate: -50% 0;
+    }
+  }
+
+  @media (max-width: 500px) {
+    .studio-heading-stars {
+      inset-inline-start: 8rem;
+    }
   }
 }

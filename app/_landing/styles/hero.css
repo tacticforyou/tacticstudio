@@ -1,8 +1,4 @@
 @layer components {
-  .studio-hero {
-    padding: calc(58 * var(--u)) 0 calc(78 * var(--u));
-  }
-
   .studio-hero-background {
     background:
       radial-gradient(
@@ -43,5 +39,18 @@
     scale: -1 1;
     opacity: 0.28;
     filter: brightness(1.2);
+  }
+
+  @media (max-width: 760px) {
+    .studio-hero-face {
+      top: -27rem;
+      opacity: 0.55;
+    }
+    .studio-hero-face-left {
+      left: -55rem;
+    }
+    .studio-hero-face-right {
+      right: -56rem;
+    }
   }
 }

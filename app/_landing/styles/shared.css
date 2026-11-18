@@ -15,7 +15,7 @@
   }
 
   .studio-landing a:focus-visible {
-    outline-color: #505b40;
+    outline-color: var(--color-studio-focus);
   }
 
   .studio-landing :is(section, footer, article)[id] {
@@ -175,7 +175,7 @@
     }
 
     .studio-button-glint {
-      transition: transform 440ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 440ms var(--ease-studio);
     }
 
     .studio-button:focus-visible .studio-button-glint {
@@ -190,7 +190,7 @@
 
     .studio-wordmark img {
       transform-origin: center bottom;
-      transition: transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+      transition: transform 420ms var(--ease-studio);
     }
 
     .studio-wordmark:hover img,
@@ -242,5 +242,154 @@
     aspect-ratio: 84 / 15;
     transform: translateX(50%);
     pointer-events: none;
+  }
+
+  .studio-nav-label,
+  .studio-footer-column a {
+    position: relative;
+  }
+
+  .studio-nav-label::after,
+  .studio-footer-column a::after {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-end: -0.24em;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right center;
+    pointer-events: none;
+    content: "";
+  }
+
+  .studio-nav-link:is(:hover, :focus-visible) > .studio-nav-label::after,
+  .studio-footer-column a:is(:hover, :focus-visible)::after {
+    transform: scaleX(1);
+  }
+
+  .studio-step-label h3,
+  .studio-faq-card h3 {
+    font-size: max(0.87rem, calc(20 * var(--u)));
+    font-weight: 600;
+  }
+
+  .studio-step-label p,
+  .studio-faq-card p {
+    margin-block-start: 0.8em;
+    font-size: max(0.76rem, calc(16 * var(--u)));
+    font-weight: 300;
+  }
+
+  /* The 224 × 101 export pads the 141 × 18 path to retain its stroke and shadow. */
+  .studio-card-wave {
+    position: absolute;
+    inset-inline-start: 9%;
+    bottom: 0;
+    width: min(74.92%, calc(224 * var(--u)));
+    aspect-ratio: 224 / 101;
+    background: url("/images/landing/card-wave.svg") center / contain no-repeat;
+    pointer-events: none;
+    transform: translate(18.53%, 39.11%);
+  }
+
+  .studio-card-wave[data-tone="rose"] {
+    background-image: url("/images/landing/card-wave-rose.svg");
+  }
+
+  .studio-hero-card,
+  .studio-hero-years,
+  .studio-service-card {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .studio-hero-card,
+  .studio-service-card {
+    border-radius: var(--studio-card-radius);
+    color: white;
+  }
+
+  .studio-service-copy {
+    position: absolute;
+    inset-inline-start: 11%;
+    z-index: 1;
+    width: 64%;
+    font-size: max(0.72rem, calc(14 * var(--u)));
+    line-height: 1.5;
+  }
+
+  .studio-service-copy h3 {
+    max-width: 12ch;
+    font-size: max(0.86rem, calc(20 * var(--u)));
+    font-weight: 600;
+  }
+
+  .studio-service-copy p {
+    margin-block-start: 0.45em;
+    color: #f5f5ee;
+  }
+
+  .studio-phone .studio-service-copy {
+    position: relative;
+    grid-row: 2;
+    align-self: start;
+    width: max(64%, min(83%, 10rem));
+  }
+
+  .studio-hero-brand .studio-service-copy,
+  .studio-service-brand .studio-service-copy {
+    bottom: 12%;
+  }
+
+  .studio-hero-brand h3,
+  .studio-service-brand h3,
+  .studio-service-ai h3,
+  .studio-hero-ai h3 {
+    max-width: none;
+  }
+
+  .studio-pane {
+    border: 1px solid var(--studio-pane-edge);
+    border-radius: var(--studio-radius);
+    background: rgb(255 255 255 / 52%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .studio-nav-label::after,
+    .studio-footer-column a::after {
+      transition: transform 240ms var(--ease-studio);
+    }
+  }
+
+  @media (max-width: 760px) {
+    .studio-landing {
+      --studio-mobile-notch-width: clamp(8.5rem, 38vw, 12.5rem);
+    }
+
+    .studio-band > .studio-wave {
+      width: var(--studio-mobile-notch-width);
+      aspect-ratio: 351 / 47;
+      background: url("/images/landing/mobile-section-notch.svg") center / 100%
+        100% no-repeat;
+    }
+
+    .studio-band > .studio-wave img {
+      display: none;
+    }
+
+    .studio-band > .studio-footer-wave {
+      width: calc(var(--studio-mobile-notch-width) * 523 / 351);
+      opacity: 0.4;
+    }
+
+    .studio-shell {
+      width: calc(100% - 2rem);
+    }
+    .studio-service-copy {
+      width: 80%;
+    }
+    .studio-service-copy p {
+      line-height: 1.3;
+    }
   }
 }
