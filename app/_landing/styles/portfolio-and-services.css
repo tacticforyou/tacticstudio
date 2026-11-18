@@ -82,7 +82,10 @@
   .studio-service-face {
     position: absolute;
     z-index: 0;
-    inset: 0;
+    /* The card frames an 868 × 838 area within the shared portrait. */
+    top: calc(-100% * 614.5 / 838);
+    left: calc(-100% * 144 / 868);
+    width: calc(100% * 1178 / 868);
   }
 
   .studio-service-stars {

@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Actions } from "../components/actions";
-import { Art, Wave } from "../components/art";
+import { Art, Portrait, Wave } from "../components/art";
 import { BackToTopLink } from "../components/back-to-top-link";
 import { Tagline } from "../components/tagline";
 import { StudioWordmark } from "../components/studio-wordmark";
@@ -24,14 +24,12 @@ function FooterColumn({
 }
 
 export function Footer() {
+  const emailDomainStart = contact.email.lastIndexOf("@");
+
   return (
     <footer id="contact" className="studio-band studio-footer">
       <div className="studio-footer-background">
-        <Art
-          name="footer-portrait.webp"
-          className="studio-footer-face"
-          unoptimized
-        />
+        <Portrait className="studio-footer-face" />
       </div>
       <div className="studio-shell relative text-center">
         <Tagline />
@@ -76,11 +74,17 @@ export function Footer() {
           <FooterColumn title="ارتباط با ما">
             <li>
               <a
-                className="inline-block wrap-anywhere"
+                className="inline-block max-w-full text-right"
                 dir="ltr"
                 href={"mailto:" + contact.email}
               >
-                {contact.email}
+                <span className="whitespace-nowrap">
+                  {contact.email.slice(0, emailDomainStart)}
+                </span>
+                <wbr />
+                <span className="whitespace-nowrap">
+                  {contact.email.slice(emailDomainStart)}
+                </span>
               </a>
             </li>
             <li>

@@ -215,7 +215,7 @@
       display: none;
     }
     .studio-footer-face {
-      width: min(calc(1162 * var(--u)), 150vw);
+      --footer-face-unit: min(var(--u), calc(150vw / 1162));
       opacity: 0.6;
     }
     .studio-footer-wave-left,

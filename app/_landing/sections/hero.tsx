@@ -1,5 +1,5 @@
 import { Actions, ConsultationLink } from "../components/actions";
-import { Art, Wave } from "../components/art";
+import { Art, Portrait, Wave } from "../components/art";
 import { HeroBrandCard } from "../components/hero-brand-card";
 import { LogoRow } from "../components/logo-row";
 import { ServiceCopy } from "../components/service-copy";
@@ -57,12 +57,7 @@ export function Hero() {
         className="studio-hero-background pointer-events-none absolute inset-0 -z-1 overflow-clip rounded-[inherit]"
         aria-hidden="true"
       >
-        <Art
-          name="hero-left.webp"
-          className="studio-hero-face studio-hero-face-left"
-          sizes="100vw"
-          eager
-        />
+        <Portrait className="studio-hero-face studio-hero-face-left" eager />
         <Art
           name="hero-right.webp"
           className="studio-hero-face studio-hero-face-right"
@@ -87,7 +82,7 @@ export function Hero() {
         </div>
         <section
           aria-label="خدمات و تجربه تاکتیک"
-          className="mt-[calc(89*var(--u))] grid grid-cols-[minmax(0,326fr)_minmax(0,606fr)_minmax(0,326fr)] gap-[calc(8*var(--u))] studio-mobile:mt-[2.8rem] studio-mobile:grid-cols-2 studio-mobile:gap-[0.6rem]"
+          className="mt-[calc(89*var(--u))] grid grid-cols-[minmax(0,326fr)_minmax(0,606fr)_minmax(0,326fr)] gap-[calc(8*var(--u))] studio-mobile:mt-[2.8rem] studio-mobile:grid-cols-2"
         >
           <article className="studio-hero-card studio-hero-web studio-phone grid min-w-0 grid-cols-1 overflow-hidden">
             <Art

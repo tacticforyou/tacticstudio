@@ -16,12 +16,13 @@
   }
 
   .studio-footer-face {
+    --footer-face-unit: var(--u);
     position: absolute;
     z-index: 1;
     top: calc(113 * var(--u));
-    left: 0;
-    width: calc(1162 * var(--u));
-    aspect-ratio: 1162 / 943;
+    /* The horizontal crop retains 16 source pixels past the mask's left edge. */
+    left: calc(-16 * var(--footer-face-unit));
+    width: calc(1178 * var(--footer-face-unit));
   }
 
   .studio-footer-column {

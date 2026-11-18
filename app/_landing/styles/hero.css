@@ -25,6 +25,9 @@
 
   .studio-hero-face-left {
     left: calc(-1096 * var(--u));
+    /* The shared image starts at x=1337 in the 2515px source. */
+    margin-left: calc(1934 * var(--u) * 1337 / 2515);
+    width: calc(1934 * var(--u) * 1178 / 2515);
   }
   .studio-hero-face-right {
     right: calc(-1119 * var(--u));

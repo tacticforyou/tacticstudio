@@ -1,5 +1,5 @@
 import { ConsultationLink } from "../components/actions";
-import { Art, Wave } from "../components/art";
+import { Art, Portrait, Wave } from "../components/art";
 import { SectionHeading } from "../components/section-heading";
 import { ServiceCopy } from "../components/service-copy";
 
@@ -41,11 +41,7 @@ export function Services() {
             id="service-ai"
             className="studio-service-card studio-service-ai"
           >
-            <Art
-              name="services-ai-portrait.webp"
-              className="studio-service-face"
-              unoptimized
-            />
+            <Portrait className="studio-service-face" />
             <Art
               name="services-ai-stars.webp"
               className="studio-service-stars"

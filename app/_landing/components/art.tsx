@@ -45,3 +45,17 @@ export function Wave({
     <Art className={"studio-wave " + className} name={name} sizes="360px" />
   );
 }
+
+export function Portrait({
+  className,
+  eager,
+}: Pick<ArtProps, "className" | "eager">) {
+  return (
+    <Art
+      name="shared-portrait.webp"
+      className={`aspect-1178/1886 ${className ?? ""}`}
+      sizes="(max-width: 526px) 152vw, (max-width: 1305px) 801px, (max-width: 1920px) 62vw, 1178px"
+      eager={eager}
+    />
+  );
+}
