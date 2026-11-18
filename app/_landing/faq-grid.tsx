@@ -3,6 +3,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { faq } from "./copy";
 
+const faqHoverLayout = "(width > 900px) and (any-hover: hover)";
+
 export function FaqGrid() {
   const [activeIndex, setActiveIndex] = useState(0);
   const gridRef = useRef<HTMLDivElement>(null);
@@ -68,6 +70,14 @@ export function FaqGrid() {
             className="studio-faq-card"
             data-expanded={expanded}
             key={question}
+            onPointerEnter={(event) => {
+              if (
+                event.pointerType === "mouse" &&
+                window.matchMedia(faqHoverLayout).matches
+              ) {
+                setActiveIndex(index);
+              }
+            }}
           >
             <div className="overflow-clip rounded-[inherit]">
               <div className="studio-faq-content">
@@ -78,7 +88,16 @@ export function FaqGrid() {
                     aria-controls={answerId}
                     aria-expanded={expanded}
                     aria-disabled={expanded}
-                    onClick={() => setActiveIndex(index)}
+                    onClick={(event) => {
+                      if (
+                        event.detail === 0 ||
+                        !window.matchMedia(faqHoverLayout).matches ||
+                        (event.nativeEvent instanceof PointerEvent &&
+                          event.nativeEvent.pointerType === "touch")
+                      ) {
+                        setActiveIndex(index);
+                      }
+                    }}
                   >
                     {question}
                   </button>

@@ -281,12 +281,6 @@
     width: max(64%, min(83%, 10rem));
   }
 
-  .studio-hero-web .studio-service-copy,
-  .studio-service-web .studio-service-copy,
-  .studio-service-ai .studio-service-copy {
-    text-shadow: 0 1px 3px rgb(11 21 8 / 40%);
-  }
-
   .studio-service-ai .studio-service-copy {
     top: 9%;
   }
@@ -333,7 +327,8 @@
     width: min(45%, calc(271 * var(--u)));
     aspect-ratio: 271 / 107;
     pointer-events: none;
-    transform: translate(-15.31%, 36.92%);
+    transform-origin: 50% 63.08%;
+    translate: -15.31% 36.92%;
   }
 
   .studio-hero-years {

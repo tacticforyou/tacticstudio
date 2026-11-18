@@ -89,8 +89,10 @@
     opacity: 1;
   }
 
-  .studio-faq-card[data-expanded="false"] button {
-    cursor: pointer;
+  @media (width <= 900px), (any-hover: none) {
+    .studio-faq-card[data-expanded="false"] button {
+      cursor: pointer;
+    }
   }
 
   .studio-faq-card[data-expanded="false"] button::after {
