@@ -30,7 +30,7 @@ export function WebServiceCard({ hero = false }: { hero?: boolean }) {
             sizes={
               (hero
                 ? "(min-width: 600px) and (max-width: 960px) min(37vw, 288px), "
-                : "") +
+                : "(min-width: 600px) and (max-width: 960px) min(calc(50vw - 2.5rem), 426px), ") +
               "(max-width: 700px) max(min(calc(100vw - 3rem), 352px), calc(57.4vw - 1.9rem)), (max-width: 760px) calc(57.4vw - 1.9rem), (max-width: 1305px) 255px, (max-width: 1920px) 19.5vw, 374px"
             }
             eager={hero}
@@ -48,7 +48,7 @@ export function WebServiceCard({ hero = false }: { hero?: boolean }) {
           sizes={
             (hero
               ? "(min-width: 600px) and (max-width: 960px) min(50vw, 390px), "
-              : "") +
+              : "(min-width: 600px) and (max-width: 960px) min(calc(68vw - 3.4rem), 577px), ") +
             "(max-width: 700px) max(calc(78vw - 2.6rem), min(calc(136vw - 4rem), 478px)), (max-width: 760px) calc(78vw - 2.6rem), (max-width: 1305px) 346px, (max-width: 1920px) 26.5vw, 508px"
           }
           eager={hero}
