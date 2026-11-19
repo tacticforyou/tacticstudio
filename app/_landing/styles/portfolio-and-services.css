@@ -70,6 +70,7 @@
   }
 
   .studio-service-card {
+    --studio-service-gradient-angle: 180deg;
     overflow: hidden;
     border-radius: var(--studio-card-radius);
     aspect-ratio: 374 / 361;
@@ -94,6 +95,18 @@
 
   .studio-service-ai .studio-service-copy {
     top: 9%;
+  }
+
+  @media (width < 600px) {
+    .studio-service-card {
+      --studio-service-gradient-angle: 222deg;
+    }
+  }
+
+  @media (width <= 960px) {
+    .studio-service-ai {
+      --studio-service-gradient-angle: 222deg;
+    }
   }
 
   @media (max-width: 760px) {
