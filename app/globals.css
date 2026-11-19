@@ -28,6 +28,7 @@
 @custom-variant studio-mobile (@media (max-width: 760px));
 @custom-variant studio-narrow (@media (max-width: 700px));
 @custom-variant studio-compact (@media (max-width: 500px));
+@custom-variant studio-tablet (@media (600px <= width <= 960px));
 
 @layer base {
   body {

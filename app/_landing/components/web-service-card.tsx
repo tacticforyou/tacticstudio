@@ -7,7 +7,7 @@ export function WebServiceCard({ hero = false }: { hero?: boolean }) {
       id={hero ? undefined : "service-web"}
       className={
         hero
-          ? "studio-hero-card studio-hero-web studio-phone grid min-w-0 grid-cols-1 overflow-hidden"
+          ? "studio-hero-card studio-hero-web studio-phone grid min-w-0 grid-cols-1 overflow-hidden studio-tablet:[grid-area:web]"
           : "studio-service-card studio-service-web studio-phone grid min-w-0 grid-cols-1"
       }
     >
@@ -27,7 +27,12 @@ export function WebServiceCard({ hero = false }: { hero?: boolean }) {
             className={
               hero ? "studio-hero-web-pattern-art" : "absolute inset-0"
             }
-            sizes="(max-width: 700px) max(min(calc(100vw - 3rem), 352px), calc(57.4vw - 1.9rem)), (max-width: 760px) calc(57.4vw - 1.9rem), (max-width: 1305px) 255px, (max-width: 1920px) 19.5vw, 374px"
+            sizes={
+              (hero
+                ? "(min-width: 600px) and (max-width: 960px) min(37vw, 288px), "
+                : "") +
+              "(max-width: 700px) max(min(calc(100vw - 3rem), 352px), calc(57.4vw - 1.9rem)), (max-width: 760px) calc(57.4vw - 1.9rem), (max-width: 1305px) 255px, (max-width: 1920px) 19.5vw, 374px"
+            }
             eager={hero}
           />
         </div>
@@ -40,7 +45,12 @@ export function WebServiceCard({ hero = false }: { hero?: boolean }) {
         <Art
           name="shared-web-phone.webp"
           className="studio-phone-art"
-          sizes="(max-width: 700px) max(calc(78vw - 2.6rem), min(calc(136vw - 4rem), 478px)), (max-width: 760px) calc(78vw - 2.6rem), (max-width: 1305px) 346px, (max-width: 1920px) 26.5vw, 508px"
+          sizes={
+            (hero
+              ? "(min-width: 600px) and (max-width: 960px) min(50vw, 390px), "
+              : "") +
+            "(max-width: 700px) max(calc(78vw - 2.6rem), min(calc(136vw - 4rem), 478px)), (max-width: 760px) calc(78vw - 2.6rem), (max-width: 1305px) 346px, (max-width: 1920px) 26.5vw, 508px"
+          }
           eager={hero}
         />
       </div>

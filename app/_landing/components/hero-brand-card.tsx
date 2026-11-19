@@ -185,7 +185,7 @@ export function HeroBrandCard({
   }
 
   return (
-    <article className="studio-hero-card studio-hero-brand">
+    <article className="studio-hero-card studio-hero-brand studio-tablet:[grid-area:brand]">
       {children}
       <span
         ref={motion}
