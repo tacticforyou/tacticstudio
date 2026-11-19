@@ -9,12 +9,14 @@ import { contact } from "../copy";
 function FooterColumn({
   title,
   children,
+  className = "studio-tablet:col-span-2",
 }: {
   title: string;
   children: ReactNode;
+  className?: string;
 }) {
   return (
-    <div className="studio-footer-column">
+    <div className={"studio-footer-column " + className}>
       <h2 className="mb-[calc(20*var(--u))] text-[max(0.87rem,calc(20*var(--u)))] leading-[max(1.2rem,calc(28*var(--u)))] font-semibold">
         {title}
       </h2>
@@ -31,9 +33,9 @@ export function Footer() {
       <div className="studio-footer-background">
         <Portrait className="studio-footer-face" />
       </div>
-      <div className="studio-shell relative text-center">
+      <div className="studio-shell relative text-center studio-tablet:grid studio-tablet:grid-cols-6 studio-tablet:items-start studio-tablet:gap-x-6 studio-tablet:gap-y-10 studio-tablet:[&>p]:col-span-full">
         <Tagline />
-        <div className="mx-auto mt-[calc(106*var(--u))] grid min-h-[calc(210*var(--u))] w-full max-w-[calc(1117*var(--u))] grid-cols-4 gap-x-[min(12.44%,calc(139*var(--u)))] text-start studio-mobile:mt-12 studio-mobile:grid-cols-2 studio-mobile:gap-x-4 studio-mobile:gap-y-6">
+        <div className="mx-auto mt-[calc(106*var(--u))] grid min-h-[calc(210*var(--u))] w-full max-w-[calc(1117*var(--u))] grid-cols-4 gap-x-[min(12.44%,calc(139*var(--u)))] text-start studio-mobile:mt-12 studio-mobile:grid-cols-2 studio-mobile:gap-x-4 studio-mobile:gap-y-6 studio-tablet:contents">
           <FooterColumn title="دسترسی سریع">
             <li>
               <a href="#top">صفحه اصلی</a>
@@ -71,7 +73,10 @@ export function Footer() {
             <li>بیهنس</li>
             <li>تلگرام</li>
           </FooterColumn>
-          <FooterColumn title="ارتباط با ما">
+          <FooterColumn
+            title="ارتباط با ما"
+            className="studio-tablet:col-span-2 studio-tablet:row-start-3"
+          >
             <li>
               <a
                 className="inline-block max-w-full text-right"
@@ -101,13 +106,15 @@ export function Footer() {
             <li>بله</li>
           </FooterColumn>
         </div>
-        <a
-          href="#top"
-          className="mx-auto mt-[calc(46*var(--u))] mb-[calc(47*var(--u))] block w-[calc(308*var(--u))]"
-        >
-          <StudioWordmark variant="footer" />
-        </a>
-        <Actions />
+        <div className="studio-tablet:col-span-4 studio-tablet:row-start-3 studio-tablet:mt-4 studio-tablet:w-[calc(50%+0.75rem+193*var(--u))] studio-tablet:justify-self-start studio-tablet:[&_.studio-button]:min-h-11 studio-tablet:[&_.studio-button]:min-w-0 studio-tablet:[&_.studio-button]:flex-1 studio-tablet:[&_.studio-button]:px-2 studio-tablet:[&>div]:mx-auto studio-tablet:[&>div]:w-full studio-tablet:[&>div]:max-w-80">
+          <a
+            href="#top"
+            className="mx-auto mt-[calc(46*var(--u))] mb-[calc(47*var(--u))] block w-[calc(308*var(--u))] studio-tablet:mt-0 studio-tablet:mb-6"
+          >
+            <StudioWordmark variant="footer" />
+          </a>
+          <Actions />
+        </div>
       </div>
       <BackToTopLink>
         <Art name="icon-arrow-up.svg" sizes="108px" />

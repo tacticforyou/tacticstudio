@@ -2,6 +2,7 @@
   .studio-portfolio {
     background: linear-gradient(
       180deg,
+      rgb(255 255 255 / 0%) 0%,
       var(--color-studio-white) 19%,
       #e4f1fc 49%,
       #a6d1f9 86%,
@@ -17,6 +18,7 @@
   .studio-project-gradient {
     background: linear-gradient(
       180deg,
+      rgb(255 255 255 / 0%) 0%,
       var(--color-studio-white) 19%,
       color-mix(in srgb, var(--project-color) 24%, white) 49%,
       color-mix(in srgb, var(--project-color) 88%, white) 86%,

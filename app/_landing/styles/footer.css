@@ -148,4 +148,26 @@
       width: 3rem;
     }
   }
+
+  @media (600px <= width <= 960px) {
+    .studio-footer {
+      padding-block-end: 7.5rem;
+    }
+
+    .studio-footer-column::after {
+      display: none;
+    }
+
+    .studio-footer-face {
+      --footer-face-unit: min(var(--u), calc(100vw / 1178));
+      left: calc(-280 * var(--footer-face-unit));
+      opacity: 0.4;
+    }
+
+    .studio-back-to-top {
+      right: 5%;
+      bottom: 1.6rem;
+      width: 3rem;
+    }
+  }
 }

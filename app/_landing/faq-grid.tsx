@@ -4,7 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import { faq } from "./copy";
 import type { prepareFaqMotion } from "./faq-motion";
 
-const faqHoverLayout = "(width > 900px) and (any-hover: hover)";
+const faqHoverLayout = "(width > 960px) and (any-hover: hover)";
 const reducedMotion = "(prefers-reduced-motion: reduce)";
 
 export function FaqGrid() {
@@ -109,7 +109,7 @@ export function FaqGrid() {
 
   return (
     <div
-      className="studio-faq-grid isolate mt-[calc(26*var(--u))] grid grid-cols-4 items-start gap-(--faq-gap) studio-faq-stack:mt-[1.65rem] studio-faq-stack:grid-cols-1 studio-faq-stack:content-start"
+      className="studio-faq-grid isolate mt-[calc(26*var(--u))] grid grid-cols-4 items-start gap-(--faq-gap) studio-faq-stack:mt-[1.65rem] studio-faq-stack:grid-cols-1 studio-faq-stack:content-start studio-tablet:mt-0 studio-tablet:grid-cols-1 studio-tablet:content-start"
       data-motion-ready={Boolean(prepareMotion)}
       data-motion-layout={usesMotion}
       ref={gridRef}
@@ -140,7 +140,7 @@ export function FaqGrid() {
                 <div className="studio-faq-content">
                   <h3>
                     <button
-                      className="block w-full text-start whitespace-pre-line studio-faq-stack:whitespace-normal"
+                      className="block w-full text-start whitespace-pre-line studio-faq-stack:whitespace-normal studio-tablet:whitespace-normal"
                       type="button"
                       aria-controls={answerId}
                       aria-expanded={expanded}
