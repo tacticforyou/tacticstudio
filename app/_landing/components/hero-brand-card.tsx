@@ -28,6 +28,7 @@ function badgeTilt(
   { left, top, width, height }: DOMRect,
   clientX: number,
   clientY: number,
+  intensity = 1,
 ) {
   const x = Math.min(1, Math.max(-1, ((clientX - left) / width) * 2 - 1));
   const y = Math.min(1, Math.max(-1, ((clientY - top) / height) * 2 - 1));
@@ -38,7 +39,7 @@ function badgeTilt(
   const edgeInfluence = blend ** 2 * (3 - 2 * blend);
   const edgeBoost = pressure < 0 ? 0.4 : -0.25;
   const strength = 1 + edgeBoost * edgeInfluence;
-  const angle = 6.8 * Math.min(Math.hypot(x, y), 1) * strength;
+  const angle = 6.8 * Math.min(Math.hypot(x, y), 1) * strength * intensity;
 
   // Rotate about the in-plane axis perpendicular to the pointer direction.
   const dx = x * width;
@@ -62,10 +63,6 @@ function badgeTilt(
   };
 }
 
-function projectedPose(rotation: string) {
-  return `var(--brand-badge-camera-pitch) ${rotation} var(--brand-badge-unproject)`;
-}
-
 export function HeroBrandCard({
   children,
   badge,
@@ -74,6 +71,7 @@ export function HeroBrandCard({
   badge: ReactNode;
 }) {
   const pose = useRef<HTMLSpanElement>(null);
+  const impact = useRef<HTMLSpanElement>(null);
   const surface = useRef<HTMLSpanElement>(null);
   const motion = useRef<HTMLSpanElement>(null);
   const frame = useRef(0);
@@ -122,15 +120,15 @@ export function HeroBrandCard({
   }
 
   function dip({ detail, clientX, clientY }: MouseEvent<HTMLButtonElement>) {
-    const badgePose = pose.current;
+    const badgeImpact = impact.current;
     const badgeSurface = surface.current;
     const badgeMotion = motion.current;
-    const badgeImage = badgePose?.querySelector("img");
+    const badgeArtwork = badgeImpact?.querySelector("img")?.parentElement;
     if (
-      !badgePose ||
+      !badgeImpact ||
       !badgeSurface ||
       !badgeMotion ||
-      !badgeImage ||
+      !badgeArtwork ||
       window.matchMedia(reducedMotion).matches
     )
       return;
@@ -140,41 +138,41 @@ export function HeroBrandCard({
       bounds,
       detail ? clientX : bounds.left + bounds.width * 0.33,
       detail ? clientY : bounds.top + bounds.height * 0.7,
+      0.85,
     );
-    const { transform, translate } = getComputedStyle(badgePose);
-    const { filter } = getComputedStyle(badgeImage);
-    const releasePose = projectedPose(
-      `var(--brand-badge-pose, ${neutralRotation})`,
-    );
-    const animation = { duration: 680 };
+    // These are press deltas only. The outer hover pose keeps following the
+    // pointer, including when it leaves or moves while the badge resurfaces.
+    const { transform, translate } = getComputedStyle(badgeImpact);
+    const { filter } = getComputedStyle(badgeArtwork);
+    const animation = { duration: 1600 };
     pressAnimations.current.forEach((running) => running.cancel());
     badgeMotion.dataset.pressing = "true";
 
-    const bob = badgePose.animate(
+    const bob = badgeImpact.animate(
       [
         { transform, translate, easing: "ease-out" },
         {
-          transform: projectedPose(rotation),
-          translate: "0 8px -6px",
-          offset: 0.28,
-          easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+          transform: rotation,
+          translate: "0 2px -12px",
+          offset: 0.12,
+          easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
         },
         {
-          transform: releasePose,
-          translate: "0 -2px 1px",
-          offset: 0.72,
-          easing: "ease-in-out",
+          transform: neutralRotation,
+          translate: "0 0 0",
         },
-        { transform: releasePose, translate: "0 0 0" },
       ],
       animation,
     );
-    const light = badgeImage.animate(
+    const light = badgeArtwork.animate(
       [
         { filter },
-        { filter: lighting, offset: 0.28 },
-        { filter: "var(--brand-badge-lighting, none)", offset: 0.72 },
-        { filter: "var(--brand-badge-lighting, none)" },
+        {
+          filter: lighting,
+          offset: 0.12,
+          easing: "cubic-bezier(0.22, 0.61, 0.36, 1)",
+        },
+        { filter: "brightness(1)" },
       ],
       animation,
     );
@@ -199,7 +197,14 @@ export function HeroBrandCard({
           className="studio-hero-brand-pose absolute inset-0"
           aria-hidden="true"
         >
-          {badge}
+          <span
+            ref={impact}
+            className="studio-hero-brand-impact absolute inset-0"
+          >
+            <span className="studio-hero-brand-face absolute inset-0">
+              {badge}
+            </span>
+          </span>
         </span>
         <span ref={surface} className="studio-hero-brand-surface absolute">
           <button

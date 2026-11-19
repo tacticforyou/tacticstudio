@@ -233,16 +233,29 @@
       outline-offset: 2px;
     }
 
-    .studio-hero-brand-pose {
+    .studio-hero-brand-pose,
+    .studio-hero-brand-impact,
+    .studio-hero-brand-face {
       transform-origin: var(--brand-badge-pivot-x) var(--brand-badge-pivot-y);
-      transform: var(--brand-badge-camera-pitch)
-        var(--brand-badge-pose, rotate3d(1, 0, 0, 0deg))
-        var(--brand-badge-unproject);
       transform-style: preserve-3d;
+    }
+
+    .studio-hero-brand-pose {
+      transform: var(--brand-badge-camera-pitch)
+        var(--brand-badge-pose, rotate3d(1, 0, 0, 0deg));
       transition: transform 600ms var(--ease-studio);
     }
 
-    .studio-hero-brand-pose::before {
+    .studio-hero-brand-impact {
+      transform: rotate3d(1, 0, 0, 0deg);
+      translate: 0 0 0;
+    }
+
+    .studio-hero-brand-face {
+      transform: var(--brand-badge-unproject);
+    }
+
+    .studio-hero-brand-face::before {
       position: absolute;
       inset: 0;
       background: #6a7459;
