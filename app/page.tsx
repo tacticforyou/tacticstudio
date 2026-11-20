@@ -2,13 +2,13 @@ import type { Metadata } from "next";
 import { LandingPage } from "@/app/_landing/landing";
 import { siteName, siteUrl } from "@/lib/site";
 
-const title = "تاکتیک استودیو";
+const title = "تاکتیک استودیو | استراتژی برند، طراحی سایت و هویت بصری";
 const description =
   "استراتژی برند، طراحی وب‌سایت و اپلیکیشن، هویت بصری و خدمات هوش مصنوعی برای رشد کسب‌وکار شما.";
 const socialImage = {
   url: "/images/social/tactic-studio.png",
-  width: 2400,
-  height: 1260,
+  width: 1200,
+  height: 630,
   alt: "تاکتیک استودیو؛ کسب‌وکارت رو برای فرصت‌های بزرگ‌تر آماده می‌کنیم. نشان تاکتیک در کنار چهره یک ربات.",
 };
 

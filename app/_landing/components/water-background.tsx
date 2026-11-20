@@ -7,8 +7,18 @@ import {
 } from "./water-webgl";
 
 type WaterPoint = { x: number; y: number };
+type WaterTap = {
+  pointerId: number;
+  x: number;
+  y: number;
+  startedAt: number;
+  scrollX: number;
+  scrollY: number;
+};
 
 const simulationStep = 1000 / 60;
+const tapMovement = 10;
+const tapDuration = 500;
 const rippleIntensity = 0.8;
 const spreadResponse = 0.06;
 const refractionScale = 28 * rippleIntensity;
@@ -72,6 +82,7 @@ export function WaterBackground({
     let target: WaterPoint | null = null;
     let lastPoint: WaterPoint | null = null;
     let motionOrigin: WaterPoint | null = null;
+    let pendingTap: WaterTap | null = null;
     let visible = true;
 
     function stop() {
@@ -96,6 +107,7 @@ export function WaterBackground({
       stop();
       target = null;
       lastPoint = null;
+      pendingTap = null;
     }
 
     function clearSvg() {
@@ -106,7 +118,11 @@ export function WaterBackground({
 
     function updateEligibility() {
       clear();
-      if (!gpu && paintScene && !motion.matches && pointer.matches) {
+      if (pointer.matches) ensureGpu();
+    }
+
+    function ensureGpu() {
+      if (!gpu && paintScene && !motion.matches) {
         gpu = createWaterWebGLRenderer(background!, paintScene, {
           refractionScale,
           highlightOpacity,
@@ -348,9 +364,9 @@ export function WaterBackground({
 
     function pointerPoint(event: PointerEvent): WaterPoint | undefined {
       if (
-        event.pointerType !== "mouse" ||
+        (event.pointerType !== "mouse" && event.pointerType !== "touch") ||
         motion.matches ||
-        !pointer.matches ||
+        (event.pointerType === "mouse" && !pointer.matches) ||
         !visible ||
         document.hidden ||
         !width
@@ -365,6 +381,17 @@ export function WaterBackground({
     }
 
     function move(event: PointerEvent) {
+      if (event.pointerType === "touch") {
+        if (
+          pendingTap?.pointerId === event.pointerId &&
+          Math.hypot(
+            event.clientX - pendingTap.x,
+            event.clientY - pendingTap.y,
+          ) > tapMovement
+        )
+          pendingTap = null;
+        return;
+      }
       const point = pointerPoint(event);
       if (!point) return;
       target = point;
@@ -374,15 +401,69 @@ export function WaterBackground({
 
     function press(event: PointerEvent) {
       if (event.button !== 0) return;
+      if (event.pointerType === "touch") {
+        pendingTap = null;
+        if (!event.isPrimary || !pointerPoint(event)) return;
+        pendingTap = {
+          pointerId: event.pointerId,
+          x: event.clientX,
+          y: event.clientY,
+          startedAt: event.timeStamp,
+          scrollX: window.scrollX,
+          scrollY: window.scrollY,
+        };
+        return;
+      }
       const point = pointerPoint(event);
       if (!point) return;
+      rippleAt(point);
+    }
+
+    function rippleAt(point: WaterPoint) {
       disturb(point.x, point.y, 0.4);
       targetSpread = 1;
       restingTime = 0;
       if (!frame) frame = requestAnimationFrame(paint);
     }
 
-    function leave() {
+    function release(event: PointerEvent) {
+      if (
+        event.pointerType !== "touch" ||
+        pendingTap?.pointerId !== event.pointerId
+      )
+        return;
+      const tap = pendingTap;
+      pendingTap = null;
+      if (
+        !event.isPrimary ||
+        event.timeStamp - tap.startedAt > tapDuration ||
+        Math.hypot(event.clientX - tap.x, event.clientY - tap.y) >
+          tapMovement ||
+        Math.abs(window.scrollX - tap.scrollX) > 0.5 ||
+        Math.abs(window.scrollY - tap.scrollY) > 0.5
+      )
+        return;
+      const point = pointerPoint(event);
+      if (!point) return;
+      ensureGpu();
+      rippleAt(point);
+    }
+
+    function cancelOtherTouch(event: PointerEvent) {
+      if (
+        event.pointerType === "touch" &&
+        pendingTap &&
+        event.pointerId !== pendingTap.pointerId
+      ) {
+        pendingTap = null;
+      }
+    }
+
+    function leave(event: PointerEvent) {
+      if (event.pointerType === "touch") {
+        if (pendingTap?.pointerId === event.pointerId) pendingTap = null;
+        return;
+      }
       target = null;
       lastPoint = null;
       motionOrigin = null;
@@ -397,11 +478,15 @@ export function WaterBackground({
     intersection.observe(section);
     section.addEventListener("pointermove", move, { passive: true });
     section.addEventListener("pointerdown", press, { passive: true });
+    section.addEventListener("pointerup", release, { passive: true });
     section.addEventListener("pointerleave", leave);
     section.addEventListener("pointercancel", leave);
     motion.addEventListener("change", updateEligibility);
     pointer.addEventListener("change", updateEligibility);
     document.addEventListener("visibilitychange", clear);
+    document.addEventListener("pointerdown", cancelOtherTouch, {
+      passive: true,
+    });
     updateEligibility();
 
     return () => {
@@ -411,11 +496,13 @@ export function WaterBackground({
       intersection.disconnect();
       section.removeEventListener("pointermove", move);
       section.removeEventListener("pointerdown", press);
+      section.removeEventListener("pointerup", release);
       section.removeEventListener("pointerleave", leave);
       section.removeEventListener("pointercancel", leave);
       motion.removeEventListener("change", updateEligibility);
       pointer.removeEventListener("change", updateEligibility);
       document.removeEventListener("visibilitychange", clear);
+      document.removeEventListener("pointerdown", cancelOtherTouch);
     };
   }, [filterId, paintScene]);
 
