@@ -110,6 +110,28 @@
     mask-composite: exclude;
   }
 
+  .studio-back-to-top-gauge {
+    position: absolute;
+    z-index: 1;
+    inset: calc(-6 * var(--u));
+    width: calc(100% + 12 * var(--u));
+    height: calc(100% + 12 * var(--u));
+    opacity: 0;
+    rotate: -90deg;
+    pointer-events: none;
+    stroke: var(--color-studio-sage);
+    stroke-width: 1.5;
+  }
+
+  .studio-back-to-top[data-dwelling="true"] .studio-back-to-top-gauge {
+    opacity: 1;
+  }
+
+  .studio-back-to-top-gauge-progress {
+    stroke-linecap: round;
+    stroke-opacity: 0.6;
+  }
+
   .studio-back-to-top .studio-art {
     position: absolute;
     top: -7.41%;
@@ -135,6 +157,10 @@
 
     .studio-back-to-top {
       transition: background-color 280ms ease-out;
+    }
+
+    .studio-back-to-top-gauge {
+      transition: opacity 160ms ease-out;
     }
 
     .studio-back-to-top .studio-art {
