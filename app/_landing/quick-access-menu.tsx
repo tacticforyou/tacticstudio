@@ -1,8 +1,9 @@
 "use client";
 
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState, type CSSProperties } from "react";
 import { QuickAccessButtonArt } from "./components/quick-access-button-art";
 import { navigation } from "./copy";
+import { usePortfolioTheme } from "./portfolio-theme";
 
 const quickLinks = ["#top", "#work", "#services", "#contact", "#approach"].map(
   (href) => navigation.find((link) => link.href === href)!,
@@ -14,6 +15,7 @@ export function QuickAccessMenu() {
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const hovered = useRef(false);
+  const { color } = usePortfolioTheme();
 
   useEffect(() => {
     if (!open) return;
@@ -54,6 +56,12 @@ export function QuickAccessMenu() {
     <div
       className="studio-quick-access"
       data-open={open}
+      data-project-theme={Boolean(color)}
+      style={
+        color
+          ? ({ "--studio-quick-project-color": color } as CSSProperties)
+          : undefined
+      }
       ref={menuRef}
       onPointerEnter={(event) => {
         if (event.pointerType !== "mouse") return;
@@ -85,7 +93,7 @@ export function QuickAccessMenu() {
           setOpen((event.detail > 0 && hovered.current) || !open);
         }}
       >
-        <QuickAccessButtonArt open={open} />
+        <QuickAccessButtonArt open={open} projectTheme={Boolean(color)} />
       </button>
       <nav
         className="studio-quick-access-panel"

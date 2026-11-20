@@ -13,6 +13,7 @@ import { PortfolioLogos } from "./portfolio-logos";
 import { projectFrame, type PortfolioProject } from "./portfolio-project";
 import { prepareProjectArtwork, ProjectArtwork } from "./project-artwork";
 import { useLandingFavicon } from "./use-landing-favicon";
+import { usePortfolioTheme } from "./portfolio-theme";
 
 export function PortfolioCarousel({
   projects,
@@ -34,6 +35,8 @@ export function PortfolioCarousel({
   const active =
     ((position % projects.length) + projects.length) % projects.length;
   const project = projects[active];
+  const visible = useInView(section);
+  const { setColor } = usePortfolioTheme();
   const widestFrameAspect = Math.max(
     ...projects.map((item) => {
       const [width, height] = projectFrame(item);
@@ -41,6 +44,11 @@ export function PortfolioCarousel({
     }),
   );
   useLandingFavicon(section, project.color);
+
+  useEffect(() => {
+    setColor(visible ? project.color : undefined);
+    return () => setColor(undefined);
+  }, [visible, project.color, setColor]);
 
   useEffect(() => {
     if (!nearby) return;

@@ -39,11 +39,21 @@ function buttonOutline(progress: number) {
   return `M ${firstX} ${firstY} A ${radius} ${radius} 0 1 1 ${secondX} ${secondY} A ${bumpRadius} ${bumpRadius} 0 0 1 ${firstX} ${firstY} Z`;
 }
 
-export function QuickAccessButtonArt({ open }: { open: boolean }) {
+export function QuickAccessButtonArt({
+  open,
+  projectTheme,
+}: {
+  open: boolean;
+  projectTheme: boolean;
+}) {
   const id = useId();
   const progress = useMotionValue(0);
   const outline = useTransform(progress, buttonOutline);
-  const fillOpacity = useTransform(progress, [0, 1], [0.4, 0.6]);
+  const fillOpacity = useTransform(
+    progress,
+    [0, 1],
+    projectTheme ? [0.88, 0.96] : [0.4, 0.6],
+  );
   const rotation = useTransform(progress, [0, 1], [0, 90]);
   const reducedMotion = useReducedMotion();
 
@@ -81,8 +91,9 @@ export function QuickAccessButtonArt({ open }: { open: boolean }) {
           </clipPath>
         </defs>
         <motion.path
+          className="studio-quick-access-surface"
           d={outline}
-          fill="var(--color-studio-sage)"
+          fill="var(--studio-quick-accent)"
           fillOpacity={fillOpacity}
         />
         <motion.path

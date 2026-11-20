@@ -1,6 +1,19 @@
 @layer components {
   .studio-quick-access {
+    --studio-quick-accent: var(--color-studio-sage);
+    --studio-quick-glow: var(--color-studio-sage);
+    --studio-quick-label: var(--color-studio-sage);
     display: none;
+  }
+
+  .studio-quick-access[data-project-theme="true"] {
+    --studio-quick-accent: color-mix(
+      in oklab,
+      var(--studio-quick-project-color) 44%,
+      var(--color-studio-ink)
+    );
+    --studio-quick-glow: var(--studio-quick-project-color);
+    --studio-quick-label: var(--studio-quick-accent);
   }
 
   @media (width > 960px) {
@@ -21,7 +34,7 @@
       block-size: 100%;
       border-radius: 50%;
       box-shadow: 0 calc(75 * var(--u)) calc(100 * var(--u))
-        rgb(148 159 128 / 50%);
+        color-mix(in srgb, var(--studio-quick-glow) 50%, transparent);
       cursor: pointer;
       transition: box-shadow 320ms var(--ease-studio);
     }
@@ -45,7 +58,11 @@
 
     .studio-quick-access[data-open="true"] .studio-quick-access-toggle {
       box-shadow: 0 calc(14 * var(--u)) calc(100 * var(--u))
-        rgb(148 159 128 / 70%);
+        color-mix(in srgb, var(--studio-quick-glow) 70%, transparent);
+    }
+
+    .studio-quick-access-surface {
+      transition: fill 300ms ease;
     }
 
     .studio-quick-access-icon {
@@ -114,15 +131,15 @@
       inset-inline-start: 0;
       inline-size: calc(10 * var(--u));
       block-size: calc(4 * var(--u));
-      background: var(--color-studio-sage);
-      box-shadow: 0 3px 15px var(--color-studio-sage);
+      background: var(--studio-quick-label);
+      box-shadow: 0 3px 15px var(--studio-quick-glow);
       scale: 0 1;
       transition: scale 180ms var(--ease-studio);
       content: "";
     }
 
     .studio-quick-access-link:is(:hover, :focus-visible) {
-      color: var(--color-studio-sage);
+      color: var(--studio-quick-label);
     }
 
     .studio-quick-access-link:is(:hover, :focus-visible)::before {
@@ -134,7 +151,7 @@
       inset-inline-start: 0;
       inset-block-start: calc(100% + max(44px, 64 * var(--u)) + 20 * var(--u));
       gap: calc(12 * var(--u));
-      color: var(--color-studio-sage);
+      color: var(--studio-quick-label);
       opacity: 0;
       translate: 0 -8px;
       transition:
@@ -165,7 +182,7 @@
     }
 
     .studio-quick-access-consultation:is(:hover, :focus-visible) {
-      color: var(--color-studio-focus);
+      color: var(--color-studio-ink);
     }
   }
 
