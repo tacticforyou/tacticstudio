@@ -1,15 +1,15 @@
 "use client";
 
 import Image, { getImageProps } from "next/image";
-import {
-  domAnimation,
-  LazyMotion,
-  useReducedMotion,
-  type Variants,
-} from "motion/react";
+import { domAnimation, LazyMotion, useReducedMotion } from "motion/react";
 import * as m from "motion/react-m";
-import type { CSSProperties } from "react";
+import type { CSSProperties, ReactNode } from "react";
 import { imageQuality } from "@/lib/image-quality";
+import {
+  artworkDelays,
+  artworkMovement,
+  artworkVisibility,
+} from "./project-artwork-motion";
 import {
   projectFrame,
   type ArtworkBounds,
@@ -17,7 +17,6 @@ import {
   type PortfolioProject,
 } from "./portfolio-project";
 
-const ease = [0.22, 1, 0.36, 1] as const;
 const preparedImages = new Map<string, Promise<void>>();
 
 function layerImage(
@@ -91,97 +90,22 @@ function position(
   };
 }
 
-function movement(layer: ArtworkLayer, reduced: boolean): Variants {
-  const kind = layer.motion;
-  if (kind === "phone-emerge" || kind === "masked-rise") {
-    const diagonal = kind === "phone-emerge";
-    return {
-      hidden: {
-        x: reduced || !diagonal ? 0 : "18%",
-        y: reduced ? 0 : `${diagonal ? 90 : (layer.entryY ?? 92)}%`,
-        opacity: reduced ? 0 : 1,
-        transition: { duration: reduced ? 0 : 0.22, delay: 0, ease },
-      },
-      shown: {
-        x: reduced || !diagonal ? 0 : [null, "-0.15%", "0%"],
-        y: reduced ? 0 : [null, "-0.4%", "0%"],
-        opacity: 1,
-        transition: {
-          duration: reduced ? 0 : 0.9,
-          delay: reduced ? 0 : layer.delay,
-          times: [0, 0.84, 1],
-          ease,
-        },
-      },
-    };
-  }
-  const offset =
-    kind === "diagonal"
-      ? { x: "15%", y: "14%" }
-      : kind === "hero"
-        ? { x: 0, y: "9%" }
-        : kind === "lift"
-          ? { x: 0, y: "15%" }
-          : kind === "circle"
-            ? { x: "-3%", y: "5%" }
-            : { x: 0, y: 14 };
-  const scale =
-    kind === "circle"
-      ? 0.84
-      : kind === "accent"
-        ? 0.76
-        : kind === "hero" || kind === "diagonal"
-          ? 0.94
-          : kind === "lift"
-            ? 0.92
-            : kind === "write" || kind === "backdrop"
-              ? 1
-              : 0.97;
-  return {
-    hidden: {
-      opacity: 0,
-      x: reduced ? 0 : offset.x,
-      y: reduced ? 0 : offset.y,
-      scale: reduced ? 1 : scale,
-      ...(kind === "write" ? { clipPath: "inset(0 100% 0 0)" } : {}),
-      transition: { duration: reduced ? 0 : 0.19, delay: 0, ease },
-    },
-    shown: {
-      opacity: 1,
-      x: 0,
-      y: 0,
-      scale: 1,
-      ...(kind === "write" ? { clipPath: "inset(0 0% 0 0)" } : {}),
-      transition: {
-        duration: reduced
-          ? 0
-          : kind === "backdrop"
-            ? 0.24
-            : kind === "write"
-              ? 0.18
-              : kind === "hero" ||
-                  kind === "circle" ||
-                  kind === "diagonal" ||
-                  kind === "lift"
-                ? 0.72
-                : 0.42,
-        delay: reduced ? 0 : layer.delay,
-        ease,
-      },
-    },
-  };
-}
-
 function ArtworkPiece({
   layer,
   width,
   height,
   reduced,
+  delay,
+  parent,
+  children,
 }: {
   layer: ArtworkLayer;
   width: number;
   height: number;
   reduced: boolean;
+  delay: number;
+  parent?: ArtworkLayer;
+  children?: ReactNode;
 }) {
   const clip = layer.clip;
   const viewport = clip?.bounds;
@@ -192,14 +116,23 @@ function ArtworkPiece({
         layer.bounds[2],
         layer.bounds[3],
       ]
-    : layer.bounds;
+    : parent
+      ? [
+          layer.bounds[0] - parent.bounds[0],
+          layer.bounds[1] - parent.bounds[1],
+          layer.bounds[2],
+          layer.bounds[3],
+        ]
+      : layer.bounds;
+  const localWidth = viewport?.[2] ?? parent?.bounds[2] ?? width;
+  const localHeight = viewport?.[3] ?? parent?.bounds[3] ?? height;
   const piece = (
     <m.div
       data-artwork-layer={layer.id}
       className="absolute"
-      variants={movement(layer, reduced)}
+      variants={artworkMovement(layer, reduced, delay)}
       style={{
-        ...position(relative, viewport?.[2] ?? width, viewport?.[3] ?? height),
+        ...position(relative, localWidth, localHeight),
         clipPath: layer.sourceClip
           ? `polygon(${layer.sourceClip.map(([x, y]) => `${x}% ${y}%`).join(", ")})`
           : undefined,
@@ -211,13 +144,25 @@ function ArtworkPiece({
         draggable={false}
         className="block size-full"
       />
+      {children}
     </m.div>
   );
   return viewport ? (
     <div
       className="absolute"
       style={{
-        ...position(viewport, width, height),
+        ...position(
+          parent
+            ? [
+                viewport[0] - parent.bounds[0],
+                viewport[1] - parent.bounds[1],
+                viewport[2],
+                viewport[3],
+              ]
+            : viewport,
+          parent?.bounds[2] ?? width,
+          parent?.bounds[3] ?? height,
+        ),
         ...(clip
           ? {
               overflow: "clip",
@@ -248,7 +193,7 @@ export function ProjectArtwork({
   const [width, height] = projectFrame(project);
   const scene = project.scene;
   const [left, top] = project.image.cardBounds;
-  const exitTogether = project.name === "Milan";
+  const delays = scene ? artworkDelays(scene.layers) : [];
   return (
     <LazyMotion features={domAnimation} strict>
       <m.figure
@@ -259,50 +204,40 @@ export function ProjectArtwork({
         style={{ width: `${(100 * width) / height / widestAspect}%` }}
         initial={initial ? false : "hidden"}
         animate={active ? "shown" : "hidden"}
-        variants={{
-          shown: {
-            visibility: "visible",
-            ...(exitTogether ? { opacity: 1 } : {}),
-            transition: {
-              ...(exitTogether ? {} : { when: "beforeChildren" }),
-              duration: exitTogether && !reduced ? 0.08 : 0,
-              visibility: { duration: 0 },
-              ease,
-            },
-          },
-          hidden: exitTogether
-            ? {
-                opacity: 0,
-                visibility: "hidden",
-                // Run the shared fade and layers together so reversals cancel
-                // immediately instead of queuing an obsolete child animation.
-                transition: {
-                  duration: reduced ? 0 : 0.16,
-                  visibility: { duration: 0, delay: reduced ? 0 : 0.16 },
-                  ease,
-                },
-              }
-            : {
-                visibility: "hidden",
-                transition: { when: "afterChildren", duration: 0 },
-              },
-        }}
+        variants={artworkVisibility(reduced)}
       >
         <figcaption className="sr-only">{project.alt}</figcaption>
         {scene ? (
-          scene.layers.map((layer) => (
-            <ArtworkPiece
-              key={layer.id}
-              layer={layer}
-              width={width}
-              height={height}
-              reduced={reduced}
-            />
-          ))
+          scene.layers
+            .filter((layer) => !layer.parent)
+            .map((layer) => (
+              <ArtworkPiece
+                key={layer.id}
+                layer={layer}
+                width={width}
+                height={height}
+                reduced={reduced}
+                delay={delays[scene.layers.indexOf(layer)]}
+              >
+                {scene.layers
+                  .filter((child) => child.parent === layer.id)
+                  .map((child) => (
+                    <ArtworkPiece
+                      key={child.id}
+                      layer={child}
+                      parent={layer}
+                      width={width}
+                      height={height}
+                      reduced={reduced}
+                      delay={delays[scene.layers.indexOf(child)]}
+                    />
+                  ))}
+              </ArtworkPiece>
+            ))
         ) : (
           <m.div
             className="absolute inset-0"
-            variants={movement(
+            variants={artworkMovement(
               {
                 id: "temporary-poster",
                 src: project.image.src,
@@ -313,6 +248,7 @@ export function ProjectArtwork({
                 delay: 0.04,
               },
               reduced,
+              0.04,
             )}
           >
             <Image

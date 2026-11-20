@@ -144,7 +144,11 @@ export const artworkPlan = [
       layer("phone-card", 6208, "backdrop"),
       layer("type", 6246),
       layer("tag", 6249),
-      layer("main-card", [6214, 6215], "lift", { delay: 0.1 }),
+      layer("main-card", 6214, "lift", { delay: 0.1 }),
+      layer("sculpture", 6217, "logo", {
+        parent: "main-card",
+        clip: 6216,
+      }),
       // Complete phone artwork moving behind the fixed, expanded CSS window.
       layer("phones", 6211, "phone-emerge", { delay: 0.22, clip: 6210 }),
       layer("watch", 6219, "lift", { delay: 0.26 }),

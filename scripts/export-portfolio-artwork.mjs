@@ -300,6 +300,7 @@ if (mode === "--export") {
           height: asset.height,
           bounds: localBounds,
           motion: layer.motion,
+          ...(layer.parent ? { parent: layer.parent } : {}),
           delay:
             layer.delay ??
             (layer.motion === "backdrop"

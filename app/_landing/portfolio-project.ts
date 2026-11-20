@@ -20,7 +20,9 @@ export type ArtworkLayer = {
     | "diagonal"
     | "phone-emerge"
     | "masked-rise"
+    | "logo"
     | "write";
+  parent?: string;
   delay: number;
   entryY?: number;
   sourceClip?: readonly (readonly [number, number])[];
