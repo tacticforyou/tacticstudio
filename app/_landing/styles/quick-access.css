@@ -1,0 +1,179 @@
+@layer components {
+  .studio-quick-access {
+    display: none;
+  }
+
+  @media (width > 960px) {
+    .studio-quick-access {
+      position: fixed;
+      z-index: 10;
+      inset-inline-start: calc(120 * var(--u));
+      inset-block-end: calc(100 * var(--u));
+      display: block;
+      inline-size: max(44px, calc(64 * var(--u)));
+      block-size: max(44px, calc(64 * var(--u)));
+    }
+
+    .studio-quick-access-toggle {
+      position: relative;
+      display: block;
+      inline-size: 100%;
+      block-size: 100%;
+      border-radius: 50%;
+      box-shadow: 0 calc(75 * var(--u)) calc(100 * var(--u))
+        rgb(148 159 128 / 50%);
+      cursor: pointer;
+      transition: box-shadow 320ms var(--ease-studio);
+    }
+
+    .studio-quick-access-toggle::before {
+      position: absolute;
+      inset: 0;
+      border-radius: inherit;
+      backdrop-filter: blur(16px);
+      content: "";
+    }
+
+    .studio-quick-access-body {
+      position: absolute;
+      inset-inline: 0;
+      inset-block-end: 0;
+      inline-size: 100%;
+      block-size: auto;
+      pointer-events: none;
+    }
+
+    .studio-quick-access[data-open="true"] .studio-quick-access-toggle {
+      box-shadow: 0 calc(14 * var(--u)) calc(100 * var(--u))
+        rgb(148 159 128 / 70%);
+    }
+
+    .studio-quick-access-icon {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      pointer-events: none;
+    }
+
+    .studio-quick-access-icon img {
+      inline-size: 28.125%;
+      block-size: auto;
+    }
+
+    .studio-quick-access-panel {
+      position: absolute;
+      inset-inline-start: 0;
+      inset-block-end: 100%;
+      inline-size: max-content;
+      min-inline-size: 100%;
+      padding-block-end: calc(28 * var(--u));
+      font-size: max(0.75rem, calc(16 * var(--u)));
+      line-height: 1.1511;
+      visibility: hidden;
+      pointer-events: none;
+      transition: visibility 0s linear 320ms;
+    }
+
+    .studio-quick-access[data-open="true"] .studio-quick-access-panel {
+      visibility: visible;
+      pointer-events: auto;
+      transition-delay: 0s;
+    }
+
+    .studio-quick-access-panel > ul {
+      opacity: 0;
+      translate: 0 8px;
+      transition:
+        opacity 200ms ease,
+        translate 320ms var(--ease-studio);
+    }
+
+    .studio-quick-access[data-open="true"] .studio-quick-access-panel > ul {
+      opacity: 1;
+      translate: none;
+    }
+
+    .studio-quick-access-link,
+    .studio-quick-access-consultation {
+      position: relative;
+      display: flex;
+      min-block-size: max(32px, calc(42 * var(--u)));
+      align-items: center;
+      white-space: nowrap;
+    }
+
+    .studio-quick-access-link {
+      padding-inline-start: calc(17 * var(--u));
+      margin-inline-start: calc(-17 * var(--u));
+      transition: color 180ms ease;
+    }
+
+    .studio-quick-access-link::before {
+      position: absolute;
+      inset-inline-start: 0;
+      inline-size: calc(10 * var(--u));
+      block-size: calc(4 * var(--u));
+      background: var(--color-studio-sage);
+      box-shadow: 0 3px 15px var(--color-studio-sage);
+      scale: 0 1;
+      transition: scale 180ms var(--ease-studio);
+      content: "";
+    }
+
+    .studio-quick-access-link:is(:hover, :focus-visible) {
+      color: var(--color-studio-sage);
+    }
+
+    .studio-quick-access-link:is(:hover, :focus-visible)::before {
+      scale: 1;
+    }
+
+    .studio-quick-access-consultation {
+      position: absolute;
+      inset-inline-start: 0;
+      inset-block-start: calc(100% + max(44px, 64 * var(--u)) + 20 * var(--u));
+      gap: calc(12 * var(--u));
+      color: var(--color-studio-sage);
+      opacity: 0;
+      translate: 0 -8px;
+      transition:
+        color 180ms ease,
+        opacity 200ms ease,
+        translate 320ms var(--ease-studio);
+    }
+
+    .studio-quick-access[data-open="true"] .studio-quick-access-consultation {
+      opacity: 1;
+      translate: none;
+    }
+
+    .studio-quick-access-consultation::after {
+      position: absolute;
+      inset-inline: 0;
+      inset-block-end: 100%;
+      block-size: calc(20 * var(--u));
+      content: "";
+    }
+
+    .studio-quick-access-consultation::before {
+      inline-size: calc(5 * var(--u));
+      aspect-ratio: 1;
+      border-radius: 50%;
+      background: currentColor;
+      content: "";
+    }
+
+    .studio-quick-access-consultation:is(:hover, :focus-visible) {
+      color: var(--color-studio-focus);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .studio-quick-access *,
+    .studio-quick-access *::before {
+      transition: none;
+      animation: none;
+    }
+  }
+}

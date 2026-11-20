@@ -1,4 +1,5 @@
 import { LandingClickSounds } from "./landing-click-sounds";
+import { QuickAccessMenu } from "./quick-access-menu";
 import { SectionEdgeAlignment } from "./section-edge-alignment";
 import { Approach } from "./sections/approach";
 import { Faq } from "./sections/faq";
@@ -24,6 +25,7 @@ export function LandingPage() {
         <Faq />
       </main>
       <Footer />
+      <QuickAccessMenu />
       <LandingClickSounds />
       <SectionEdgeAlignment />
     </div>
