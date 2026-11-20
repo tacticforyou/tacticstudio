@@ -35,6 +35,26 @@
     line-height: max(1rem, calc(22 * var(--u)));
   }
 
+  .studio-footer-column a[target="_blank"][href^="http"]::before {
+    position: absolute;
+    inset-block-start: 50%;
+    inset-inline-start: calc(100% + 0.35em);
+    width: 0.9em;
+    height: 0.9em;
+    background: currentColor;
+    opacity: 0;
+    translate: 0 -50%;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M17 17 7 7M7 17V7h10' fill='none' stroke='black' stroke-width='1.7' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+      center / contain no-repeat;
+    pointer-events: none;
+    content: "";
+  }
+
+  .studio-footer-column
+    a[target="_blank"][href^="http"]:is(:hover, :focus-visible)::before {
+    opacity: 1;
+  }
+
   .studio-footer-column:not(:last-child)::after {
     position: absolute;
     inset-block-start: calc(6 * var(--u));
@@ -99,6 +119,20 @@
   }
 
   @media (prefers-reduced-motion: no-preference) {
+    .studio-footer-column a[target="_blank"][href^="http"]::before {
+      translate: 0.15em calc(-50% + 0.15em);
+      transition:
+        opacity 160ms ease-out,
+        translate 160ms var(--ease-studio);
+    }
+
+    .studio-footer-column
+      a[target="_blank"][href^="http"]:is(:hover, :focus-visible)::before {
+      translate: 0 -50%;
+      /* Reveal after the 240ms underline animation in shared.css. */
+      transition-delay: 240ms;
+    }
+
     .studio-back-to-top {
       transition: background-color 280ms ease-out;
     }

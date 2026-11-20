@@ -10,6 +10,8 @@ export const contact = {
   email: "Tacticforyou@gmail.com",
   phone: "+98 912 332 0019",
   phoneNumber: "+989123320019",
+  inquiryMessage:
+    "سلام از طریق سایت تاکتیک با شما آشنا شدم و برای مشاوره درباره پروژه ام پیام میدم\n\nنام:\nنوع پروژه:\nتوضیح کوتاه:",
 };
 
 export const approaches = [

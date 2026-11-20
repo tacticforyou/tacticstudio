@@ -227,7 +227,7 @@
     .studio-hero-brand-trigger {
       /* The oval covers the face and a small radius around it on all sides. */
       position: absolute;
-      inset: calc(-4px - 10 * var(--u));
+      inset: calc(-8px - 14 * var(--u));
       display: block;
       pointer-events: auto;
     }

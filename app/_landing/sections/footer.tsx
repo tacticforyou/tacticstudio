@@ -28,6 +28,7 @@ function FooterColumn({
 
 export function Footer() {
   const emailDomainStart = contact.email.lastIndexOf("@");
+  const whatsappUrl = `https://wa.me/${contact.phoneNumber.replace(/\D/g, "")}?text=${encodeURIComponent(contact.inquiryMessage)}`;
 
   return (
     <footer id="contact" className="studio-band studio-footer">
@@ -68,11 +69,51 @@ export function Footer() {
             <li>طراحی محصول</li>
           </FooterColumn>
           <FooterColumn title="ما را دنبال کنید">
-            <li>اینستاگرام</li>
-            <li>لینکدین</li>
-            <li>دریبل</li>
-            <li>بیهنس</li>
-            <li>تلگرام</li>
+            <li>
+              <a
+                href="https://www.instagram.com/tacticgroup/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                اینستاگرام
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/in/sina-amiri-b19b081b6/"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                لینکدین
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://dribbble.com/sinaamiri"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                دریبل
+              </a>
+            </li>
+            <li>
+              <a
+                href="http://behance.net/sinaamiri"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                بیهنس
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://t.me/Brandsaz_1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                تلگرام
+              </a>
+            </li>
           </FooterColumn>
           <FooterColumn
             title="ارتباط با ما"
@@ -102,8 +143,20 @@ export function Footer() {
                 {contact.phone}
               </a>
             </li>
-            <li>واتس‌اپ</li>
-            <li>تلگرام</li>
+            <li>
+              <a href={whatsappUrl} target="_blank" rel="noopener noreferrer">
+                واتس‌اپ
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://t.me/Brandsaz_1"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                تلگرام
+              </a>
+            </li>
             <li>بله</li>
           </FooterColumn>
         </div>
