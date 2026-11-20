@@ -239,7 +239,7 @@ export function WaterBackground({
       lastPoint = next;
     }
 
-    function move(event: PointerEvent) {
+    function pointerPoint(event: PointerEvent): WaterPoint | undefined {
       if (
         event.pointerType !== "mouse" ||
         motion.matches ||
@@ -251,11 +251,26 @@ export function WaterBackground({
         return;
 
       const bounds = background!.getBoundingClientRect();
-      target = {
+      return {
         x: ((event.clientX - bounds.left) / bounds.width) * (width - 1),
         y: ((event.clientY - bounds.top) / bounds.height) * (height - 1),
       };
+    }
+
+    function move(event: PointerEvent) {
+      const point = pointerPoint(event);
+      if (!point) return;
+      target = point;
       if (!lastPoint) lastPoint = target;
+      if (!frame) frame = requestAnimationFrame(paint);
+    }
+
+    function press(event: PointerEvent) {
+      if (event.button !== 0) return;
+      const point = pointerPoint(event);
+      if (!point) return;
+      disturb(point.x, point.y, 0.4);
+      restingTime = 0;
       if (!frame) frame = requestAnimationFrame(paint);
     }
 
@@ -272,6 +287,7 @@ export function WaterBackground({
     resizeObserver.observe(background);
     intersection.observe(section);
     section.addEventListener("pointermove", move, { passive: true });
+    section.addEventListener("pointerdown", press, { passive: true });
     section.addEventListener("pointerleave", leave);
     section.addEventListener("pointercancel", leave);
     motion.addEventListener("change", clear);
@@ -283,6 +299,7 @@ export function WaterBackground({
       resizeObserver.disconnect();
       intersection.disconnect();
       section.removeEventListener("pointermove", move);
+      section.removeEventListener("pointerdown", press);
       section.removeEventListener("pointerleave", leave);
       section.removeEventListener("pointercancel", leave);
       motion.removeEventListener("change", clear);
