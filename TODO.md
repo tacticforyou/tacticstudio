@@ -3,7 +3,8 @@
 ## Content and launch
 
 - [ ] Move the landing page's editorial content (services, FAQs, testimonials, and featured projects) to validated Markdown under `content/`. Read it through a server-only adapter that can later use Payload without changing public project URLs.
-- [ ] Add a branded Open Graph image and descriptive alt text to the home page. Verify the image is available at an absolute public URL and appears in link previews.
+- [x] Add the approved branded social image and descriptive alt text to the home page's Open Graph and Twitter metadata.
+- [ ] Verify the social image's absolute public URL and rendered link previews on the deployed domain.
 - [ ] Replace or remove the published `sample-project` entry before enabling production indexing. Verify that the public sitemap lists only real, published content.
 - [ ] Verify production canonical URLs, robots directives, and sitemap on the deployed domain. Check that `SITE_URL` points to the canonical origin and that previews retain `noindex`.
 

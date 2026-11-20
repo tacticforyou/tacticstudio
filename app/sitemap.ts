@@ -8,6 +8,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const projects = await getPublishedProjects();
   return [
     { url: siteUrl.origin },
+    { url: new URL("/projects", siteUrl).href },
     ...projects.map(({ slug }) => ({
       url: new URL(projectPath(slug), siteUrl).href,
     })),

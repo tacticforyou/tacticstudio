@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import { Art } from "./art";
 
 export function SectionHeading({
@@ -6,12 +7,14 @@ export function SectionHeading({
   subtitle,
   description,
   stars = false,
+  action,
 }: {
   id: string;
   title: string;
   subtitle: string;
   description: string;
   stars?: boolean;
+  action?: ReactNode;
 }) {
   return (
     <div className="studio-section-heading flex items-start justify-between gap-6 studio-mobile:block">
@@ -33,9 +36,12 @@ export function SectionHeading({
           </span>
         </h2>
       </div>
-      <p className="mt-[calc(14*var(--u))] ml-[calc(25*var(--u))] w-[min(28%,calc(351*var(--u)))] flex-none text-[max(0.84rem,calc(18*var(--u)))] leading-[1.64] font-light text-[#4e5149] studio-mobile:mt-[0.9rem] studio-mobile:ml-0 studio-mobile:w-full studio-mobile:max-w-104">
-        {description}
-      </p>
+      <div className="mt-[calc(14*var(--u))] ml-[calc(25*var(--u))] w-[min(28%,calc(351*var(--u)))] flex-none studio-mobile:mt-[0.9rem] studio-mobile:ml-0 studio-mobile:w-full studio-mobile:max-w-104">
+        <p className="text-[max(0.84rem,calc(18*var(--u)))] leading-[1.64] font-light text-[#4e5149]">
+          {description}
+        </p>
+        {action}
+      </div>
     </div>
   );
 }
