@@ -36,10 +36,9 @@ export function PortfolioCarousel({
   wave: ReactNode;
 }) {
   const section = useRef<HTMLElement>(null);
-  const [{ active, direction }, setSelection] = useState({
-    active: 0,
-    direction: 1,
-  });
+  const [position, setPosition] = useState(0);
+  const active =
+    ((position % projects.length) + projects.length) % projects.length;
   const project = projects[active];
   const widestFrameAspect = Math.max(
     ...projects.map(({ image }) => {
@@ -50,10 +49,7 @@ export function PortfolioCarousel({
   useLandingFavicon(section, project.color);
 
   function select(offset: number) {
-    setSelection((current) => ({
-      active: (current.active + offset + projects.length) % projects.length,
-      direction: offset > 0 ? 1 : -1,
-    }));
+    setPosition((current) => current + offset);
   }
 
   return (
@@ -117,11 +113,7 @@ export function PortfolioCarousel({
           <PortfolioArrow direction="left" onSelect={() => select(-1)} />
         </div>
         <output className="sr-only">{project.name}</output>
-        <PortfolioLogos
-          projects={projects}
-          active={active}
-          direction={direction}
-        />
+        <PortfolioLogos projects={projects} position={position} />
       </div>
       {wave}
     </section>
