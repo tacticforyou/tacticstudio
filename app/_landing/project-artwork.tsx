@@ -264,21 +264,23 @@ export function ProjectArtwork({
             visibility: "visible",
             ...(exitTogether ? { opacity: 1 } : {}),
             transition: {
-              when: "beforeChildren",
+              ...(exitTogether ? {} : { when: "beforeChildren" }),
               duration: exitTogether && !reduced ? 0.08 : 0,
+              visibility: { duration: 0 },
               ease,
             },
           },
           hidden: exitTogether
             ? {
                 opacity: 0,
-                // Fade the composed artwork before any layer resets its pose.
+                visibility: "hidden",
+                // Run the shared fade and layers together so reversals cancel
+                // immediately instead of queuing an obsolete child animation.
                 transition: {
-                  when: "beforeChildren",
                   duration: reduced ? 0 : 0.16,
+                  visibility: { duration: 0, delay: reduced ? 0 : 0.16 },
                   ease,
                 },
-                transitionEnd: { visibility: "hidden" },
               }
             : {
                 visibility: "hidden",

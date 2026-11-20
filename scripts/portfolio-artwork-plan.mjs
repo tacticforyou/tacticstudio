@@ -98,7 +98,7 @@ export const artworkPlan = [
     frame: 6541,
     bounds: [382, 227, 2812, 2217],
     layers: [
-      layer("robot-card", [6545, 6578, 6581, 6583, 6606], "backdrop"),
+      layer("robot-card", [6545, 6578, 6581, 6583], "backdrop"),
       layer("texture", [6567, 6568]),
       layer("hand-card", 6558),
       layer("phone", [6557, 6584]),
