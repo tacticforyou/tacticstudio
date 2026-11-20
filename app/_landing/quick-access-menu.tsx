@@ -93,7 +93,7 @@ export function QuickAccessMenu() {
           setOpen((event.detail > 0 && hovered.current) || !open);
         }}
       >
-        <QuickAccessButtonArt open={open} projectTheme={Boolean(color)} />
+        <QuickAccessButtonArt open={open} />
       </button>
       <nav
         className="studio-quick-access-panel"

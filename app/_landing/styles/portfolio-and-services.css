@@ -40,6 +40,7 @@
     flex: none;
     width: calc(var(--project-logo-height) * var(--project-logo-aspect));
     height: var(--project-logo-height);
+    opacity: var(--project-logo-opacity);
   }
 
   @media (max-width: 760px) {

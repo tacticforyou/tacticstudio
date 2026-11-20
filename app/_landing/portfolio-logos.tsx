@@ -8,6 +8,7 @@ import {
   useReducedMotion,
   useTransform,
   type MotionValue,
+  type MotionStyle,
 } from "motion/react";
 import * as m from "motion/react-m";
 import { useEffect, useSyncExternalStore, type CSSProperties } from "react";
@@ -91,7 +92,7 @@ function PortfolioLogoItem({
       aria-hidden={!isVisible}
       inert={!isVisible}
       className="absolute top-0 left-1/2 flex h-full w-1/5 items-center justify-center px-[min(1rem,1vw)] max-[600px]:w-5/6 studio-tablet:studio-mobile:w-1/3"
-      style={{ x, scale, opacity }}
+      style={{ x, scale, "--project-logo-opacity": opacity } as MotionStyle}
     >
       <button
         type="button"
@@ -100,10 +101,10 @@ function PortfolioLogoItem({
         onClick={() => onSelect(index)}
         onPointerEnter={() => onPrepare?.(index)}
         onFocus={() => onPrepare?.(index)}
-        className="group flex size-full cursor-pointer items-center justify-center rounded-xl hover:bg-white/10 focus-visible:-outline-offset-8 focus-visible:outline-studio-focus active:bg-white/15 motion-safe:transition-colors"
+        className="group flex size-full cursor-pointer items-center justify-center rounded-xl focus-visible:-outline-offset-8 focus-visible:outline-studio-focus"
       >
         <span
-          className="studio-project-logo"
+          className="studio-project-logo group-hover:opacity-100 group-focus-visible:opacity-100"
           data-active={isActive}
           style={
             {

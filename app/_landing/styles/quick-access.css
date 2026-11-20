@@ -7,13 +7,16 @@
   }
 
   .studio-quick-access[data-project-theme="true"] {
-    --studio-quick-accent: color-mix(
+    /* Match the original sage's OKLCH lightness while retaining the project hue. */
+    --studio-quick-accent: oklch(
+      from var(--studio-quick-project-color) 0.685136 c h
+    );
+    --studio-quick-glow: var(--studio-quick-project-color);
+    --studio-quick-label: color-mix(
       in oklab,
       var(--studio-quick-project-color) 44%,
       var(--color-studio-ink)
     );
-    --studio-quick-glow: var(--studio-quick-project-color);
-    --studio-quick-label: var(--studio-quick-accent);
   }
 
   @media (width > 960px) {
