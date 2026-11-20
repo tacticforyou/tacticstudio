@@ -5,7 +5,7 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
 type WaterPoint = { x: number; y: number };
 
 const simulationStep = 1000 / 60;
-const refractionScale = 36;
+const refractionScale = 28;
 
 export function WaterBackground({
   children,
