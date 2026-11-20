@@ -39,6 +39,23 @@ export function useLandingFavicon(
         : undefined;
 
   useEffect(() => {
+    const existing = document.head.querySelector<HTMLMetaElement>(
+      'meta[name="theme-color"]',
+    );
+    const theme = existing ?? document.createElement("meta");
+    const originalContent = theme.getAttribute("content");
+    theme.name = "theme-color";
+    theme.content = activeAccent ?? "#FFFFFF";
+    if (!existing) document.head.append(theme);
+
+    return () => {
+      if (!existing) theme.remove();
+      else if (originalContent === null) theme.removeAttribute("content");
+      else theme.setAttribute("content", originalContent);
+    };
+  }, [activeAccent]);
+
+  useEffect(() => {
     const portfolio = section.current;
     const footer = document.getElementById("contact");
     if (!portfolio) return;
