@@ -6,6 +6,9 @@ type WaterPoint = { x: number; y: number };
 
 const simulationStep = 1000 / 60;
 const refractionScale = 28;
+const waterLight = { x: -0.5, y: -0.5, z: Math.SQRT1_2 };
+const lightingOpacity = 0.22;
+const neutralLight = 128 / 255;
 
 export function WaterBackground({
   children,
@@ -86,6 +89,7 @@ export function WaterBackground({
       for (let i = 0; i < pixels.data.length; i += 4) {
         pixels.data[i] = 128;
         pixels.data[i + 1] = 128;
+        pixels.data[i + 2] = 128;
         pixels.data[i + 3] = 255;
       }
       for (let y = 0; y < height; y++) {
@@ -150,6 +154,17 @@ export function WaterBackground({
           // A soft limit avoids hard creases when several waves overlap.
           pixels.data[i * 4] = 128 + 110 * Math.tanh(dx * 1.6) * fade;
           pixels.data[i * 4 + 1] = 128 + 110 * Math.tanh(dy * 1.6) * fade;
+          // Use the spare blue channel for light from the upper left at 45 degrees.
+          const nx = dx * 0.9;
+          const ny = dy * 0.9;
+          const normalLength = Math.sqrt(1 + nx * nx + ny * ny);
+          const diffuse =
+            (nx * waterLight.x + ny * waterLight.y + waterLight.z) /
+              normalLength -
+            waterLight.z;
+          const heightLight = 0.2 * Math.tanh(current[i] * 0.7);
+          const light = Math.tanh(diffuse * 2 + heightLight);
+          pixels.data[i * 4 + 2] = 128 + 110 * light * fade * strength;
         }
       }
 
@@ -307,7 +322,33 @@ export function WaterBackground({
               scale="0"
               xChannelSelector="R"
               yChannelSelector="G"
+              result="refracted"
             />
+            <feColorMatrix
+              in="water"
+              type="matrix"
+              values={`0 0 0 0 0
+                       0 0 0 0 0
+                       0 0 0 0 0
+                       0 0 ${-lightingOpacity} 0 ${lightingOpacity * neutralLight}`}
+              result="wave-shadow"
+            />
+            <feComposite
+              in="wave-shadow"
+              in2="refracted"
+              operator="atop"
+              result="shaded"
+            />
+            <feColorMatrix
+              in="water"
+              type="matrix"
+              values={`0 0 0 0 1
+                       0 0 0 0 1
+                       0 0 0 0 1
+                       0 0 ${lightingOpacity} 0 ${-lightingOpacity * neutralLight}`}
+              result="wave-highlight"
+            />
+            <feComposite in="wave-highlight" in2="shaded" operator="atop" />
           </filter>
         </defs>
       </svg>
