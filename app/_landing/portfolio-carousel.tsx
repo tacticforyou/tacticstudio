@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { type CSSProperties, type ReactNode, useRef, useState } from "react";
-import { LogoRow } from "./components/logo-row";
 import { PortfolioArrow } from "./portfolio-arrow";
+import { PortfolioLogos } from "./portfolio-logos";
 import { useLandingFavicon } from "./use-landing-favicon";
 
 type Project = {
   name: string;
+  logo: string;
   image: {
     src: string;
     width: number;
@@ -34,14 +35,24 @@ export function PortfolioCarousel({
   wave: ReactNode;
 }) {
   const section = useRef<HTMLElement>(null);
-  const [active, setActive] = useState(0);
+  const [{ active, direction }, setSelection] = useState({
+    active: 0,
+    direction: 1,
+  });
   const project = projects[active];
+  const widestFrameAspect = Math.max(
+    ...projects.map(({ image }) => {
+      const [left, top, right, bottom] = image.cardBounds;
+      return (right - left) / (bottom - top);
+    }),
+  );
   useLandingFavicon(section, project.color);
 
   function select(offset: number) {
-    setActive(
-      (current) => (current + offset + projects.length) % projects.length,
-    );
+    setSelection((current) => ({
+      active: (current.active + offset + projects.length) % projects.length,
+      direction: offset > 0 ? 1 : -1,
+    }));
   }
 
   return (
@@ -64,7 +75,10 @@ export function PortfolioCarousel({
         {heading}
         <div className="mt-[calc(38*var(--u))] grid grid-cols-[minmax(0,1fr)_minmax(0,calc(694*var(--u)))_minmax(0,1fr)] place-items-center gap-4 studio-mobile:grid-cols-[minmax(0,1fr)_minmax(0,7fr)_minmax(0,1fr)] studio-mobile:gap-[0.45rem]">
           <PortfolioArrow direction="right" onSelect={() => select(1)} />
-          <div className="grid w-full grid-cols-1 items-center">
+          <div
+            className="relative w-full"
+            style={{ aspectRatio: widestFrameAspect }}
+          >
             {projects.map(({ name, image, alt }, index) => {
               const [left, top, right, bottom] = image.cardBounds;
               const cardWidth = right - left;
@@ -75,8 +89,10 @@ export function PortfolioCarousel({
                   key={name}
                   aria-hidden={active !== index}
                   data-active={active === index}
-                  className="relative col-start-1 row-start-1 w-full opacity-0 data-[active=true]:opacity-100 motion-safe:transition-opacity motion-safe:duration-300"
-                  style={{ aspectRatio: `${cardWidth} / ${cardHeight}` }}
+                  className="absolute top-1/2 left-1/2 h-full -translate-1/2 opacity-0 data-[active=true]:opacity-100 motion-safe:transition-opacity motion-safe:duration-300"
+                  style={{
+                    width: `${(100 * cardWidth) / cardHeight / widestFrameAspect}%`,
+                  }}
                 >
                   <Image
                     src={image.src}
@@ -99,7 +115,11 @@ export function PortfolioCarousel({
           <PortfolioArrow direction="left" onSelect={() => select(-1)} />
         </div>
         <output className="sr-only">{project.name}</output>
-        <LogoRow featuredProject={project.name} />
+        <PortfolioLogos
+          projects={projects}
+          active={active}
+          direction={direction}
+        />
       </div>
       {wave}
     </section>

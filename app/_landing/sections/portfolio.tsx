@@ -5,6 +5,7 @@ import { PortfolioCarousel } from "../portfolio-carousel";
 const projects = [
   {
     name: "Prevaisor",
+    logo: "logo-previsore.svg",
     image: {
       src: "/images/landing/previsore-project@2x.webp",
       width: 1388,
@@ -16,6 +17,7 @@ const projects = [
   },
   {
     name: "Doshi",
+    logo: "logo-doshi.svg",
     image: {
       src: "/images/landing/doshi-project.png",
       width: 2969,
@@ -27,6 +29,7 @@ const projects = [
   },
   {
     name: "Radian Robots",
+    logo: "logo-radian.svg",
     image: {
       src: "/images/landing/radian-robots-project.png",
       width: 3232,
@@ -38,6 +41,7 @@ const projects = [
   },
   {
     name: "Collision Centers",
+    logo: "logo-north.svg",
     image: {
       src: "/images/landing/collision-centers-project.png",
       width: 3043,
@@ -46,6 +50,30 @@ const projects = [
     },
     alt: "هویت بصری Collision Centers، همراه با لوگو، تابلو، خودرو و نمونه نمایش روی گوشی",
     color: "#F1D88D",
+  },
+  {
+    name: "Milan",
+    logo: "logo-milan.svg",
+    image: {
+      src: "/images/landing/milan-project.png",
+      width: 716,
+      height: 544,
+      cardBounds: [51, 22, 716, 544],
+    },
+    alt: "هویت بصری Milan، همراه با لوگو و نمونه نمایش برند روی گوشی، ساعت و کارت",
+    color: "#C8CBD1",
+  },
+  {
+    name: "Puressis",
+    logo: "logo-puressis.svg",
+    image: {
+      src: "/images/landing/puressis-project.png",
+      width: 712,
+      height: 492,
+      cardBounds: [39, 0, 712, 492],
+    },
+    alt: "هویت بصری Puressis، همراه با لوگوی محصولات مراقبت از حیوانات و نمونه بسته بندی شامپو",
+    color: "#C9D3BE",
   },
 ] as const;
 
