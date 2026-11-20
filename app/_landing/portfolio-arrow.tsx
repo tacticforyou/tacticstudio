@@ -2,19 +2,28 @@
 
 import { useEffect, useRef, type MouseEvent } from "react";
 import { Art } from "./components/art";
+import { useHoverActivation } from "./components/use-hover-activation";
 import { animatePress } from "./press-animation";
 
 const labels = { right: "پروژه بعدی", left: "پروژه قبلی" };
 
 export function PortfolioArrow({
   direction,
+  position,
   onSelect,
   onPrepare,
 }: {
   direction: keyof typeof labels;
+  position: number;
   onSelect: () => void;
   onPrepare?: () => void;
 }) {
+  const hover = useHoverActivation(
+    ".studio-art",
+    "translate",
+    `calc(${direction === "left" ? -8 : 8} * var(--u)) 0`,
+    position,
+  );
   const anchorRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
   const pressAnimation = useRef<Animation | null>(null);
@@ -115,6 +124,7 @@ export function PortfolioArrow({
   }, []);
 
   function handleClick(event: MouseEvent<HTMLButtonElement>) {
+    hover.onClick();
     pressAnimation.current = animatePress(event.currentTarget);
     onSelect();
   }
@@ -136,9 +146,16 @@ export function PortfolioArrow({
         className="studio-project-arrow relative block size-full cursor-pointer rounded-full"
         data-direction={direction}
         data-click-sound="project"
+        {...hover}
         onClick={handleClick}
-        onPointerEnter={onPrepare}
-        onPointerDown={onPrepare}
+        onPointerEnter={(event) => {
+          onPrepare?.();
+          hover.onPointerEnter(event);
+        }}
+        onPointerDown={() => {
+          onPrepare?.();
+          hover.onPointerDown();
+        }}
         onFocus={onPrepare}
       >
         <Art

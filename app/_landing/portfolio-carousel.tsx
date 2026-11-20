@@ -140,6 +140,7 @@ export function PortfolioCarousel({
         <div className="mt-[calc(38*var(--u))] grid grid-cols-[minmax(0,1fr)_minmax(0,calc(694*var(--u)))_minmax(0,1fr)] place-items-center gap-x-4 max-[600px]:grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] max-[600px]:gap-x-2 max-[600px]:gap-y-6 studio-tablet:studio-mobile:grid-cols-[minmax(0,1fr)_minmax(0,7fr)_minmax(0,1fr)] studio-tablet:studio-mobile:gap-x-[0.45rem]">
           <PortfolioArrow
             direction="right"
+            position={position}
             onSelect={() => select(1)}
             onPrepare={() => prepare((active + 1) % projects.length)}
           />
@@ -161,6 +162,7 @@ export function PortfolioCarousel({
           </div>
           <PortfolioArrow
             direction="left"
+            position={position}
             onSelect={() => select(-1)}
             onPrepare={() =>
               prepare((active - 1 + projects.length) % projects.length)
