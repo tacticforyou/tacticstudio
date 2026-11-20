@@ -1,4 +1,5 @@
 import Image, { type StaticImageData } from "next/image";
+import { imageQuality } from "@/lib/image-quality";
 import heroAi from "@/public/images/landing/hero-ai-art.webp";
 import webBackground from "@/public/images/landing/services-web-background.webp";
 import portraitRight from "@/public/images/landing/shared-portrait-right.webp";
@@ -66,6 +67,7 @@ export function Art({
         alt={alt}
         fill
         sizes={sizes}
+        quality={imageQuality}
         unoptimized={unoptimized}
         loading={eager ? "eager" : undefined}
         className={imageClassName}

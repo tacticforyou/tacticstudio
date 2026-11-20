@@ -5,6 +5,7 @@ import { notFound } from "next/navigation";
 import { Suspense } from "react";
 import Markdown from "react-markdown";
 import { getProjectBySlug } from "@/lib/content/projects";
+import { imageQuality } from "@/lib/image-quality";
 import { projectPath, siteName, siteUrl } from "@/lib/site";
 
 type ProjectPageProps = Pick<PageProps<"/projects/[slug]">, "params">;
@@ -59,6 +60,7 @@ async function ProjectDetails({ params }: ProjectPageProps) {
         className="h-auto w-full rounded-lg"
         loading="eager"
         sizes="(max-width: 768px) calc(100vw - 3rem), 720px"
+        quality={imageQuality}
       />
       <div className="markdown mt-8 max-w-prose">
         <Markdown skipHtml>{project.body}</Markdown>

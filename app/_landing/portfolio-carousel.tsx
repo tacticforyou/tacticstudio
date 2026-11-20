@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { type CSSProperties, type ReactNode, useRef, useState } from "react";
+import { imageQuality } from "@/lib/image-quality";
 import { PortfolioArrow } from "./portfolio-arrow";
 import { PortfolioLogos, type PortfolioLogo } from "./portfolio-logos";
 import { useLandingFavicon } from "./use-landing-favicon";
@@ -106,6 +107,7 @@ export function PortfolioCarousel({
                       top: `${(-100 * top) / cardHeight}%`,
                     }}
                     sizes="(max-width: 760px) 74vw, (max-width: 1920px) 39vw, 750px"
+                    quality={imageQuality}
                     unoptimized={index === 0}
                   />
                 </figure>

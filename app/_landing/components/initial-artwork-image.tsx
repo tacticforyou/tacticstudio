@@ -2,6 +2,7 @@
 
 import Image, { type StaticImageData } from "next/image";
 import { useState } from "react";
+import { imageQuality } from "@/lib/image-quality";
 
 export function InitialArtworkImage({
   src,
@@ -42,6 +43,7 @@ export function InitialArtworkImage({
         alt={alt}
         fill
         sizes={sizes}
+        quality={imageQuality}
         unoptimized={unoptimized}
         loading="eager"
         className={imageClassName}
