@@ -42,60 +42,67 @@
   .studio-footer-background,
   .studio-testimonials {
     /* Blend to white in the gradient so the pale tail is painted as opaque color. */
-    background-image: radial-gradient(
-      ellipse calc(2673 * var(--u)) calc(1300 * var(--u)) at
-        var(--studio-glow-center) in srgb,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 98%,
-          var(--color-studio-white)
-        )
-        0%,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 89%,
-          var(--color-studio-white)
-        )
-        19%,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 75%,
-          var(--color-studio-white)
-        )
-        30%,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 50%,
-          var(--color-studio-white)
-        )
-        40%,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 25%,
-          var(--color-studio-white)
-        )
-        50%,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 13%,
-          var(--color-studio-white)
-        )
-        60%,
-      color-mix(in srgb, var(--color-studio-mist) 4%, var(--color-studio-white))
-        70%,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 1.2%,
-          var(--color-studio-white)
-        )
-        80%,
-      color-mix(
-          in srgb,
-          var(--color-studio-mist) 0.25%,
-          var(--color-studio-white)
-        )
-        90%,
+    --studio-glow-radius-x: calc(2673 * var(--u));
+    --studio-glow-radius-y: calc(1300 * var(--u));
+    --studio-glow-color-0: color-mix(
+      in srgb,
+      var(--color-studio-mist) 98%,
       var(--color-studio-white)
+    );
+    --studio-glow-color-1: color-mix(
+      in srgb,
+      var(--color-studio-mist) 89%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-2: color-mix(
+      in srgb,
+      var(--color-studio-mist) 75%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-3: color-mix(
+      in srgb,
+      var(--color-studio-mist) 50%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-4: color-mix(
+      in srgb,
+      var(--color-studio-mist) 25%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-5: color-mix(
+      in srgb,
+      var(--color-studio-mist) 13%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-6: color-mix(
+      in srgb,
+      var(--color-studio-mist) 4%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-7: color-mix(
+      in srgb,
+      var(--color-studio-mist) 1.2%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-8: color-mix(
+      in srgb,
+      var(--color-studio-mist) 0.25%,
+      var(--color-studio-white)
+    );
+    --studio-glow-color-9: var(--color-studio-white);
+    background-image: radial-gradient(
+      ellipse var(--studio-glow-radius-x) var(--studio-glow-radius-y) at
+        var(--studio-glow-center) in srgb,
+      var(--studio-glow-color-0) 0%,
+      var(--studio-glow-color-1) 19%,
+      var(--studio-glow-color-2) 30%,
+      var(--studio-glow-color-3) 40%,
+      var(--studio-glow-color-4) 50%,
+      var(--studio-glow-color-5) 60%,
+      var(--studio-glow-color-6) 70%,
+      var(--studio-glow-color-7) 80%,
+      var(--studio-glow-color-8) 90%,
+      var(--studio-glow-color-9)
     );
   }
 

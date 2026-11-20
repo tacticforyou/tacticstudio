@@ -9,7 +9,10 @@
     position: absolute;
     z-index: -1;
     inset: var(--footer-artwork-top) 0 0;
-    --studio-glow-center: calc(948.5 * var(--u)) calc(1166.5 * var(--u));
+    --studio-glow-center-x: calc(948.5 * var(--u));
+    --studio-glow-center-y: calc(1166.5 * var(--u));
+    --studio-glow-center: var(--studio-glow-center-x)
+      var(--studio-glow-center-y);
     overflow: clip;
     border-radius: var(--studio-radius);
     pointer-events: none;

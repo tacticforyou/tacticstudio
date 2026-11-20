@@ -4,7 +4,7 @@ import { Art, Portrait, Wave } from "../components/art";
 import { BackToTopLink } from "../components/back-to-top-link";
 import { Tagline } from "../components/tagline";
 import { StudioWordmark } from "../components/studio-wordmark";
-import { WaterBackground } from "../components/water-background";
+import { FooterWaterBackground } from "../components/footer-water-background";
 import { contact } from "../copy";
 
 function FooterColumn({
@@ -31,9 +31,9 @@ export function Footer() {
 
   return (
     <footer id="contact" className="studio-band studio-footer">
-      <WaterBackground className="studio-footer-background">
+      <FooterWaterBackground>
         <Portrait className="studio-footer-face" />
-      </WaterBackground>
+      </FooterWaterBackground>
       <div className="studio-shell relative text-center studio-tablet:grid studio-tablet:grid-cols-6 studio-tablet:items-start studio-tablet:gap-x-6 studio-tablet:gap-y-10 studio-tablet:[&>p]:col-span-full">
         <Tagline />
         <div className="mx-auto mt-[calc(106*var(--u))] grid min-h-[calc(210*var(--u))] w-full max-w-[calc(1117*var(--u))] grid-cols-4 gap-x-[min(12.44%,calc(139*var(--u)))] text-start studio-mobile:mt-12 studio-mobile:grid-cols-2 studio-mobile:gap-x-4 studio-mobile:gap-y-6 studio-tablet:contents">
