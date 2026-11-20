@@ -98,7 +98,7 @@ function movement(layer: ArtworkLayer, reduced: boolean): Variants {
     return {
       hidden: {
         x: reduced || !diagonal ? 0 : "18%",
-        y: reduced ? 0 : diagonal ? "90%" : "92%",
+        y: reduced ? 0 : `${diagonal ? 90 : (layer.entryY ?? 92)}%`,
         opacity: reduced ? 0 : 1,
         transition: { duration: reduced ? 0 : 0.22, delay: 0, ease },
       },
@@ -198,11 +198,12 @@ function ArtworkPiece({
       data-artwork-layer={layer.id}
       className="absolute"
       variants={movement(layer, reduced)}
-      style={position(
-        relative,
-        viewport?.[2] ?? width,
-        viewport?.[3] ?? height,
-      )}
+      style={{
+        ...position(relative, viewport?.[2] ?? width, viewport?.[3] ?? height),
+        clipPath: layer.sourceClip
+          ? `polygon(${layer.sourceClip.map(([x, y]) => `${x}% ${y}%`).join(", ")})`
+          : undefined,
+      }}
     >
       <Image
         {...layerImage(layer, width)}

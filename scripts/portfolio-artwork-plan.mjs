@@ -60,7 +60,12 @@ export const artworkPlan = [
       layer("billboard", [6501, 6521]),
       layer("phone-card", 6513, "backdrop"),
       layer("calendar", [6512, 6514]),
-      layer("phone", 6518, "hero"),
+      layer("phone", 6520, "masked-rise", {
+        asset: "phone-complete",
+        delay: 0.22,
+        clip: 6519,
+        startBelowClip: true,
+      }),
     ],
   },
   {
@@ -79,7 +84,13 @@ export const artworkPlan = [
         delay: 0.22,
         clip: 6260,
       }),
-      layer("bag-lower", 6264, "masked-rise", { delay: 0.22, clip: 6263 }),
+      layer("bag-lower", 6264, "masked-rise", {
+        delay: 0.22,
+        clip: 6263,
+        // Project-frame coordinates: exclude the forearm left of the card,
+        // ending 16 source pixels above the first visible bag edge.
+        sourceNotch: [0, 1660],
+      }),
     ],
   },
   {
@@ -98,7 +109,12 @@ export const artworkPlan = [
       layer("mark-top", 6546, "accent"),
       layer("mark-middle", 6552, "accent"),
       layer("mark-bottom", 6549, "accent"),
-      layer("hand", 6561, "lift"),
+      layer("hand", 6565, "masked-rise", {
+        asset: "hand-complete",
+        delay: 0.22,
+        clip: 6564,
+        startBelowClip: true,
+      }),
     ],
   },
   {
@@ -151,7 +167,12 @@ export const artworkPlan = [
       layer("portrait-card", 6374, "backdrop"),
       layer("hand-card", 6380),
       layer("sign", [6381, 6382]),
-      layer("hand", 6383, "lift"),
+      layer("hand", 6386, "masked-rise", {
+        asset: "hand-complete",
+        delay: 0.22,
+        clip: 6385,
+        startBelowClip: true,
+      }),
       layer("woman", 6377, "hero", { clip: 6376 }),
     ],
     poster: [6350, 6351, 6352, 6353, 6359, 6363, 6373, 6378, 6382, 6383, 6387],

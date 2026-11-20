@@ -269,12 +269,36 @@ if (mode === "--export") {
           throw new Error(
             `Mask ${clip.id} needs its exact supported corner geometry.`,
           );
+        const localBounds = relative(asset.bounds);
+        let sourceClip;
+        if (layer.sourceNotch) {
+          const x =
+            (100 * (layer.sourceNotch[0] - localBounds[0])) / localBounds[2];
+          const y =
+            (100 * (layer.sourceNotch[1] - localBounds[1])) / localBounds[3];
+          if (x < 0 || x > 100 || y < 0 || y > 100)
+            throw new Error(
+              `Source polygon for ${layer.name} lies outside its image.`,
+            );
+          sourceClip = [
+            [x, 0],
+            [100, 0],
+            [100, 100],
+            [0, 100],
+            [0, y],
+            [x, y],
+          ].map((point) => point.map((value) => +value.toFixed(4)));
+        }
+        if (layer.startBelowClip && !clip)
+          throw new Error(
+            `A fixed clip is required for ${layer.name}'s entrance.`,
+          );
         return {
           id: layer.name,
           src: asset.src,
           width: asset.width,
           height: asset.height,
-          bounds: relative(asset.bounds),
+          bounds: localBounds,
           motion: layer.motion,
           delay:
             layer.delay ??
@@ -283,6 +307,19 @@ if (mode === "--export") {
               : layer.motion === "panel"
                 ? index * 0.025
                 : 0.1 + index * 0.014),
+          ...(layer.startBelowClip
+            ? {
+                entryY: +(
+                  (100 *
+                    (clip.absoluteBounds.y +
+                      clip.absoluteBounds.height +
+                      project.bounds[3] * 0.01 -
+                      asset.bounds[1])) /
+                  asset.bounds[3]
+                ).toFixed(4),
+              }
+            : {}),
+          ...(sourceClip ? { sourceClip } : {}),
           ...(clip
             ? {
                 clip: {

@@ -22,6 +22,8 @@ export type ArtworkLayer = {
     | "masked-rise"
     | "write";
   delay: number;
+  entryY?: number;
+  sourceClip?: readonly (readonly [number, number])[];
   clip?: ArtworkRegion;
 };
 
