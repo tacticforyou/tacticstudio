@@ -1,6 +1,6 @@
 "use client";
 
-import { useInView } from "motion/react";
+import { useInView, useReducedMotion } from "motion/react";
 import {
   type CSSProperties,
   type ReactNode,
@@ -16,6 +16,12 @@ import { prepareProjectArtwork, ProjectArtwork } from "./project-artwork";
 import { useLandingFavicon } from "./use-landing-favicon";
 import { usePortfolioTheme } from "./portfolio-theme";
 
+function isCarouselControl(target: EventTarget | null, section: HTMLElement) {
+  const control =
+    target instanceof Element ? target.closest("button, a[href]") : null;
+  return control !== null && section.contains(control);
+}
+
 export function PortfolioCarousel({
   projects,
   heading,
@@ -26,6 +32,11 @@ export function PortfolioCarousel({
   wave: ReactNode;
 }) {
   const section = useRef<HTMLElement>(null);
+  const artwork = useRef<HTMLDivElement>(null);
+  const inView = useInView(artwork, { amount: 0.5 });
+  const reducedMotion = useReducedMotion();
+  const [controlsHovered, setControlsHovered] = useState(false);
+  const [controlsFocused, setControlsFocused] = useState(false);
   const [{ position, visited }, setNavigation] = useState({
     position: 0,
     visited: [0],
@@ -76,31 +87,80 @@ export function PortfolioCarousel({
     void prepareProjectArtwork(projects[index]).catch(() => {});
   }
 
-  function navigate(next: number) {
-    requestedPosition.current = next;
-    const version = ++requestVersion.current;
-    const index =
-      ((next % projects.length) + projects.length) % projects.length;
-    void prepareProjectArtwork(projects[index])
-      .then(() => {
-        if (version !== requestVersion.current) return;
-        setNavigation((current) => ({
-          position: next,
-          visited: current.visited.includes(index)
-            ? current.visited
-            : [...current.visited, index],
-        }));
-      })
-      .catch((error) => {
-        if (version !== requestVersion.current) return;
-        requestedPosition.current = position;
-        console.error("Unable to load project artwork", error);
-      });
-  }
+  const navigate = useCallback(
+    (next: number) => {
+      requestedPosition.current = next;
+      const version = ++requestVersion.current;
+      const index =
+        ((next % projects.length) + projects.length) % projects.length;
+      void prepareProjectArtwork(projects[index])
+        .then(() => {
+          if (version !== requestVersion.current) return;
+          setNavigation((current) => ({
+            position: next,
+            visited: current.visited.includes(index)
+              ? current.visited
+              : [...current.visited, index],
+          }));
+        })
+        .catch((error) => {
+          if (version !== requestVersion.current) return;
+          requestedPosition.current = position;
+          console.error("Unable to load project artwork", error);
+        });
+    },
+    [position, projects],
+  );
 
-  function select(offset: number) {
-    navigate(requestedPosition.current + offset);
-  }
+  const select = useCallback(
+    (offset: number) => {
+      navigate(requestedPosition.current + offset);
+    },
+    [navigate],
+  );
+
+  useEffect(() => {
+    if (
+      !inView ||
+      reducedMotion ||
+      controlsHovered ||
+      controlsFocused ||
+      projects.length < 2
+    )
+      return;
+
+    let timer: number | undefined;
+    function restart() {
+      window.clearInterval(timer);
+      if (document.hidden) return;
+      timer = window.setInterval(() => {
+        if (
+          document.hidden ||
+          requestedPosition.current !== position ||
+          section.current?.querySelector(
+            "button:hover, a[href]:hover, :focus-visible",
+          )
+        )
+          return;
+        select(1);
+      }, 8000);
+    }
+
+    restart();
+    document.addEventListener("visibilitychange", restart);
+    return () => {
+      window.clearInterval(timer);
+      document.removeEventListener("visibilitychange", restart);
+    };
+  }, [
+    controlsFocused,
+    controlsHovered,
+    inView,
+    position,
+    projects.length,
+    reducedMotion,
+    select,
+  ]);
 
   function selectProject(index: number) {
     const current = requestedPosition.current;
@@ -120,6 +180,25 @@ export function PortfolioCarousel({
       ref={registerSection}
       id="work"
       aria-labelledby="work-title"
+      onPointerOverCapture={(event) => {
+        if (event.pointerType === "mouse") {
+          setControlsHovered(
+            isCarouselControl(event.target, event.currentTarget),
+          );
+        }
+      }}
+      onPointerOutCapture={(event) => {
+        if (event.pointerType === "mouse") {
+          setControlsHovered(
+            isCarouselControl(event.relatedTarget, event.currentTarget),
+          );
+        }
+      }}
+      onPointerLeave={() => setControlsHovered(false)}
+      onFocusCapture={(event) => {
+        setControlsFocused(event.target.matches(":focus-visible"));
+      }}
+      onBlurCapture={() => setControlsFocused(false)}
       className="studio-band studio-portfolio overflow-visible pt-[calc(25*var(--u))] pb-[calc(114*var(--u))] studio-mobile:pt-10 studio-mobile:pb-12"
     >
       <div
@@ -145,6 +224,7 @@ export function PortfolioCarousel({
             onPrepare={() => prepare((active + 1) % projects.length)}
           />
           <div
+            ref={artwork}
             className="relative w-full max-[600px]:col-span-full max-[600px]:col-start-1 max-[600px]:row-start-1"
             style={{ aspectRatio: widestFrameAspect }}
           >
