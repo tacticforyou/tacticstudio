@@ -6,6 +6,9 @@
   }
 
   .studio-landing {
+    --studio-hover-duration-ms: 2220;
+    /* Power-six ease-out approximation: 1 - (1 - t)^6. */
+    --studio-hover-easing: cubic-bezier(0.184, 1, 0.27, 1);
     --u: clamp(0.68px, 0.0520833vw, 1px);
     --studio-radius: calc(33 * var(--u));
     --studio-card-radius: calc(40 * var(--u));
@@ -147,6 +150,27 @@
     --studio-button-color: transparent;
     border-color: transparent;
     background-color: var(--studio-button-color);
+    transition: background-color 260ms ease-out;
+  }
+
+  .studio-button[data-hover-activating="true"] {
+    background-color: color-mix(
+      in srgb,
+      var(--studio-button-color),
+      var(--color-studio-ink) 18%
+    );
+    transition-duration: calc(var(--studio-hover-duration-ms) * 1ms);
+    transition-timing-function: var(--studio-hover-easing);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .studio-button[data-hover-activating="true"] {
+      transition-timing-function: steps(3, end);
+    }
+
+    .studio-button:not([data-hover-activating="true"]) {
+      transition-duration: 0s;
+    }
   }
 
   .studio-button-shadow {
@@ -171,7 +195,7 @@
   }
 
   @media (hover: hover) {
-    .studio-button:hover {
+    .studio-button:hover:not([data-hover-activating="true"]) {
       background-color: color-mix(
         in srgb,
         var(--studio-button-color),
@@ -185,22 +209,8 @@
       animation: studio-button-shadow-reveal 3s ease-out both;
     }
 
-    .studio-button {
-      transition: background-color 260ms ease-out;
-    }
-
-    .studio-button-glint {
-      transition: transform 440ms var(--ease-studio);
-    }
-
     .studio-button:focus-visible .studio-button-glint {
       transform: translate(50%, 43%) scale(1.025, 0.9);
-    }
-
-    @media (hover: hover) {
-      .studio-button:hover .studio-button-glint {
-        transform: translate(50%, 43%) scale(1.025, 0.9);
-      }
     }
 
     .studio-wordmark img {
@@ -271,22 +281,24 @@
     position: relative;
   }
 
-  .studio-nav-label::after,
+  .studio-nav-label:not(.studio-dwell-nav-label)::after,
+  .studio-nav-progress,
   .studio-footer-column a::after {
     position: absolute;
     inset-inline: 0;
     inset-block-end: -0.24em;
     height: 1px;
     background: currentColor;
-    transform: scaleX(0);
+    scale: 0 1;
     transform-origin: right center;
     pointer-events: none;
     content: "";
   }
 
   .studio-nav-link:is(:hover, :focus-visible) > .studio-nav-label::after,
-  .studio-footer-column a:is(:hover, :focus-visible)::after {
-    transform: scaleX(1);
+  .studio-footer-column a:is(:hover, :focus-visible)::after,
+  .studio-nav-link:focus-visible .studio-nav-progress {
+    scale: 1 1;
   }
 
   .studio-step-label h3,
@@ -379,7 +391,7 @@
   @media (prefers-reduced-motion: no-preference) {
     .studio-nav-label::after,
     .studio-footer-column a::after {
-      transition: transform 240ms var(--ease-studio);
+      transition: scale 240ms var(--ease-studio);
     }
   }
 
