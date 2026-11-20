@@ -247,6 +247,7 @@ export function ProjectArtwork({
   const [width, height] = projectFrame(project);
   const scene = project.scene;
   const [left, top] = project.image.cardBounds;
+  const exitTogether = project.name === "Milan";
   return (
     <LazyMotion features={domAnimation} strict>
       <m.figure
@@ -260,12 +261,28 @@ export function ProjectArtwork({
         variants={{
           shown: {
             visibility: "visible",
-            transition: { when: "beforeChildren", duration: 0 },
+            ...(exitTogether ? { opacity: 1 } : {}),
+            transition: {
+              when: "beforeChildren",
+              duration: exitTogether && !reduced ? 0.08 : 0,
+              ease,
+            },
           },
-          hidden: {
-            visibility: "hidden",
-            transition: { when: "afterChildren", duration: 0 },
-          },
+          hidden: exitTogether
+            ? {
+                opacity: 0,
+                // Fade the composed artwork before any layer resets its pose.
+                transition: {
+                  when: "beforeChildren",
+                  duration: reduced ? 0 : 0.16,
+                  ease,
+                },
+                transitionEnd: { visibility: "hidden" },
+              }
+            : {
+                visibility: "hidden",
+                transition: { when: "afterChildren", duration: 0 },
+              },
         }}
       >
         <figcaption className="sr-only">{project.alt}</figcaption>
