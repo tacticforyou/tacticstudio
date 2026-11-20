@@ -46,18 +46,14 @@ export function WaterBackground({
 
     const motion = matchMedia("(prefers-reduced-motion: reduce)");
     const pointer = matchMedia("(any-hover: hover) and (any-pointer: fine)");
-    const canvas = document.createElement("canvas");
-    const context = canvas.getContext("2d");
-    if (!context) return;
-    const gpu =
-      paintScene && !motion.matches && pointer.matches
-        ? createWaterWebGLRenderer(background, paintScene, {
-            refractionScale,
-            highlightOpacity,
-            shadowOpacity,
-            waterLight,
-          })
-        : null;
+    let gpu: ReturnType<typeof createWaterWebGLRenderer> = null;
+    let backend: "webgl" | "svg" | null = null;
+    let fallback: {
+      canvas: HTMLCanvasElement;
+      context: CanvasRenderingContext2D;
+      pixels: ImageData;
+      edgeFade: Float32Array<ArrayBuffer>;
+    } | null = null;
 
     let width = 0;
     let height = 0;
@@ -66,8 +62,6 @@ export function WaterBackground({
     let previous = new Float32Array(0);
     let sourceActivity = new Float32Array(0);
     let damping = new Float32Array(0);
-    let edgeFade = new Float32Array(0);
-    let pixels: ImageData;
     let frame = 0;
     let lastFrame = 0;
     let accumulatedTime = 0;
@@ -93,16 +87,59 @@ export function WaterBackground({
       current.fill(0);
       previous.fill(0);
       sourceActivity.fill(0);
-      background!.style.removeProperty("filter");
-      map!.removeAttribute("href");
-      displacement!.setAttribute("scale", "0");
-      gpu?.hide();
+      if (backend === "svg") clearSvg();
+      if (backend === "webgl") gpu?.hide();
+      backend = null;
     }
 
     function clear() {
       stop();
       target = null;
       lastPoint = null;
+    }
+
+    function clearSvg() {
+      background!.style.removeProperty("filter");
+      map!.removeAttribute("href");
+      displacement!.setAttribute("scale", "0");
+    }
+
+    function updateEligibility() {
+      clear();
+      if (!gpu && paintScene && !motion.matches && pointer.matches) {
+        gpu = createWaterWebGLRenderer(background!, paintScene, {
+          refractionScale,
+          highlightOpacity,
+          shadowOpacity,
+          waterLight,
+        });
+        if (width && height) gpu?.resize(width, height);
+      }
+    }
+
+    function ensureFallback() {
+      if (fallback) return fallback;
+      const canvas = document.createElement("canvas");
+      canvas.width = width;
+      canvas.height = height;
+      const context = canvas.getContext("2d", { willReadFrequently: true });
+      if (!context) return null;
+      const pixels = context.createImageData(width, height);
+      const edgeFade = new Float32Array(width * height);
+      for (let i = 0; i < pixels.data.length; i += 4) {
+        pixels.data[i] = 128;
+        pixels.data[i + 1] = 128;
+        pixels.data[i + 2] = 128;
+        pixels.data[i + 3] = 255;
+      }
+      for (let y = 0; y < height; y++) {
+        for (let x = 0; x < width; x++) {
+          const edge = Math.min(x, y, width - 1 - x, height - 1 - y);
+          edgeFade[y * width + x] = smoothstep(edge / 8);
+        }
+      }
+      fallback = { canvas, context, pixels, edgeFade };
+      return fallback;
     }
 
     function resize() {
@@ -113,21 +150,12 @@ export function WaterBackground({
       width = Math.min(192, Math.max(64, Math.round(bounds.width / 6)));
       height = Math.max(2, Math.round((width * bounds.height) / bounds.width));
       cellSize = bounds.width / (width - 1);
-      canvas.width = width;
-      canvas.height = height;
       current = new Float32Array(width * height);
       previous = new Float32Array(width * height);
       sourceActivity = new Float32Array(width * height);
       damping = new Float32Array(width * height);
-      edgeFade = new Float32Array(width * height);
-      pixels = context!.createImageData(width, height);
+      fallback = null;
       gpu?.resize(width, height);
-      for (let i = 0; i < pixels.data.length; i += 4) {
-        pixels.data[i] = 128;
-        pixels.data[i + 1] = 128;
-        pixels.data[i + 2] = 128;
-        pixels.data[i + 3] = 255;
-      }
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
           const edge = Math.min(x, y, width - 1 - x, height - 1 - y);
@@ -135,7 +163,6 @@ export function WaterBackground({
           const i = y * width + x;
           // Absorb the wake at the perimeter instead of reflecting sharp rings.
           damping[i] = 0.86 + 0.123 * fade;
-          edgeFade[i] = fade;
         }
       }
     }
@@ -193,6 +220,11 @@ export function WaterBackground({
       }
       const elapsed = steps * simulationStep;
       const useGPU = gpu?.ready ?? false;
+      const svg = useGPU ? null : ensureFallback();
+      if (!useGPU && !svg) {
+        stop();
+        return;
+      }
       const lightingStrength = strength;
 
       let energy = 0;
@@ -203,10 +235,10 @@ export function WaterBackground({
           const dy = current[i - width] - current[i + width];
           energy = Math.max(energy, Math.abs(dx), Math.abs(dy));
           if (useGPU) continue;
-          const fade = edgeFade[i];
+          const fade = svg!.edgeFade[i];
           // A soft limit avoids hard creases when several waves overlap.
-          pixels.data[i * 4] = 128 + 110 * Math.tanh(dx * 1.6) * fade;
-          pixels.data[i * 4 + 1] = 128 + 110 * Math.tanh(dy * 1.6) * fade;
+          svg!.pixels.data[i * 4] = 128 + 110 * Math.tanh(dx * 1.6) * fade;
+          svg!.pixels.data[i * 4 + 1] = 128 + 110 * Math.tanh(dy * 1.6) * fade;
           // Use the spare blue channel for light from the upper left at 45 degrees.
           const nx = dx * 0.9;
           const ny = dy * 0.9;
@@ -217,7 +249,7 @@ export function WaterBackground({
             waterLight.z;
           const heightLight = 0.2 * Math.tanh(current[i] * 0.7);
           const light = Math.tanh(diffuse * 2 + heightLight);
-          pixels.data[i * 4 + 2] = 128 + 110 * light * fade * strength;
+          svg!.pixels.data[i * 4 + 2] = 128 + 110 * light * fade * strength;
         }
       }
 
@@ -238,16 +270,16 @@ export function WaterBackground({
       const envelope = Math.min(1, energy / 0.035) * tail;
       strength += (envelope - strength) * (1 - Math.exp(-elapsed / 110));
       if (useGPU) {
+        if (backend === "svg") clearSvg();
         gpu!.render(current, strength, lightingStrength);
-        background!.style.removeProperty("filter");
-        map!.removeAttribute("href");
-        displacement!.setAttribute("scale", "0");
+        backend = "webgl";
       } else {
-        gpu?.hide();
-        context!.putImageData(pixels, 0, 0);
-        map!.setAttribute("href", canvas.toDataURL());
+        if (backend === "webgl") gpu?.hide();
+        svg!.context.putImageData(svg!.pixels, 0, 0);
+        map!.setAttribute("href", svg!.canvas.toDataURL());
         displacement!.setAttribute("scale", String(refractionScale * strength));
-        background!.style.filter = `url(#${filterId})`;
+        if (backend !== "svg") background!.style.filter = `url(#${filterId})`;
+        backend = "svg";
       }
       frame = requestAnimationFrame(paint);
     }
@@ -367,9 +399,10 @@ export function WaterBackground({
     section.addEventListener("pointerdown", press, { passive: true });
     section.addEventListener("pointerleave", leave);
     section.addEventListener("pointercancel", leave);
-    motion.addEventListener("change", clear);
-    pointer.addEventListener("change", clear);
+    motion.addEventListener("change", updateEligibility);
+    pointer.addEventListener("change", updateEligibility);
     document.addEventListener("visibilitychange", clear);
+    updateEligibility();
 
     return () => {
       clear();
@@ -380,8 +413,8 @@ export function WaterBackground({
       section.removeEventListener("pointerdown", press);
       section.removeEventListener("pointerleave", leave);
       section.removeEventListener("pointercancel", leave);
-      motion.removeEventListener("change", clear);
-      pointer.removeEventListener("change", clear);
+      motion.removeEventListener("change", updateEligibility);
+      pointer.removeEventListener("change", updateEligibility);
       document.removeEventListener("visibilitychange", clear);
     };
   }, [filterId, paintScene]);

@@ -82,6 +82,7 @@ export function createWaterWebGLRenderer(
     "pointer-events-none absolute inset-0 z-2 size-full rounded-[inherit]";
   canvas.dataset.waterWebgl = "";
   canvas.style.visibility = "hidden";
+  canvas.dataset.waterState = "idle";
   background.append(canvas);
 
   let gridWidth = 0;
@@ -89,6 +90,7 @@ export function createWaterWebGLRenderer(
   let cssWidth = 0;
   let cssHeight = 0;
   let ready = false;
+  let active = false;
   let disposed = false;
   let sceneFrame = 0;
   let resources: ReturnType<typeof initialize> | null = null;
@@ -164,6 +166,19 @@ export function createWaterWebGLRenderer(
         "highlightOpacity",
         "shadowOpacity",
       ]);
+      gl!.useProgram(map.program);
+      gl!.uniform1i(map.uniforms.heights, 0);
+      gl!.uniform3f(
+        map.uniforms.lightDirection,
+        lighting.waterLight.x,
+        lighting.waterLight.y,
+        lighting.waterLight.z,
+      );
+      gl!.useProgram(scene.program);
+      gl!.uniform1i(scene.uniforms.scene, 0);
+      gl!.uniform1i(scene.uniforms.displacement, 1);
+      gl!.uniform1f(scene.uniforms.highlightOpacity, lighting.highlightOpacity);
+      gl!.uniform1f(scene.uniforms.shadowOpacity, lighting.shadowOpacity);
       const vertices = gl!.createBuffer();
       const framebuffer = gl!.createFramebuffer();
       if (vertices) buffers.push(vertices);
@@ -198,6 +213,8 @@ export function createWaterWebGLRenderer(
   }
 
   function hide() {
+    if (!active) return;
+    active = false;
     canvas.style.visibility = "hidden";
     canvas.dataset.waterState = "idle";
   }
@@ -229,8 +246,9 @@ export function createWaterWebGLRenderer(
         gl!.UNSIGNED_BYTE,
         scene,
       );
+      gl!.useProgram(resources.scene.program);
+      gl!.uniform2f(resources.scene.uniforms.cssSize, cssWidth, cssHeight);
       ready = true;
-      canvas.dataset.waterState = "idle";
     } catch (error) {
       console.warn("Water scene upload failed; using the SVG renderer.", error);
     }
@@ -334,13 +352,6 @@ export function createWaterWebGLRenderer(
       gl.bindFramebuffer(gl.FRAMEBUFFER, resources.framebuffer);
       gl.viewport(0, 0, gridWidth, gridHeight);
       gl.useProgram(map.program);
-      gl.uniform1i(map.uniforms.heights, 0);
-      gl.uniform3f(
-        map.uniforms.lightDirection,
-        lighting.waterLight.x,
-        lighting.waterLight.y,
-        lighting.waterLight.z,
-      );
       gl.uniform1f(map.uniforms.lightingStrength, lightingStrength);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
 
@@ -351,15 +362,13 @@ export function createWaterWebGLRenderer(
       gl.bindTexture(gl.TEXTURE_2D, resources.image);
       gl.activeTexture(gl.TEXTURE1);
       gl.bindTexture(gl.TEXTURE_2D, resources.displacement);
-      gl.uniform1i(scene.uniforms.scene, 0);
-      gl.uniform1i(scene.uniforms.displacement, 1);
-      gl.uniform2f(scene.uniforms.cssSize, cssWidth, cssHeight);
       gl.uniform1f(scene.uniforms.scale, lighting.refractionScale * strength);
-      gl.uniform1f(scene.uniforms.highlightOpacity, lighting.highlightOpacity);
-      gl.uniform1f(scene.uniforms.shadowOpacity, lighting.shadowOpacity);
       gl.drawArrays(gl.TRIANGLES, 0, 3);
-      canvas.style.visibility = "visible";
-      canvas.dataset.waterState = "active";
+      if (!active) {
+        active = true;
+        canvas.style.visibility = "visible";
+        canvas.dataset.waterState = "active";
+      }
     },
     dispose() {
       disposed = true;
