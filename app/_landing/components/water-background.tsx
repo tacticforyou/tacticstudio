@@ -6,6 +6,7 @@ type WaterPoint = { x: number; y: number };
 
 const simulationStep = 1000 / 60;
 const rippleIntensity = 0.8;
+const spreadResponse = 0.06;
 const refractionScale = 28 * rippleIntensity;
 const waterLight = { x: -0.5, y: -0.5, z: Math.SQRT1_2 };
 const highlightOpacity = 0.22 * rippleIntensity;
@@ -48,6 +49,7 @@ export function WaterBackground({
     let cellSize = 1;
     let current = new Float32Array(0);
     let previous = new Float32Array(0);
+    let sourceActivity = new Float32Array(0);
     let damping = new Float32Array(0);
     let edgeFade = new Float32Array(0);
     let pixels: ImageData;
@@ -55,6 +57,8 @@ export function WaterBackground({
     let lastFrame = 0;
     let accumulatedTime = 0;
     let strength = 0;
+    let spread = 1;
+    let targetSpread = 1;
     let restingTime = 0;
     let target: WaterPoint | null = null;
     let lastPoint: WaterPoint | null = null;
@@ -67,10 +71,13 @@ export function WaterBackground({
       lastFrame = 0;
       accumulatedTime = 0;
       strength = 0;
+      spread = 1;
+      targetSpread = 1;
       restingTime = 0;
       motionOrigin = null;
       current.fill(0);
       previous.fill(0);
+      sourceActivity.fill(0);
       background!.style.removeProperty("filter");
       map!.removeAttribute("href");
       displacement!.setAttribute("scale", "0");
@@ -94,6 +101,7 @@ export function WaterBackground({
       canvas.height = height;
       current = new Float32Array(width * height);
       previous = new Float32Array(width * height);
+      sourceActivity = new Float32Array(width * height);
       damping = new Float32Array(width * height);
       edgeFade = new Float32Array(width * height);
       pixels = context!.createImageData(width, height);
@@ -116,19 +124,34 @@ export function WaterBackground({
     }
 
     function step() {
+      spread += (targetSpread - spread) * (1 - Math.exp(-simulationStep / 140));
+      // Keep propagation at or below the existing wave equation's stability limit.
+      const propagation = 0.5 * spread * spread;
       // Damped wave equation: each point transfers its height to its neighbours.
       for (let y = 1; y < height - 1; y++) {
         for (let x = 1; x < width - 1; x++) {
           const i = y * width + x;
           previous[i] =
-            ((current[i - 1] +
-              current[i + 1] +
-              current[i - width] +
-              current[i + width]) /
-              2 -
-              previous[i]) *
+            (2 * current[i] -
+              previous[i] +
+              propagation *
+                (current[i - 1] +
+                  current[i + 1] +
+                  current[i - width] +
+                  current[i + width] -
+                  4 * current[i])) *
             damping[i];
         }
+      }
+      // Dissipate travelling waves while briefly preserving fresh cursor disturbances.
+      // Fade both time levels together so this does not inject a new impulse.
+      const decay = 1 - Math.exp(-simulationStep / 900);
+      const cooling = Math.exp(-simulationStep / 180);
+      for (let i = 0; i < current.length; i++) {
+        const retention = 1 - decay * (1 - sourceActivity[i]);
+        previous[i] *= retention;
+        current[i] *= retention;
+        sourceActivity[i] *= cooling;
       }
       [current, previous] = [previous, current];
     }
@@ -213,6 +236,7 @@ export function WaterBackground({
           const weight = Math.exp(-(dx * dx + dy * dy) / 8);
           const i = py * width + px;
           current[i] += weight * strength;
+          sourceActivity[i] = Math.max(sourceActivity[i], weight);
         }
       }
     }
@@ -249,6 +273,7 @@ export function WaterBackground({
       const speedResponse = smoothstep(speed / 1.25);
       const motionGain =
         0.04 + 0.96 * speedResponse * speedResponse * smoothstep(range / 64);
+      targetSpread = 1 - spreadResponse * (1 - motionGain);
       const count = Math.max(1, Math.ceil(travel));
       for (let i = 1; i <= count; i++) {
         const t = i / count;
@@ -292,6 +317,7 @@ export function WaterBackground({
       const point = pointerPoint(event);
       if (!point) return;
       disturb(point.x, point.y, 0.4);
+      targetSpread = 1;
       restingTime = 0;
       if (!frame) frame = requestAnimationFrame(paint);
     }
