@@ -12,6 +12,11 @@ const highlightOpacity = 0.22 * rippleIntensity;
 const shadowOpacity = 0.17 * rippleIntensity;
 const neutralLight = 128 / 255;
 
+function smoothstep(value: number) {
+  const t = Math.max(0, Math.min(1, value));
+  return t * t * (3 - 2 * t);
+}
+
 export function WaterBackground({
   children,
   className,
@@ -40,6 +45,7 @@ export function WaterBackground({
 
     let width = 0;
     let height = 0;
+    let cellSize = 1;
     let current = new Float32Array(0);
     let previous = new Float32Array(0);
     let damping = new Float32Array(0);
@@ -52,6 +58,7 @@ export function WaterBackground({
     let restingTime = 0;
     let target: WaterPoint | null = null;
     let lastPoint: WaterPoint | null = null;
+    let motionOrigin: WaterPoint | null = null;
     let visible = true;
 
     function stop() {
@@ -61,6 +68,7 @@ export function WaterBackground({
       accumulatedTime = 0;
       strength = 0;
       restingTime = 0;
+      motionOrigin = null;
       current.fill(0);
       previous.fill(0);
       background!.style.removeProperty("filter");
@@ -81,6 +89,7 @@ export function WaterBackground({
       // Square simulation cells keep the waves circular at every section aspect ratio.
       width = Math.min(192, Math.max(64, Math.round(bounds.width / 6)));
       height = Math.max(2, Math.round((width * bounds.height) / bounds.width));
+      cellSize = bounds.width / (width - 1);
       canvas.width = width;
       canvas.height = height;
       current = new Float32Array(width * height);
@@ -97,8 +106,7 @@ export function WaterBackground({
       for (let y = 0; y < height; y++) {
         for (let x = 0; x < width; x++) {
           const edge = Math.min(x, y, width - 1 - x, height - 1 - y);
-          const t = Math.min(1, edge / 8);
-          const fade = t * t * (3 - 2 * t);
+          const fade = smoothstep(edge / 8);
           const i = y * width + x;
           // Absorb the wake at the perimeter instead of reflecting sharp rings.
           damping[i] = 0.86 + 0.123 * fade;
@@ -183,8 +191,7 @@ export function WaterBackground({
         return;
       }
 
-      const t = Math.min(1, restingTime / 1800);
-      const tail = 1 - t * t * (3 - 2 * t);
+      const tail = 1 - smoothstep(restingTime / 1800);
       const envelope = Math.min(1, energy / 0.035) * tail;
       strength += (envelope - strength) * (1 - Math.exp(-elapsed / 110));
       context!.putImageData(pixels, 0, 0);
@@ -212,6 +219,12 @@ export function WaterBackground({
 
     function followPointer() {
       if (!target || !lastPoint) return;
+      const origin = motionOrigin ?? lastPoint;
+      const originEase = 1 - Math.exp(-simulationStep / 180);
+      motionOrigin = {
+        x: origin.x + (lastPoint.x - origin.x) * originEase,
+        y: origin.y + (lastPoint.y - origin.y) * originEase,
+      };
       const dx = target.x - lastPoint.x;
       const dy = target.y - lastPoint.y;
       const distance = Math.hypot(dx, dy);
@@ -228,13 +241,21 @@ export function WaterBackground({
         x: lastPoint.x + (dx / distance) * travel,
         y: lastPoint.y + (dy / distance) * travel,
       };
+      // Measure CSS pixels per millisecond and excursion from a slowly following origin.
+      // Short, rapid wiggles stay gentle; fast, broad sweeps reach the existing ceiling.
+      const speed = (travel * cellSize) / simulationStep;
+      const range =
+        Math.hypot(next.x - motionOrigin.x, next.y - motionOrigin.y) * cellSize;
+      const speedResponse = smoothstep(speed / 1.25);
+      const motionGain =
+        0.04 + 0.96 * speedResponse * speedResponse * smoothstep(range / 64);
       const count = Math.max(1, Math.ceil(travel));
       for (let i = 1; i <= count; i++) {
         const t = i / count;
         disturb(
           lastPoint.x + (next.x - lastPoint.x) * t,
           lastPoint.y + (next.y - lastPoint.y) * t,
-          (Math.min(travel, 4) * 0.07) / count,
+          (Math.min(travel, 4) * 0.07 * motionGain) / count,
         );
       }
       lastPoint = next;
@@ -278,6 +299,7 @@ export function WaterBackground({
     function leave() {
       target = null;
       lastPoint = null;
+      motionOrigin = null;
     }
 
     const resizeObserver = new ResizeObserver(resize);
