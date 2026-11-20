@@ -2,6 +2,7 @@
 
 ## Content and launch
 
+- [x] Replace the temporary Puressis portfolio poster with separate animated layers and the approved user-supplied Care Symbol SVG.
 - [ ] Move the landing page's editorial content (services, FAQs, testimonials, and featured projects) to validated Markdown under `content/`. Read it through a server-only adapter that can later use Payload without changing public project URLs.
 - [x] Add the approved branded social image and descriptive alt text to the home page's Open Graph and Twitter metadata.
 - [ ] Verify the social image's absolute public URL and rendered link previews on the deployed domain.

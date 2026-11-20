@@ -1,55 +1,103 @@
 "use client";
 
-import Image from "next/image";
-import { type CSSProperties, type ReactNode, useRef, useState } from "react";
-import { imageQuality } from "@/lib/image-quality";
+import { useInView } from "motion/react";
+import {
+  type CSSProperties,
+  type ReactNode,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { PortfolioArrow } from "./portfolio-arrow";
-import { PortfolioLogos, type PortfolioLogo } from "./portfolio-logos";
+import { PortfolioLogos } from "./portfolio-logos";
+import { projectFrame, type PortfolioProject } from "./portfolio-project";
+import { prepareProjectArtwork, ProjectArtwork } from "./project-artwork";
 import { useLandingFavicon } from "./use-landing-favicon";
-
-type Project = {
-  name: string;
-  logo: PortfolioLogo;
-  image: {
-    src: string;
-    width: number;
-    height: number;
-    // Outer card edges in source pixels. Artwork can extend beyond this frame.
-    cardBounds: readonly [
-      left: number,
-      top: number,
-      right: number,
-      bottom: number,
-    ];
-  };
-  alt: string;
-  color: string;
-};
 
 export function PortfolioCarousel({
   projects,
   heading,
   wave,
 }: {
-  projects: readonly [Project, ...Project[]];
+  projects: readonly [PortfolioProject, ...PortfolioProject[]];
   heading: ReactNode;
   wave: ReactNode;
 }) {
   const section = useRef<HTMLElement>(null);
-  const [position, setPosition] = useState(0);
+  const [{ position, visited }, setNavigation] = useState({
+    position: 0,
+    visited: [0],
+  });
+  const requestedPosition = useRef(0);
+  const requestVersion = useRef(0);
+  const nearby = useInView(section, { margin: "250px 0px", once: true });
   const active =
     ((position % projects.length) + projects.length) % projects.length;
   const project = projects[active];
   const widestFrameAspect = Math.max(
-    ...projects.map(({ image }) => {
-      const [left, top, right, bottom] = image.cardBounds;
-      return (right - left) / (bottom - top);
+    ...projects.map((item) => {
+      const [width, height] = projectFrame(item);
+      return width / height;
     }),
   );
   useLandingFavicon(section, project.color);
 
+  useEffect(() => {
+    if (!nearby) return;
+    for (const offset of [-1, 0, 1]) {
+      const index = (active + offset + projects.length) % projects.length;
+      void prepareProjectArtwork(projects[index]).catch(() => {});
+    }
+  }, [active, nearby, projects]);
+
+  useEffect(
+    () => () => {
+      requestVersion.current += 1;
+    },
+    [],
+  );
+
+  function prepare(index: number) {
+    void prepareProjectArtwork(projects[index]).catch(() => {});
+  }
+
+  function navigate(next: number) {
+    requestedPosition.current = next;
+    const version = ++requestVersion.current;
+    const index =
+      ((next % projects.length) + projects.length) % projects.length;
+    void prepareProjectArtwork(projects[index])
+      .then(() => {
+        if (version !== requestVersion.current) return;
+        setNavigation((current) => ({
+          position: next,
+          visited: current.visited.includes(index)
+            ? current.visited
+            : [...current.visited, index],
+        }));
+      })
+      .catch((error) => {
+        if (version !== requestVersion.current) return;
+        requestedPosition.current = position;
+        console.error("Unable to load project artwork", error);
+      });
+  }
+
   function select(offset: number) {
-    setPosition((current) => current + offset);
+    navigate(requestedPosition.current + offset);
+  }
+
+  function selectProject(index: number) {
+    const current = requestedPosition.current;
+    const currentIndex =
+      ((current % projects.length) + projects.length) % projects.length;
+    const distance = (index - currentIndex + projects.length) % projects.length;
+    navigate(
+      current +
+        (distance > projects.length / 2
+          ? distance - projects.length
+          : distance),
+    );
   }
 
   return (
@@ -57,7 +105,7 @@ export function PortfolioCarousel({
       ref={section}
       id="work"
       aria-labelledby="work-title"
-      className="studio-band studio-portfolio overflow-hidden pt-[calc(25*var(--u))] pb-[calc(114*var(--u))] studio-mobile:pt-10 studio-mobile:pb-12"
+      className="studio-band studio-portfolio overflow-hidden pt-[calc(25*var(--u))] pb-[calc(114*var(--u))] max-[600px]:overflow-clip studio-mobile:pt-10 studio-mobile:pb-12"
     >
       {projects.slice(1).map(({ name, color }, index) => (
         <div
@@ -70,50 +118,43 @@ export function PortfolioCarousel({
       ))}
       <div className="studio-shell relative">
         {heading}
-        <div className="mt-[calc(38*var(--u))] grid grid-cols-[minmax(0,1fr)_minmax(0,calc(694*var(--u)))_minmax(0,1fr)] place-items-center gap-4 studio-mobile:grid-cols-[minmax(0,1fr)_minmax(0,7fr)_minmax(0,1fr)] studio-mobile:gap-[0.45rem]">
-          <PortfolioArrow direction="right" onSelect={() => select(1)} />
+        <div className="mt-[calc(38*var(--u))] grid grid-cols-[minmax(0,1fr)_minmax(0,calc(694*var(--u)))_minmax(0,1fr)] place-items-center gap-x-4 max-[600px]:grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] max-[600px]:gap-x-2 max-[600px]:gap-y-6 studio-tablet:studio-mobile:grid-cols-[minmax(0,1fr)_minmax(0,7fr)_minmax(0,1fr)] studio-tablet:studio-mobile:gap-x-[0.45rem]">
+          <PortfolioArrow
+            direction="right"
+            onSelect={() => select(1)}
+            onPrepare={() => prepare((active + 1) % projects.length)}
+          />
           <div
-            className="relative w-full"
+            className="relative w-full max-[600px]:col-span-full max-[600px]:col-start-1 max-[600px]:row-start-1"
             style={{ aspectRatio: widestFrameAspect }}
           >
-            {projects.map(({ name, image, alt }, index) => {
-              const [left, top, right, bottom] = image.cardBounds;
-              const cardWidth = right - left;
-              const cardHeight = bottom - top;
-
-              return (
-                <figure
-                  key={name}
-                  aria-hidden={active !== index}
-                  data-active={active === index}
-                  className="absolute top-1/2 left-1/2 h-full -translate-1/2 opacity-0 data-[active=true]:opacity-100 motion-safe:transition-opacity motion-safe:duration-300"
-                  style={{
-                    width: `${(100 * cardWidth) / cardHeight / widestFrameAspect}%`,
-                  }}
-                >
-                  <Image
-                    src={image.src}
-                    alt={alt}
-                    width={image.width}
-                    height={image.height}
-                    className="pointer-events-none absolute h-auto max-w-none"
-                    style={{
-                      width: `${(100 * image.width) / cardWidth}%`,
-                      left: `${(-100 * left) / cardWidth}%`,
-                      top: `${(-100 * top) / cardHeight}%`,
-                    }}
-                    sizes="(max-width: 760px) 74vw, (max-width: 1920px) 39vw, 750px"
-                    quality={imageQuality}
-                    unoptimized={index === 0}
-                  />
-                </figure>
-              );
-            })}
+            {projects.map((item, index) =>
+              visited.includes(index) ? (
+                <ProjectArtwork
+                  key={item.name}
+                  project={item}
+                  active={active === index}
+                  initial={index === 0}
+                  widestAspect={widestFrameAspect}
+                />
+              ) : null,
+            )}
           </div>
-          <PortfolioArrow direction="left" onSelect={() => select(-1)} />
+          <PortfolioArrow
+            direction="left"
+            onSelect={() => select(-1)}
+            onPrepare={() =>
+              prepare((active - 1 + projects.length) % projects.length)
+            }
+          />
+          <PortfolioLogos
+            projects={projects}
+            position={position}
+            onSelect={selectProject}
+            onPrepare={prepare}
+          />
         </div>
         <output className="sr-only">{project.name}</output>
-        <PortfolioLogos projects={projects} position={position} />
       </div>
       {wave}
     </section>

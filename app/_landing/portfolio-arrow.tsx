@@ -9,9 +9,11 @@ const labels = { right: "پروژه بعدی", left: "پروژه قبلی" };
 export function PortfolioArrow({
   direction,
   onSelect,
+  onPrepare,
 }: {
   direction: keyof typeof labels;
   onSelect: () => void;
+  onPrepare?: () => void;
 }) {
   const anchorRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLButtonElement>(null);
@@ -122,7 +124,9 @@ export function PortfolioArrow({
       ref={anchorRef}
       className={
         "studio-project-arrow-slot aspect-square w-[calc(138*var(--u))] -translate-y-[calc(19*var(--u))] studio-mobile:w-full studio-mobile:translate-none " +
-        (direction === "right" ? "justify-self-start" : "justify-self-end")
+        (direction === "right"
+          ? "justify-self-start max-[600px]:col-start-1 max-[600px]:row-start-2"
+          : "justify-self-end max-[600px]:col-start-3 max-[600px]:row-start-2")
       }
     >
       <button
@@ -133,6 +137,9 @@ export function PortfolioArrow({
         data-direction={direction}
         data-click-sound="project"
         onClick={handleClick}
+        onPointerEnter={onPrepare}
+        onPointerDown={onPrepare}
+        onFocus={onPrepare}
       >
         <Art
           name="icon-arrow-right.svg"

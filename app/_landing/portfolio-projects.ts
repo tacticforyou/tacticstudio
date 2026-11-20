@@ -1,6 +1,13 @@
-export const portfolioProjects = [
+import { projectArtwork } from "./project-artwork-data";
+import type { PortfolioProject } from "./portfolio-project";
+
+export const portfolioProjects: readonly [
+  PortfolioProject,
+  ...PortfolioProject[],
+] = [
   {
     name: "Prevaisor",
+    scene: projectArtwork.prevaisor,
     logo: {
       asset: "logo-previsore.svg",
       width: 277.772,
@@ -18,6 +25,7 @@ export const portfolioProjects = [
   },
   {
     name: "Doshi",
+    scene: projectArtwork.doshi,
     logo: { asset: "logo-doshi.svg", width: 271, height: 57, symbolWidth: 66 },
     image: {
       src: "/images/landing/doshi-project.png",
@@ -30,6 +38,7 @@ export const portfolioProjects = [
   },
   {
     name: "Radian Robots",
+    scene: projectArtwork.radian,
     logo: { asset: "logo-radian.svg", width: 276, height: 62, symbolWidth: 41 },
     image: {
       src: "/images/landing/radian-robots-project.png",
@@ -41,7 +50,31 @@ export const portfolioProjects = [
     color: "#A8CFAD",
   },
   {
+    name: "Uninect",
+    scene: projectArtwork.uninect,
+    logo: {
+      asset: "logo-uninect.svg",
+      width: 787,
+      height: 148.48,
+      symbolWidth: 149,
+    },
+    image: {
+      src: projectArtwork.uninect.poster.src,
+      width: projectArtwork.uninect.poster.width,
+      height: projectArtwork.uninect.poster.height,
+      cardBounds: [
+        0,
+        0,
+        projectArtwork.uninect.poster.width,
+        projectArtwork.uninect.poster.height,
+      ],
+    },
+    alt: "هویت بصری Uninect، همراه با نشان برند، پرتره، تابلو و ارتباط دانشجویان با دانشگاه‌ها",
+    color: "#A7E7DD",
+  },
+  {
     name: "Collision Centers",
+    scene: projectArtwork.north,
     logo: { asset: "logo-north.svg", width: 281, height: 52, symbolWidth: 52 },
     image: {
       src: "/images/landing/collision-centers-project.png",
@@ -54,6 +87,7 @@ export const portfolioProjects = [
   },
   {
     name: "Milan",
+    scene: projectArtwork.milan,
     logo: { asset: "logo-milan.svg", width: 206, height: 60, symbolWidth: 60 },
     image: {
       src: "/images/landing/milan-project.png",
@@ -66,6 +100,7 @@ export const portfolioProjects = [
   },
   {
     name: "Puressis",
+    scene: projectArtwork.puressis,
     logo: {
       asset: "logo-puressis.svg",
       width: 271,

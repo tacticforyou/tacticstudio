@@ -75,6 +75,15 @@
     }
   }
 
+  @media (width < 600px) {
+    .studio-project-logo {
+      --project-logo-height: min(
+        1.85rem,
+        calc(80cqw / var(--project-logo-max-aspect))
+      );
+    }
+  }
+
   .studio-project-arrow {
     background: rgb(255 255 255 / 40%);
     box-shadow: inset 0 0 0 calc(1 * var(--u)) white;
