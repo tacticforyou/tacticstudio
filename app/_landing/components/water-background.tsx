@@ -1,6 +1,10 @@
 "use client";
 
 import { useEffect, useId, useRef, type ReactNode } from "react";
+import {
+  createWaterWebGLRenderer,
+  type WaterScenePainter,
+} from "./water-webgl";
 
 type WaterPoint = { x: number; y: number };
 
@@ -21,9 +25,11 @@ function smoothstep(value: number) {
 export function WaterBackground({
   children,
   className,
+  paintScene,
 }: {
   children: ReactNode;
   className: string;
+  paintScene?: WaterScenePainter;
 }) {
   const backgroundRef = useRef<HTMLDivElement>(null);
   const mapRef = useRef<SVGFEImageElement>(null);
@@ -43,6 +49,15 @@ export function WaterBackground({
     const canvas = document.createElement("canvas");
     const context = canvas.getContext("2d");
     if (!context) return;
+    const gpu =
+      paintScene && !motion.matches && pointer.matches
+        ? createWaterWebGLRenderer(background, paintScene, {
+            refractionScale,
+            highlightOpacity,
+            shadowOpacity,
+            waterLight,
+          })
+        : null;
 
     let width = 0;
     let height = 0;
@@ -81,6 +96,7 @@ export function WaterBackground({
       background!.style.removeProperty("filter");
       map!.removeAttribute("href");
       displacement!.setAttribute("scale", "0");
+      gpu?.hide();
     }
 
     function clear() {
@@ -105,6 +121,7 @@ export function WaterBackground({
       damping = new Float32Array(width * height);
       edgeFade = new Float32Array(width * height);
       pixels = context!.createImageData(width, height);
+      gpu?.resize(width, height);
       for (let i = 0; i < pixels.data.length; i += 4) {
         pixels.data[i] = 128;
         pixels.data[i + 1] = 128;
@@ -175,6 +192,8 @@ export function WaterBackground({
         return;
       }
       const elapsed = steps * simulationStep;
+      const useGPU = gpu?.ready ?? false;
+      const lightingStrength = strength;
 
       let energy = 0;
       for (let y = 1; y < height - 1; y++) {
@@ -183,6 +202,7 @@ export function WaterBackground({
           const dx = current[i - 1] - current[i + 1];
           const dy = current[i - width] - current[i + width];
           energy = Math.max(energy, Math.abs(dx), Math.abs(dy));
+          if (useGPU) continue;
           const fade = edgeFade[i];
           // A soft limit avoids hard creases when several waves overlap.
           pixels.data[i * 4] = 128 + 110 * Math.tanh(dx * 1.6) * fade;
@@ -217,10 +237,18 @@ export function WaterBackground({
       const tail = 1 - smoothstep(restingTime / 1800);
       const envelope = Math.min(1, energy / 0.035) * tail;
       strength += (envelope - strength) * (1 - Math.exp(-elapsed / 110));
-      context!.putImageData(pixels, 0, 0);
-      map!.setAttribute("href", canvas.toDataURL());
-      displacement!.setAttribute("scale", String(refractionScale * strength));
-      background!.style.filter = `url(#${filterId})`;
+      if (useGPU) {
+        gpu!.render(current, strength, lightingStrength);
+        background!.style.removeProperty("filter");
+        map!.removeAttribute("href");
+        displacement!.setAttribute("scale", "0");
+      } else {
+        gpu?.hide();
+        context!.putImageData(pixels, 0, 0);
+        map!.setAttribute("href", canvas.toDataURL());
+        displacement!.setAttribute("scale", String(refractionScale * strength));
+        background!.style.filter = `url(#${filterId})`;
+      }
       frame = requestAnimationFrame(paint);
     }
 
@@ -345,6 +373,7 @@ export function WaterBackground({
 
     return () => {
       clear();
+      gpu?.dispose();
       resizeObserver.disconnect();
       intersection.disconnect();
       section.removeEventListener("pointermove", move);
@@ -355,7 +384,7 @@ export function WaterBackground({
       pointer.removeEventListener("change", clear);
       document.removeEventListener("visibilitychange", clear);
     };
-  }, [filterId]);
+  }, [filterId, paintScene]);
 
   return (
     <>

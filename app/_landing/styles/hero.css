@@ -1,12 +1,24 @@
 @layer components {
   .studio-hero-background {
+    --hero-gradient-start: #fff;
+    --hero-gradient-upper: #fafbf9;
+    --hero-gradient-lower: #e6e7df;
+    --hero-gradient-end: #d4d6c9;
+    --hero-mask-start: 38%;
+    --hero-mask-end: 58%;
     background:
       radial-gradient(
         ellipse at 50% 115%,
         var(--color-studio-mist) 23%,
         transparent 72%
       ),
-      linear-gradient(to bottom, white 18%, #fafbf9 49%, #e6e7df 80%, #d4d6c9);
+      linear-gradient(
+        to bottom,
+        var(--hero-gradient-start) 18%,
+        var(--hero-gradient-upper) 49%,
+        var(--hero-gradient-lower) 80%,
+        var(--hero-gradient-end)
+      );
   }
 
   .studio-hero-face {
@@ -16,7 +28,10 @@
     width: calc(1934 * var(--u));
     aspect-ratio: 4 / 3;
     pointer-events: none;
-    mask-image: linear-gradient(transparent 38%, #000 58%);
+    mask-image: linear-gradient(
+      transparent var(--hero-mask-start),
+      #000 var(--hero-mask-end)
+    );
   }
 
   .studio-hero-face-left {

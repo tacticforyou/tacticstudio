@@ -2,7 +2,7 @@ import { Actions, ConsultationLink } from "../components/actions";
 import { Art, Portrait, Wave } from "../components/art";
 import { ExperienceCount } from "../components/experience-count";
 import { HeroBrandCard } from "../components/hero-brand-card";
-import { WaterBackground } from "../components/water-background";
+import { HeroWaterBackground } from "../components/hero-water-background";
 import { LogoRow } from "../components/logo-row";
 import { ServiceCopy } from "../components/service-copy";
 import { Tagline } from "../components/tagline";
@@ -60,12 +60,12 @@ export function Hero() {
       id="top"
       className="studio-band studio-hero px-0 pt-[calc(58*var(--u))] pb-[calc(78*var(--u))] studio-mobile:pt-[1.3rem] studio-tablet:pb-8"
     >
-      <WaterBackground className="studio-hero-background pointer-events-none absolute inset-0 -z-1 overflow-clip rounded-[inherit]">
+      <HeroWaterBackground>
         <Portrait className="studio-hero-face studio-hero-face-left" eager />
         <span className="studio-hero-face studio-hero-face-right">
           <Portrait side="right" className="studio-hero-right-art" eager />
         </span>
-      </WaterBackground>
+      </HeroWaterBackground>
       <SiteHeader />
       <div className="studio-shell relative studio-tablet:max-w-3xl">
         <div className="mx-auto mt-[calc(98*var(--u))] w-full max-w-[calc(1040*var(--u))] studio-mobile:mt-[clamp(2.5rem,9vw,3.6rem)]">
