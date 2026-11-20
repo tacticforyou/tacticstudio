@@ -5,10 +5,11 @@ import { useEffect, useId, useRef, type ReactNode } from "react";
 type WaterPoint = { x: number; y: number };
 
 const simulationStep = 1000 / 60;
-const refractionScale = 28;
+const rippleIntensity = 0.8;
+const refractionScale = 28 * rippleIntensity;
 const waterLight = { x: -0.5, y: -0.5, z: Math.SQRT1_2 };
-const highlightOpacity = 0.22;
-const shadowOpacity = 0.17;
+const highlightOpacity = 0.22 * rippleIntensity;
+const shadowOpacity = 0.17 * rippleIntensity;
 const neutralLight = 128 / 255;
 
 export function WaterBackground({
