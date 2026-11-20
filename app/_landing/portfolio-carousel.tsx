@@ -105,17 +105,21 @@ export function PortfolioCarousel({
       ref={section}
       id="work"
       aria-labelledby="work-title"
-      className="studio-band studio-portfolio overflow-hidden pt-[calc(25*var(--u))] pb-[calc(114*var(--u))] max-[600px]:overflow-clip studio-mobile:pt-10 studio-mobile:pb-12"
+      className="studio-band studio-portfolio overflow-visible pt-[calc(25*var(--u))] pb-[calc(114*var(--u))] studio-mobile:pt-10 studio-mobile:pb-12"
     >
-      {projects.slice(1).map(({ name, color }, index) => (
-        <div
-          key={name}
-          aria-hidden="true"
-          className="studio-project-gradient pointer-events-none absolute inset-0 opacity-0 data-[active=true]:opacity-100 motion-safe:transition-opacity motion-safe:duration-300"
-          data-active={active === index + 1}
-          style={{ "--project-color": color } as CSSProperties}
-        />
-      ))}
+      <div
+        aria-hidden="true"
+        className="studio-project-backdrop pointer-events-none absolute inset-0 overflow-hidden rounded-[inherit]"
+      >
+        {projects.slice(1).map(({ name, color }, index) => (
+          <div
+            key={name}
+            className="studio-project-gradient absolute inset-0 opacity-0 data-[active=true]:opacity-100 motion-safe:transition-opacity motion-safe:duration-300"
+            data-active={active === index + 1}
+            style={{ "--project-color": color } as CSSProperties}
+          />
+        ))}
+      </div>
       <div className="studio-shell relative">
         {heading}
         <div className="mt-[calc(38*var(--u))] grid grid-cols-[minmax(0,1fr)_minmax(0,calc(694*var(--u)))_minmax(0,1fr)] place-items-center gap-x-4 max-[600px]:grid-cols-[2.75rem_minmax(0,1fr)_2.75rem] max-[600px]:gap-x-2 max-[600px]:gap-y-6 studio-tablet:studio-mobile:grid-cols-[minmax(0,1fr)_minmax(0,7fr)_minmax(0,1fr)] studio-tablet:studio-mobile:gap-x-[0.45rem]">

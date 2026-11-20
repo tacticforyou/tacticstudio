@@ -10,39 +10,39 @@ const layer = (name, ids, motion = "panel", options = {}) => ({
 export const artworkPlan = [
   {
     slug: "puressis",
-    frame: 6138,
-    bounds: [359, 299, 2833, 2070],
+    frame: 6631,
+    bounds: [359, 219.99, 2833, 2228.02],
     layers: [
-      layer("symbol", [6183, 6184]),
-      layer("story", [6156, 6157]),
-      layer("brand", [6145, 6146]),
-      layer("letter-p", [6164, 6168]),
-      layer("dog-symbol", [6165, 6171]),
-      layer("care-card", [6166, 6175]),
+      layer("symbol", [6676, 6677]),
+      layer("story", [6649, 6650], "panel", { asset: "story-tall" }),
+      layer("brand", [6638, 6639]),
+      layer("letter-p", [6657, 6661]),
+      layer("dog-symbol", [6658, 6664]),
+      layer("care-card", [6659, 6668]),
       // Approved user-supplied vector; FigCraft's Boolean export loses the gap.
-      layer("care-symbol", 6176, "accent", {
+      layer("care-symbol", 6695, "accent", {
         source: "scripts/portfolio-source-assets/puressis-care-symbol.svg",
         delay: 0.3,
       }),
-      layer("dog-card", 6187, "backdrop"),
+      layer("dog-card", 6680, "backdrop"),
       // One complete cutout moves behind the two original, fixed CSS windows.
-      layer("dog", 6191, "masked-rise", {
+      layer("dog", 6684, "masked-rise", {
         asset: "dog-complete",
         delay: 0.22,
-        clip: 6190,
+        clip: 6683,
       }),
-      layer("dog-body", 6191, "masked-rise", {
+      layer("dog-body", 6684, "masked-rise", {
         asset: "dog-complete",
         delay: 0.22,
-        clip: 6193,
+        clip: 6686,
       }),
-      layer("dog-shade", 6195, "backdrop", { clip: 6193 }),
+      layer("dog-shade", 6688, "backdrop", { clip: 6686 }),
       // Full FigCraft shadow bounds: 149px disc inside a 426.8px export.
-      layer("plus-left", 6196, "accent", {
+      layer("plus-left", 6689, "accent", {
         delay: 0.4,
         exportPadding: [138.9, 112.9, 138.9, 164.9],
       }),
-      layer("plus-right", 6199, "accent", {
+      layer("plus-right", 6692, "accent", {
         delay: 0.48,
         exportPadding: [138.9, 112.9, 138.9, 164.9],
       }),
@@ -148,6 +148,7 @@ export const artworkPlan = [
       layer("sculpture", 6217, "logo", {
         parent: "main-card",
         clip: 6216,
+        delay: 0.32,
       }),
       // Complete phone artwork moving behind the fixed, expanded CSS window.
       layer("phones", 6211, "phone-emerge", { delay: 0.22, clip: 6210 }),
