@@ -7,7 +7,8 @@ type WaterPoint = { x: number; y: number };
 const simulationStep = 1000 / 60;
 const refractionScale = 28;
 const waterLight = { x: -0.5, y: -0.5, z: Math.SQRT1_2 };
-const lightingOpacity = 0.22;
+const highlightOpacity = 0.22;
+const shadowOpacity = 0.17;
 const neutralLight = 128 / 255;
 
 export function WaterBackground({
@@ -330,7 +331,7 @@ export function WaterBackground({
               values={`0 0 0 0 0
                        0 0 0 0 0
                        0 0 0 0 0
-                       0 0 ${-lightingOpacity} 0 ${lightingOpacity * neutralLight}`}
+                       0 0 ${-shadowOpacity} 0 ${shadowOpacity * neutralLight}`}
               result="wave-shadow"
             />
             <feComposite
@@ -345,7 +346,7 @@ export function WaterBackground({
               values={`0 0 0 0 1
                        0 0 0 0 1
                        0 0 0 0 1
-                       0 0 ${lightingOpacity} 0 ${-lightingOpacity * neutralLight}`}
+                       0 0 ${highlightOpacity} 0 ${-highlightOpacity * neutralLight}`}
               result="wave-highlight"
             />
             <feComposite in="wave-highlight" in2="shaded" operator="atop" />
