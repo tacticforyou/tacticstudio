@@ -4,6 +4,7 @@ import { useInView } from "motion/react";
 import {
   type CSSProperties,
   type ReactNode,
+  useCallback,
   useEffect,
   useRef,
   useState,
@@ -35,8 +36,14 @@ export function PortfolioCarousel({
   const active =
     ((position % projects.length) + projects.length) % projects.length;
   const project = projects[active];
-  const visible = useInView(section);
-  const { setColor } = usePortfolioTheme();
+  const { setColor, setSection } = usePortfolioTheme();
+  const registerSection = useCallback(
+    (element: HTMLElement | null) => {
+      section.current = element;
+      setSection(element);
+    },
+    [setSection],
+  );
   const widestFrameAspect = Math.max(
     ...projects.map((item) => {
       const [width, height] = projectFrame(item);
@@ -46,9 +53,9 @@ export function PortfolioCarousel({
   useLandingFavicon(section, project.color);
 
   useEffect(() => {
-    setColor(visible ? project.color : undefined);
+    setColor(project.color);
     return () => setColor(undefined);
-  }, [visible, project.color, setColor]);
+  }, [project.color, setColor]);
 
   useEffect(() => {
     if (!nearby) return;
@@ -110,7 +117,7 @@ export function PortfolioCarousel({
 
   return (
     <section
-      ref={section}
+      ref={registerSection}
       id="work"
       aria-labelledby="work-title"
       className="studio-band studio-portfolio overflow-visible pt-[calc(25*var(--u))] pb-[calc(114*var(--u))] studio-mobile:pt-10 studio-mobile:pb-12"

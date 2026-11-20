@@ -15,7 +15,58 @@ export function QuickAccessMenu() {
   const menuRef = useRef<HTMLDivElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
   const hovered = useRef(false);
-  const { color } = usePortfolioTheme();
+  const { color: projectColor, section } = usePortfolioTheme();
+  const [overPortfolio, setOverPortfolio] = useState(false);
+  const color = section && overPortfolio ? projectColor : undefined;
+
+  useEffect(() => {
+    const button = toggleRef.current;
+    if (!section || !button) return;
+
+    const controller = new AbortController();
+    let observer: IntersectionObserver | undefined;
+
+    const observeButtonPosition = () => {
+      observer?.disconnect();
+      const bounds = button.getBoundingClientRect();
+      if (!bounds.width || !bounds.height) {
+        setOverPortfolio(false);
+        return;
+      }
+
+      const viewport = document.documentElement;
+      const x = Math.max(
+        0,
+        Math.min(viewport.clientWidth - 1, bounds.left + bounds.width / 2),
+      );
+      const y = Math.max(
+        0,
+        Math.min(viewport.clientHeight - 1, bounds.top + bounds.height / 2),
+      );
+
+      // A one-pixel root tracks the section underneath the button's center.
+      observer = new IntersectionObserver(
+        ([entry]) => setOverPortfolio(entry.isIntersecting),
+        {
+          rootMargin: `-${y}px -${viewport.clientWidth - x - 1}px -${viewport.clientHeight - y - 1}px -${x}px`,
+        },
+      );
+      observer.observe(section);
+    };
+
+    const resize = new ResizeObserver(observeButtonPosition);
+    resize.observe(button);
+    window.addEventListener("resize", observeButtonPosition, {
+      signal: controller.signal,
+    });
+    observeButtonPosition();
+
+    return () => {
+      controller.abort();
+      resize.disconnect();
+      observer?.disconnect();
+    };
+  }, [section]);
 
   useEffect(() => {
     if (!open) return;
