@@ -5,7 +5,12 @@ import { PortfolioCarousel } from "../portfolio-carousel";
 const projects = [
   {
     name: "Prevaisor",
-    logo: "logo-previsore.svg",
+    logo: {
+      asset: "logo-previsore.svg",
+      width: 277.772,
+      height: 60.043,
+      symbolWidth: 49,
+    },
     image: {
       src: "/images/landing/previsore-project@2x.webp",
       width: 1388,
@@ -17,7 +22,7 @@ const projects = [
   },
   {
     name: "Doshi",
-    logo: "logo-doshi.svg",
+    logo: { asset: "logo-doshi.svg", width: 271, height: 57, symbolWidth: 66 },
     image: {
       src: "/images/landing/doshi-project.png",
       width: 2969,
@@ -29,7 +34,7 @@ const projects = [
   },
   {
     name: "Radian Robots",
-    logo: "logo-radian.svg",
+    logo: { asset: "logo-radian.svg", width: 276, height: 62, symbolWidth: 41 },
     image: {
       src: "/images/landing/radian-robots-project.png",
       width: 3232,
@@ -41,7 +46,7 @@ const projects = [
   },
   {
     name: "Collision Centers",
-    logo: "logo-north.svg",
+    logo: { asset: "logo-north.svg", width: 281, height: 52, symbolWidth: 52 },
     image: {
       src: "/images/landing/collision-centers-project.png",
       width: 3043,
@@ -53,7 +58,7 @@ const projects = [
   },
   {
     name: "Milan",
-    logo: "logo-milan.svg",
+    logo: { asset: "logo-milan.svg", width: 206, height: 60, symbolWidth: 60 },
     image: {
       src: "/images/landing/milan-project.png",
       width: 716,
@@ -65,7 +70,12 @@ const projects = [
   },
   {
     name: "Puressis",
-    logo: "logo-puressis.svg",
+    logo: {
+      asset: "logo-puressis.svg",
+      width: 271,
+      height: 82,
+      symbolWidth: 64,
+    },
     image: {
       src: "/images/landing/puressis-project.png",
       width: 712,

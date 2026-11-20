@@ -26,6 +26,55 @@
     );
   }
 
+  .studio-project-logos {
+    container-type: inline-size;
+  }
+
+  .studio-project-logo {
+    /* Fit the widest wordmark at one shared height for every brand. */
+    --project-logo-height: min(
+      calc(55 * var(--u)),
+      calc(18cqw / var(--project-logo-max-aspect))
+    );
+    position: relative;
+    flex: none;
+    width: calc(var(--project-logo-height) * var(--project-logo-aspect));
+    height: var(--project-logo-height);
+  }
+
+  @media (max-width: 760px) {
+    .studio-project-logo {
+      --project-logo-height: min(
+        2.4rem,
+        calc(42cqw / var(--project-logo-max-aspect))
+      );
+      clip-path: inset(0);
+      translate: 0;
+    }
+
+    .studio-project-logo[data-active="false"] {
+      clip-path: inset(0 calc(100% - var(--project-logo-symbol-width)) 0 0);
+      translate: var(--project-logo-symbol-offset) 0;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .studio-project-logo {
+        transition:
+          clip-path 400ms var(--ease-studio),
+          translate 400ms var(--ease-studio);
+      }
+    }
+  }
+
+  @media (max-width: 500px) {
+    .studio-project-logo {
+      --project-logo-height: min(
+        1.85rem,
+        calc(42cqw / var(--project-logo-max-aspect))
+      );
+    }
+  }
+
   .studio-project-arrow {
     background: rgb(255 255 255 / 40%);
     box-shadow: inset 0 0 0 calc(1 * var(--u)) white;

@@ -7,7 +7,16 @@ import {
   MotionConfig,
 } from "motion/react";
 import * as m from "motion/react-m";
+import type { CSSProperties } from "react";
 import { Art } from "./components/art";
+
+export type PortfolioLogo = {
+  asset: string;
+  width: number;
+  height: number;
+  // Right edge of the symbol in the original SVG, before the wordmark begins.
+  symbolWidth: number;
+};
 
 const offsets = [-2, -1, 0, 1, 2];
 const edgeVariants = {
@@ -28,17 +37,24 @@ export function PortfolioLogos({
   active,
   direction,
 }: {
-  projects: readonly { name: string; logo: string }[];
+  projects: readonly { name: string; logo: PortfolioLogo }[];
   active: number;
   direction: number;
 }) {
+  const maxLogoAspect = Math.max(
+    ...projects.map(({ logo }) => logo.width / logo.height),
+  );
+
   return (
     <MotionConfig reducedMotion="user">
       <LazyMotion features={domAnimation} strict>
         <ul
           aria-label="لوگوهای پروژه ها"
-          className="relative mx-auto mt-[calc(94*var(--u))] h-[calc(70*var(--u))] w-full overflow-hidden studio-mobile:mt-8 studio-mobile:h-12 studio-compact:h-10"
+          className="studio-project-logos relative mx-auto mt-[calc(94*var(--u))] h-[calc(70*var(--u))] w-full overflow-hidden studio-mobile:mt-8 studio-mobile:h-12 studio-compact:h-10"
           dir="ltr"
+          style={
+            { "--project-logo-max-aspect": maxLogoAspect } as CSSProperties
+          }
         >
           <AnimatePresence initial={false} custom={direction}>
             {offsets.map((offset) => {
@@ -66,12 +82,25 @@ export function PortfolioLogos({
                     ease: [0.22, 1, 0.36, 1],
                   }}
                 >
-                  <Art
-                    className="h-[calc(55*var(--u))] w-full studio-mobile:h-[2.4rem] studio-compact:h-[1.85rem]"
-                    name={project.logo}
-                    alt={project.name}
-                    sizes="(max-width: 760px) 36vw, 280px"
-                  />
+                  <span
+                    className="studio-project-logo"
+                    data-active={isActive}
+                    style={
+                      {
+                        "--project-logo-aspect":
+                          project.logo.width / project.logo.height,
+                        "--project-logo-symbol-width": `${(100 * project.logo.symbolWidth) / project.logo.width}%`,
+                        "--project-logo-symbol-offset": `${50 * (1 - project.logo.symbolWidth / project.logo.width)}%`,
+                      } as CSSProperties
+                    }
+                  >
+                    <Art
+                      className="absolute inset-0 size-full"
+                      name={project.logo.asset}
+                      alt={project.name}
+                      sizes="(max-width: 760px) 50vw, 280px"
+                    />
+                  </span>
                 </m.li>
               );
             })}

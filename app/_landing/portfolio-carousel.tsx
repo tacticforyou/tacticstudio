@@ -3,12 +3,12 @@
 import Image from "next/image";
 import { type CSSProperties, type ReactNode, useRef, useState } from "react";
 import { PortfolioArrow } from "./portfolio-arrow";
-import { PortfolioLogos } from "./portfolio-logos";
+import { PortfolioLogos, type PortfolioLogo } from "./portfolio-logos";
 import { useLandingFavicon } from "./use-landing-favicon";
 
 type Project = {
   name: string;
-  logo: string;
+  logo: PortfolioLogo;
   image: {
     src: string;
     width: number;
