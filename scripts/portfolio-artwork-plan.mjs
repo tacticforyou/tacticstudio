@@ -25,18 +25,13 @@ export const artworkPlan = [
         delay: 0.3,
       }),
       layer("dog-card", 6680, "backdrop"),
-      // One complete cutout moves behind the two original, fixed CSS windows.
-      layer("dog", 6684, "masked-rise", {
-        asset: "dog-complete",
+      // FigCraft bakes the left body crop and diagonal alpha fade into one cutout.
+      // The fixed window leaves room for the full ear throughout the rise.
+      layer("dog", 6704, "masked-rise", {
+        asset: "dog-alpha",
         delay: 0.22,
         clip: 6683,
       }),
-      layer("dog-body", 6684, "masked-rise", {
-        asset: "dog-complete",
-        delay: 0.22,
-        clip: 6686,
-      }),
-      layer("dog-shade", 6688, "backdrop", { clip: 6686 }),
       // Full FigCraft shadow bounds: 149px disc inside a 426.8px export.
       layer("plus-left", 6689, "accent", {
         delay: 0.4,
